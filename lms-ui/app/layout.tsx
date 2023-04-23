@@ -1,18 +1,24 @@
 'use client';
 
 import './globals.css';
-import { AuthContextProvider, useAuthContext } from './context/AuthContext';
-import { useState } from 'react';
+import { AuthContextProvider } from './context/AuthContext';
+import { ToastContainer } from 'react-toastify';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [showSidebar, setShowSidebar] = useState(false);
 
   return (
-    <html lang="en">
+    <html lang="en" translate="no">
+        <title>BookWoods Library Managements System</title>
+        <meta name="description" content="My Page"/>
       <body>
+      <ToastContainer
+      />
+
         <AuthContextProvider>
             {children}
         </AuthContextProvider>
+        <ToastContainer/>
+
       </body>
     </html>
   );

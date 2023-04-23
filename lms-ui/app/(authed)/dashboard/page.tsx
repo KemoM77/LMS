@@ -1,24 +1,12 @@
 'use client'
 import Button from "@mui/material/Button";
 import addData from "../../firebase/firestore/addData";
+import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 export default function Home() {
-
-  const handleForm = async () => {
-    const data = {
-      name: 'Kemo',
-      house: 'M',
-      age:12
-    }
-    const { result, error } = await addData('users', 'user-id2', data);
-
-    if (error) {
-      return console.log(error)
-    }
-  }
   
   return ( <>
-<Button variant="outlined">Outlined</Button>
 <Button variant="outlined">Outlined</Button>
 <Button variant="outlined">Outlined</Button>
 <Button variant="outlined">Outlined</Button>

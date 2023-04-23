@@ -36,7 +36,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
@@ -223,7 +222,7 @@ export default function PrimarySearchAppBar(props: Props) {
       <ThemeProvider theme={theme}>
       <AppBar position="fixed" color='primary' >
         <Toolbar >
-          {!props.isOpen && <IconButton className='hover:bg-blue-900' onClick={props.onMenuButtonClick} size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
+          {<IconButton className='hover:bg-blue-900' onClick={props.onMenuButtonClick} size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
             <MenuIcon/>
           </IconButton>}
           <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>

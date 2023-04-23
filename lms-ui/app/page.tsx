@@ -1,5 +1,13 @@
-import { Inter } from "next/font/google";
+'use client'
+import { redirect } from 'next/navigation';
+import Loader from './(authed)/(shared)/loader/loader';
 
-const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
+redirect('/dashboard');
+
+  return (
+    <div className="mt-96 flex justify-center">
+      <Loader size={100}  />
+    </div>
+  );
 }
