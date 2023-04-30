@@ -9,6 +9,7 @@ import { LibraryBooks } from "@mui/icons-material";
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import CategoryIcon from '@mui/icons-material/Category';
 
 export const defaultNavItems: NavItem[] = [
   {
@@ -33,13 +34,6 @@ export const defaultNavItems: NavItem[] = [
     forUsers:true
   },
   {
-    label: "Manage Requests",
-    href: "#",
-    icon: <RunningWithErrorsIcon className="w-6 h-6" />,
-    forLabrarian:true,
-    forUsers:false
-  },
-  {
     label: "Manage Users",
     href: "/users",
     icon: <ManageAccountsIcon className="w-6 h-6" />,
@@ -47,8 +41,22 @@ export const defaultNavItems: NavItem[] = [
     forUsers:false
   },
   {
-    label: "Library System Settings",
+    label: "Manage Requests",
     href: "#",
+    icon: <RunningWithErrorsIcon className="w-6 h-6" />,
+    forLabrarian:true,
+    forUsers:false
+  },
+  {
+    label: "Manage Categories",
+    href: "/categories",
+    icon: <CategoryIcon className="w-6 h-6" />,
+    forLabrarian:true,
+    forUsers:false
+  },
+  {
+    label: "Library System Settings",
+    href: "/settings",
     icon: <SettingsIcon className="w-6 h-6" />,
     forLabrarian:true,
     forUsers:false

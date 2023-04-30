@@ -194,10 +194,10 @@ export default function AddBook({ BookData = undefined, onSubmit = () => {} }: P
             <label> Select categories: </label>
             <CategoriesDropdown
               onChange={setCategories}
-              value={categories.map((genre) => ({
+              value={categories?categories.map((genre) => ({
                 label: genre,
                 value: genre,
-              }))}
+              })):[]}
             />
           </div>
         </div>

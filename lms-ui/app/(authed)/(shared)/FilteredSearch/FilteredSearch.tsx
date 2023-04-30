@@ -6,7 +6,7 @@ type Props = {
   onSearch: Dispatch<any>;
 };
 
-export default function ({ options = [], onSearch }: Props) {
+export default function filteredSearch ({ options = [], onSearch }: Props) {
   const [searchState, setSearchState] = useState<SearchTerms>({ searchText: '', filterOption: 'all' });
 
   const handleChange = (e) => {
