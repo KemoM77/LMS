@@ -5,7 +5,6 @@ import FormAction from '@/app/(unauthed)/(components)/formAction';
 import Input from '../../(unauthed)/(components)/input';
 import { useRouter } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
-import FormExtra from '@/app/(unauthed)/(components)/formExtra';
 import { useAuthContext } from '@/app/context/AuthContext';
 import getData from '@/app/firebase/firestore/getData';
 import addData from '@/app/firebase/firestore/addData';

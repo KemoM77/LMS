@@ -48,7 +48,7 @@ const ConfirmDialog = () => {
         <Alert severity="error">{message}</Alert>
       </DialogContent>
       <DialogActions>
-        <button className='bg-zinc-500 scale-110 p-3 hover:bg-gray-400 text-white rounded-xl mr-3'  onClick={close}>
+        <button className='bg-zinc-500 scale-110 p-3 bg-gray-600  hover:bg-gray-400 text-white rounded-xl mr-3'  onClick={close}>
           Cancel
         </button>
         <button

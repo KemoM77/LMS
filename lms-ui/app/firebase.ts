@@ -10,4 +10,6 @@ const firebaseConfig = {
 };
 
 let firebase_app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-export default firebase_app;
+let second_firebase_app = getApps().length === 1 ? initializeApp(firebaseConfig,'secondary') : getApps()[1];
+
+export  {firebase_app , second_firebase_app};

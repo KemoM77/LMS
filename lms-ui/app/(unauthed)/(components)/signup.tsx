@@ -47,18 +47,18 @@ export default function Signup({ byLibrarian = false ,onSubmit=()=>{} }) {
     setLoading(true);
     console.log(signupState);
 
-    const { result, error } = await signUp(signupState);
+    const { result, error } = await signUp(signupState,byLibrarian);
 
-    console.log(error, result, 323232323);
-    alert(
-      error.code == 'auth/too-many-requests'
-        ? 'Too many Requests.Try again later, or reset your password'
-        : error.code == 'auth/wrong-password'
-        ? 'Invalid email or password'
-        : error.code === 'auth/user-not-found'
-        ? 'User does not exist, sign up first'
-        : 'Login Error, try again later.'
-    );
+   // console.log(error, result, 323232323);
+    // alert(
+    //   error?.code == 'auth/too-many-requests'
+    //     ? 'Too many Requests.Try again later, or reset your password'
+    //     : error.code == 'auth/wrong-password'
+    //     ? 'Invalid email or password'
+    //     : error.code === 'auth/user-not-found'
+    //     ? 'User does not exist, sign up first'
+    //     : 'Login Error, try again later.'
+    // );
 
     setErrorMessage(
       error?.code == 'auth/too-many-requests'
@@ -72,10 +72,10 @@ export default function Signup({ byLibrarian = false ,onSubmit=()=>{} }) {
 
     // alert(error.code)
     if (result) {
-      push('/dashboard');
+      if(!byLibrarian)push('/dashboard');
       setSuccessful(true);
     }
-    onSubmit();
+    if(!error)onSubmit();
     setLoading(false);
   };
 

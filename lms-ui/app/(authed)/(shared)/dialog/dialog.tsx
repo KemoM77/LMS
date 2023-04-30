@@ -1,14 +1,16 @@
 'use client';
 import { useState } from 'react'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'
+import { useRouter } from 'next/navigation';
 
 const ActionDialog = ({ title, content, isOpen, onClose }) => {
  //const [open, setOpen] = useState(isOpen)
-
+  const router = useRouter()
   const handleClose = (event, reason) => {
     if(reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
         // Set 'open' to false, however you would do that with your particular code.
         onClose()
+        router.refresh()
     }
 }
 

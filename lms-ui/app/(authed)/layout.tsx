@@ -5,6 +5,7 @@ import { useAuthContext } from '../context/AuthContext';
 import { redirect } from 'next/navigation';
 import PrimarySearchAppBar from './(shared)/navbar/navbar';
 import ConfirmDialog from './(shared)/confirmDialog/dialog';
+import { CircularProgress } from '@mui/material';
 
 // const metadata = {
 // title: 'BookWoods',
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, [user]);
 
   return (
-    <>
+    !loading ? <>
       <ConfirmDialog />
       <div className="grid  grid-rows-header">
         <div className=" z-20 bg-white shadow-sm">
@@ -45,9 +46,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               }}
             />
           </div>
-          <div className='flex-1'> {children}</div>
+          <div className='flex-1'> { children}</div>
         </div>
       </div>
-    </>
+    </>: <div className='flex items-center justify-center h-screen '> <CircularProgress size={200}/> </div>
   );
 }

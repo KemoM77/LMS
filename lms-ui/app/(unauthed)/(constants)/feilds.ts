@@ -100,6 +100,140 @@ const signupFields=[
     //     placeholder:"Sign up as Librarian"   
     // },
 ]
+const addBookFields=[
+    {
+        labelText:"Title",
+        labelFor:"title",
+        id:"title",
+        name:"title",
+        type:"text",
+        autoComplete:"title",
+        isRequired:true,
+        placeholder:"Title",
+        value:'' 
+    },
+    {
+        labelText:"Pages",
+        labelFor:"pages",
+        id:"pages",
+        name:"pages",
+        type:"number",
+        autoComplete:"pages",
+        isRequired:true,
+        value:'',
+        placeholder:"Pages"   
+    },
+    {
+        labelText:"In Stock",
+        labelFor:"in_stock",
+        id:"in_stock",
+        name:"in_stock",
+        type:"number",
+        autoComplete:"in_stock",
+        isRequired:true,
+        value:'',
+        placeholder:"In Stock"   
+    },
+    {
+        labelText:"Published",
+        labelFor:"published",
+        id:"published",
+        name:"published",
+        type:"number",
+        autoComplete:"published",
+        isRequired:true,
+        value:'',
+        placeholder:"Published"   
+    },
+    {
+        labelText:"Cover Image URL",
+        labelFor:"cover_img",
+        id:"cover_img",
+        name:"cover_img",
+        type:"url",
+        autoComplete:"cover_img",
+        isRequired:false,
+        value:'',
+        placeholder:"Cover Image URL"   
+    },
+    {
+        labelText:"Authors",
+        labelFor:"authors",
+        id:"authors",
+        name:"authors",
+        type:"text",
+        autoComplete:"authors",
+        isRequired:true,
+        value:'',
+        placeholder:"Authors"   
+    },
+    {
+        labelText:"Price(USD)",
+        labelFor:"price",
+        id:"price",
+        name:"price",
+        type:"number",
+        autoComplete:"price",
+        isRequired:true,
+        value:'',
+        placeholder:"Price"   
+    },
+    {
+        labelText:"ISBN",
+        labelFor:"isbn",
+        id:"isbn",
+        name:"isbn",
+        type:"number",
+        autoComplete:"isbn",
+        isRequired:false,
+        value:'',
+        placeholder:"ISBN"   
+    },
+    {
+        labelText:"ISBN13",
+        labelFor:"isbn13",
+        id:"isbn13",
+        name:"isbn13",
+        type:"number",
+        autoComplete:"isbn13",
+        isRequired:true,
+        value:'',
+        placeholder:"ISBN13"   
+    },
+    // {
+    //     labelText:"description",
+    //     labelFor:"description",
+    //     id:"discription",
+    //     name:"discription",
+    //     type:"text",
+    //     autoComplete:"discription",
+    //     isRequired:false,
+    //     value:'',
+    //     placeholder:"Discription"   
+    // },
+    // {
+    //     labelText:"Langauge",
+    //     labelFor:"langauge",
+    //     id:"langauge",
+    //     name:"langauge",
+    //     type:"text",
+    //     autoComplete:"langauge",
+    //     isRequired:true,
+    //     value:'',
+    //     placeholder:"Langauge"   
+    // },
+    {
+        labelText:"Location",
+        labelFor:"location",
+        id:"location",
+        name:"location",
+        type:"text",
+        autoComplete:"location",
+        isRequired:true,
+        value:'',
+        placeholder:"Location"   
+    },
+]
 const editProfileFields=[
     {
         labelText:"Date of birth",
@@ -157,4 +291,4 @@ const editProfileFields=[
 
 
 
-export {loginFields,signupFields, editProfileFields}
+export {loginFields,signupFields, editProfileFields ,addBookFields}

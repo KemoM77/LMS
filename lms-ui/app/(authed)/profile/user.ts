@@ -1,4 +1,3 @@
-import { Timestamp } from "firebase/firestore";
 
 export interface UserInfo {
             id:string,
@@ -19,7 +18,8 @@ export interface UserInfo {
             city:string,
             address:string,
             postalcode:string,
-            fines?:number
+            fines?:number,
+            searchableTerms:string[]
             
 
 

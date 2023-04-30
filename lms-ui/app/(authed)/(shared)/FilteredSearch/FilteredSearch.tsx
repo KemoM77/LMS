@@ -6,24 +6,25 @@ type Props = {
   onSearch: Dispatch<any>;
 };
 
-
-
 export default function ({ options = [], onSearch }: Props) {
-const [searchState, setSearchState] = useState({searchText:'',filter:'all'})
+  const [searchState, setSearchState] = useState<SearchTerms>({ searchText: '', filterOption: 'all' });
 
-const handleChange = (e) => setSearchState({ ...searchState, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setSearchState({ ...searchState, [e.target.name]: e.target.value });
+   // onSearch({ ...searchState, [e.target.name]: e.target.value })
+  };
 
-
-const handleKeyUp = (event:KeyboardEvent) =>{
-   if( event.key === 'Enter'){
-    onSearch(searchState)
-   }}
+  const handleKeyUp = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      onSearch(searchState);
+    }
+  };
 
   return (
     <div className="box flex justify-center pt-6 ">
       <div className="box-wrapper w-[calc(100%_-_73px)]">
         <div className=" flex  items-center rounded border border-gray-200 bg-white p-3 shadow-sm">
-          <button className="outline-none focus:outline-none " onClick={()=>onSearch(searchState)}>
+          <button className="outline-none focus:outline-none " onClick={() => onSearch(searchState)}>
             <svg
               className=" h-5 w-5 cursor-pointer text-gray-600"
               fill="none"
@@ -48,12 +49,24 @@ const handleKeyUp = (event:KeyboardEvent) =>{
             onChange={handleChange}
           />
           <div className="select">
-            <select name="filter" id="filter" value={searchState.filter} onChange={handleChange} className="bg-transparent text-sm outline-none focus:outline-none">
-              <option value="all" selected={ 'all' === searchState.filter }>
+            <select
+              name="filterOption"
+              defaultValue={searchState.filterOption}
+              id="filterOption"
+              onChange={handleChange}
+              className="bg-transparent text-sm outline-none focus:outline-none"
+            >
+              <option value="all" >
                 All
               </option>
               {options.map((option) => (
-                <option selected={ option.toLowerCase() === searchState.filter } value={option.toLowerCase()}>{option}</option>
+                <option
+                  key={option.toLowerCase()}
+                  selected={option.toLowerCase() === searchState.filterOption}
+                  value={option.toLowerCase()}
+                >
+                  {option}
+                </option>
               ))}
             </select>
           </div>

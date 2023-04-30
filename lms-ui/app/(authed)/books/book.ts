@@ -1,0 +1,19 @@
+export interface BookInfo {
+    id:string,
+    title:string,
+    published:number,
+    authors:string[],
+    isbn:number,
+    isbn13:number,
+    categories:string[],
+    borrowable:boolean,
+    sellable:boolean,
+    language:string,
+    location:string,
+    pages:number,
+    cover_img?:string,
+    description?:string,
+    in_stock:number,
+    price:number,
+    searchableTerms:string[]
+}

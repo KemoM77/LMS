@@ -22,6 +22,7 @@
 //   );
 // };
 // export default Navbar;
+'use client'
 
 import * as React from 'react';
 import { styled, alpha, createTheme, ThemeProvider } from '@mui/material/styles';
@@ -40,10 +41,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { redirect } from 'next/navigation';
-
-
-
+import { redirect ,useRouter } from 'next/navigation';
 const theme = createTheme({
   palette: {
     primary: {
@@ -60,8 +58,6 @@ const theme = createTheme({
     },
   },
 });
-
-
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -104,7 +100,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 type Props = {
   onMenuButtonClick(): void;
-  isOpen: boolean
+  isOpen: boolean;
 };
 
 export default function PrimarySearchAppBar(props: Props) {
@@ -113,13 +109,15 @@ export default function PrimarySearchAppBar(props: Props) {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const router = useRouter()
+  
 
-  const handleProfileClick  = ()  => {
+  const handleProfileClick = () => {
     handleMenuClose();
     console.log(435454534);
-    redirect('/admin')
-  }
-  
+    redirect('/admin');
+  };
+
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -131,6 +129,12 @@ export default function PrimarySearchAppBar(props: Props) {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter') {
+      router.push('/books?search='+event.target.value)
+      event.target.value = '';
+    }
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -218,38 +222,60 @@ export default function PrimarySearchAppBar(props: Props) {
   );
 
   return (
-    <Box   sx={{ position:'fixed', flexGrow: 1 }}>
+    <Box sx={{ position: 'fixed', flexGrow: 1 }}>
       <ThemeProvider theme={theme}>
-      <AppBar position="fixed" color='primary' >
-        <Toolbar >
-          {<IconButton className='hover:bg-blue-900' onClick={props.onMenuButtonClick} size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
-            <MenuIcon/>
-          </IconButton>}
-          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-            BookWoods
-          </Typography>
-          <Search theme={theme} className='flex justify-between'>
-            <div >
-              <SearchIconWrapper theme={theme}>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase theme={theme} placeholder="Search books..." inputProps={{ 'aria-label': 'search books' }} />
-            </div>
-            <FilterAltIcon className='cursor-pointer hover:scale-90 duration-200 rounded-lg mr-2 mt-2' />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={21} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            {/* <IconButton
+        <AppBar position="fixed" color="primary">
+          <Toolbar>
+            {
+              <IconButton
+                className="hover:bg-blue-900"
+                onClick={props.onMenuButtonClick}
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+            }
+            <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
+              BookWoods
+            </Typography>
+            <Search theme={theme} className="flex justify-between">
+              <div>
+                <SearchIconWrapper theme={theme}>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  theme={theme}
+                  placeholder="Search books..."
+                  inputProps={{ 'aria-label': 'search books' }}
+                  onKeyUp={handleKeyUp}
+                />
+              </div>
+              <div
+                onClick={() => {
+                  console.log('filter');
+                  router.push('/books');
+                }}
+              >
+                <FilterAltIcon className="mr-2 mt-2 cursor-pointer rounded-lg duration-200 hover:scale-90" />
+              </div>
+            </Search>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={4} color="error">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
+                <Badge badgeContent={21} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              {/* <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -259,27 +285,26 @@ export default function PrimarySearchAppBar(props: Props) {
               color="inherit"
             >
               {/* <AccountCircle /> */}
-            {/* </IconButton>  */}
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-        </ThemeProvider>
+              {/* </IconButton>  */}
+            </Box>
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </ThemeProvider>
 
       {renderMobileMenu}
       {renderMenu}
     </Box>
   );
 }
-

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, getAuth, signOut, Auth, User } from 'firebase/auth';
-import firebase_app from '../firebase';
+import {firebase_app} from '../firebase';
 import getData from '../firebase/firestore/getData';
 import { UserInfo } from '../(authed)/profile/user';
 const auth = getAuth(firebase_app);

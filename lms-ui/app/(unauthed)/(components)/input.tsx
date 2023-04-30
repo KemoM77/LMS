@@ -18,7 +18,7 @@ export default function Input({
   return (
     <div className="my-4">
       <label htmlFor={labelFor} className={'text-sm text-slate-500'}>
-        {labelText}:
+        {labelText}{isRequired?'*':''}:
       </label>
       {id !== 'country' ? (
         <input
@@ -28,7 +28,7 @@ export default function Input({
           name={name}
           type={type}
           required={isRequired}
-          className={type !== 'checkbox' && type !== 'radio' ?fixedInputClass + customClass:'mx-4'}
+          className={type !== 'checkbox' && type !== 'radio' ?fixedInputClass + customClass +'mx-4':'mx-4'}
           placeholder={placeholder}
           pattern={id === 'email-address' ? '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$' : '.*'}
         />

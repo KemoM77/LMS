@@ -1,15 +1,24 @@
-import { deleteUser } from 'firebase/auth';
-import { deleteDoc, doc, getFirestore } from 'firebase/firestore/lite';
-import firebase_app from '@/app/firebase';
+import { deleteDoc, doc, getFirestore ,collection } from 'firebase/firestore';
 import { db } from './getData';
 
-//const db = getFirestore(firebase_app);
-export const deleteData = async (id: any, collection: string) => {
+export const deleteData = async (id: any, collectionName: string) => {
   let e = null;
+  //console.log('this should be del',docRef);
   try {
-    await deleteDoc(doc(db, collection, id));
+   
+    const docRef =  doc(db, collectionName, id)
+    ;
+    if (!docRef.id) {
+      console.log('Document does not exist.');
+      return;
+    }
+
+    await deleteDoc(docRef);
+    console.log("successfully deleted");
+    
   } catch (error) {
-    e = e.code;
+    console.log(error);
+    e = error.code;
   }
   return { e };
 };

@@ -20,7 +20,7 @@ export const defaultNavItems: NavItem[] = [
   },
   {
     label: "Books",
-    href: "#",
+    href: "/books",
     icon: <LibraryBooks className="w-6 h-6" />,
     forLabrarian:true,
     forUsers:true
