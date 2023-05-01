@@ -1,9 +1,13 @@
-'use client'
-import { CircularProgress } from '@mui/material'
+'use client';
+import { Box, CircularProgress } from '@mui/material';
 import React from 'react'
 
-export default function loading() {
-  return (
-   <CircularProgress size={420}/>
-  )
+export default function Loading() {
+    return (
+        <div className='h-screen flex justify-center items-center'>
+        <Box sx={{ display: 'flex' }}>
+          <CircularProgress size={100} />
+        </Box>
+        </div>
+      );
 }

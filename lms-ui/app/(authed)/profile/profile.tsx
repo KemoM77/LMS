@@ -9,6 +9,9 @@ import EditProfileComp from './editProfileComp';
 import ActionDialog from '../(shared)/dialog/dialog';
 import { useRouter } from 'next/navigation';
 import addData from '@/app/firebase/firestore/addData';
+import RequestsList from './requestsList';
+import { Timestamp } from 'firebase/firestore';
+import ActivateMember from './activateMemeberForm';
 
 type Props = {
   userInfo: UserInfo;
@@ -16,8 +19,10 @@ type Props = {
 
 export default function Profile({ userInfo }: Props) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+  const [activateDialogOpen, setActivateDialogOpen] = useState<boolean>(false);
   const { user, signout, loading, currentUser } = useAuthContext();
   const router = useRouter();
+  // console.log(userInfo?.date_of_registration);
 
   // if (userInfo === null) {
   //   const { docData, error } = await getData('users', user.uid);
@@ -32,12 +37,16 @@ export default function Profile({ userInfo }: Props) {
     });
   };
 
-  const handleActivate = () => {
-    confirmDialog(`Do you really want to ${userInfo.isActive ? 'suspend' : 'activate'} this accout?`, async () => {
-      await addData('users', userInfo.id, { isActive: !userInfo.isActive });
-      router.refresh();
-      console.log(33333);
-    });
+  const handleActivate = async () => {
+    if (userInfo.isActive) {
+      confirmDialog(`Do you really want to suspend this accout?`, async () => {
+        await addData('users', userInfo.id, { isActive: false });
+        router.refresh();
+        console.log(33333);
+      });
+    } else {
+      setActivateDialogOpen(true);
+    }
   };
 
   return !loading && currentUser.id !== user.uid && !currentUser.isLibrarian ? (
@@ -62,10 +71,26 @@ export default function Profile({ userInfo }: Props) {
             setIsEditDialogOpen(false);
           }}
         />
+        <ActionDialog
+          title={'Set Unsubscription Date'}
+          content={
+            <ActivateMember
+              userInfo={userInfo}
+              onSubmit={() => {
+                setActivateDialogOpen(false);
+              }}
+            />
+          }
+          isOpen={activateDialogOpen}
+          onClose={() => {
+            setActivateDialogOpen(false);
+            router.refresh();
+          }}
+        />
         <div className="p-16">
           <div className="mt-24 bg-white p-8 shadow">
-            <div className="grid grid-cols-1 md:grid-cols-3">
-              <div className="order-last mt-20 grid grid-cols-3 text-center md:order-first md:mt-0">
+            <div className="grid grid-cols-1 lg:grid-cols-3">
+              <div className="order-last mt-20 grid grid-cols-3 text-center lg:order-first lg:mt-0">
                 <div className="mr-2 rounded-md border-0 border-red-700">
                   <p className={`text-xl font-bold ${userInfo.fines > 0 ? 'text-red-700' : 'text-green-700'}  `}>
                     {userInfo.fines > 0 ? '-' : ''}
@@ -100,7 +125,7 @@ export default function Profile({ userInfo }: Props) {
                   />
                 </div>
               </div>
-              <div className="mt-32 flex justify-between space-x-8 md:mt-0 md:justify-center ">
+              <div className="mt-32 flex justify-between space-x-8 lg:mt-0 lg:justify-center ">
                 {currentUser?.isLibrarian && userInfo.id !== currentUser.id && (
                   <button
                     onClick={handleActivate}
@@ -128,7 +153,14 @@ export default function Profile({ userInfo }: Props) {
               <h3
                 className={`text-xl font-medium ${userInfo.isActive ? 'text-green-500' : 'text-red-600'} text-gray-700`}
               >
-                Status: {userInfo?.isActive ? 'Active' : 'Inactive'}
+                Status: {userInfo?.isActive ? 'Active' : 'Inactive'} <br />
+                {userInfo?.isActive &&  userInfo?.valid_until &&('Until: ' +
+                    Timestamp.fromMillis(
+                      userInfo.valid_until.seconds * 1000 + userInfo.valid_until.nanoseconds / 1000000
+                    )
+                      .toDate()
+                      .toLocaleDateString())
+                  }
               </h3>
               <p className="mt-5 font-light text-gray-600">{'Date of birth: ' + userInfo?.date_of_birth}</p>
               <p className="mt-8 text-gray-500">{userInfo?.email}</p>
@@ -137,7 +169,13 @@ export default function Profile({ userInfo }: Props) {
             </div>
             <div className="mt-12 flex flex-col justify-center">
               <p className="text-center font-light text-gray-600 lg:px-16">
-                Registration date : {userInfo?.date_of_registration.toDate().toLocaleString()}
+                Registration date :{' '}
+                {userInfo?.date_of_registration &&
+                  Timestamp.fromMillis(
+                    userInfo.date_of_registration.seconds * 1000 + userInfo.date_of_registration.nanoseconds / 1000000
+                  )
+                    .toDate()
+                    .toLocaleString()}
               </p>
               {currentUser?.isLibrarian && userInfo?.id === currentUser?.id && (
                 <button
@@ -150,6 +188,7 @@ export default function Profile({ userInfo }: Props) {
             </div>
           </div>
         </div>
+        <RequestsList userInfo={userInfo} />
       </>
     )
   );

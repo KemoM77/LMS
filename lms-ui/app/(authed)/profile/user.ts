@@ -11,7 +11,7 @@ export interface UserInfo {
             profile_img_url:string,
             bio:string,
             isActive:boolean,
-            valid_until?:string,
+            valid_until?:any,
             country?:string,
             pending_requests:number,
             borrowed_books:number,

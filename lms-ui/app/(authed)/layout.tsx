@@ -49,6 +49,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className='flex-1'> { children}</div>
         </div>
       </div>
-    </>: <div className='flex items-center justify-center h-screen '> <CircularProgress size={200}/> </div>
+    </>: <div className='flex items-center justify-center h-screen '> <CircularProgress size={50}/> </div>
   );
 }

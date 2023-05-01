@@ -28,22 +28,15 @@ export const defaultNavItems: NavItem[] = [
   },
   {
     label: "My Requests",
-    href: "#",
+    href: "/myrequests",
     icon: <RunningWithErrorsIcon className="w-6 h-6" />,
     forLabrarian:false,
     forUsers:true
   },
   {
-    label: "Manage Users",
+    label: "Manage Users and Requests",
     href: "/users",
     icon: <ManageAccountsIcon className="w-6 h-6" />,
-    forLabrarian:true,
-    forUsers:false
-  },
-  {
-    label: "Manage Requests",
-    href: "#",
-    icon: <RunningWithErrorsIcon className="w-6 h-6" />,
     forLabrarian:true,
     forUsers:false
   },

@@ -6,7 +6,7 @@ export default function Loading() {
     return (
         <div className='h-screen flex justify-center items-center'>
         <Box sx={{ display: 'flex' }}>
-          <CircularProgress size={100} />
+          <CircularProgress />
         </Box>
         </div>
       );

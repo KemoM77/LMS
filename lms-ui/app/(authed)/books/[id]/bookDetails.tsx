@@ -47,7 +47,7 @@ export default function BookDetails({ bookInfo }: Props) {
   };
   
   const handleBorrowBook = () => {
-    confirmDialog('Do you really want to delete this book?', async () => {
+    confirmDialog(`Do you really want to send a borrow request for this book?(request will be auto-cancelled in ${72} hours if not processed)`, async () => {
       deleteData(bookInfo?.id, 'books');
       router.push('/books');
       toast('Book was deleted from database successfully', {
@@ -64,7 +64,7 @@ export default function BookDetails({ bookInfo }: Props) {
   };
 
   const handleBuyBook = () => {
-    confirmDialog('Do you really want to delete this book?', async () => {
+    confirmDialog(`Do you really want to send a buy request for this book?(request will be auto-cancelled in ${72} hours if not processed)`, async () => {
       deleteData(bookInfo?.id, 'books');
       router.push('/books');
       toast('Book was deleted from database successfully', {

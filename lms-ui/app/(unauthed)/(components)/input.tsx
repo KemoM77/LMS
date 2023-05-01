@@ -14,9 +14,13 @@ export default function Input({
   isRequired = false,
   placeholder,
   customClass = '',
+  disabled = false
 }) {
   return (
     <div className="relative z-0 w-full mb-6 group">
+      <label htmlFor={labelFor} className={'peer-focus:font-medium  text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 w-full'}>
+        {labelText}{isRequired?'*':''}:
+      </label>
       {id !== 'country' ? (
         <input
           onChange={handleChange}
@@ -25,9 +29,10 @@ export default function Input({
           name={name}
           type={type}
           required={isRequired}
-          className={type !== 'checkbox' && type !== 'radio' ?fixedInputClass + customClass +'mx-4':'mx-4'}
+          className={type !== 'checkbox' && type !== 'radio' ?fixedInputClass+ " " + customClass +' mx-4 ':' mx-4 '}
           placeholder={placeholder}
           pattern={id === 'email-address' ? '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$' : '.*'}
+          disabled={disabled}
         />
       ) : (
         <CountriesDropdown
@@ -39,9 +44,6 @@ export default function Input({
           placeholder={placeholder}
         />
       )}
-      <label htmlFor={labelFor} className={'peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'}>
-        {labelText}{isRequired?'*':''}:
-      </label>
     </div>
   );
 }

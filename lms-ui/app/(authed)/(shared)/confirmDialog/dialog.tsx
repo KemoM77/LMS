@@ -1,6 +1,7 @@
 import React from 'react';
 // material ui
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, IconButton, makeStyles } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Box, IconButton, makeStyles } from '@mui/material';
+import { Button } from '@material-tailwind/react';
 import { Close } from '@mui/icons-material';
 // zustand
 import { create } from 'zustand';
@@ -47,11 +48,11 @@ const ConfirmDialog = () => {
       <DialogContent>
         <Alert severity="error">{message}</Alert>
       </DialogContent>
-      <DialogActions>
-        <button className='bg-zinc-500 scale-110 p-3 bg-gray-600  hover:bg-gray-400 text-white rounded-xl mr-3'  onClick={close}>
+      <DialogActions className='m-2 mr-4'>
+        <Button className='bg-zinc-500 scale-110 p-3 bg-gray-600  hover:bg-gray-400 text-white rounded-xl mr-3'  onClick={close}>
           Cancel
-        </button>
-        <button
+        </Button>
+        <Button
           className='bg-blue-500 scale-110 p-3 hover:bg-blue-700 text-white rounded-xl' 
           onClick={() => {
             if (onSubmit) {
@@ -61,7 +62,7 @@ const ConfirmDialog = () => {
           }}
         >
           Confirm
-        </button>
+        </Button>
       </DialogActions>
     </Dialog>
   );

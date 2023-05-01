@@ -14,17 +14,6 @@ import getPaginatedDocs, { getQueryCount } from '@/app/firebase/firestore/getPag
 import { CircularProgress } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 
-// function getAllSubarrays(arr) {
-//   const subarrays = [];
-
-//   for (let i = 0; i < arr.length; i++) {
-//     for (let j = i; j < arr.length; j++) {
-//       subarrays.push(arr.slice(i, j + 1));
-//     }
-//   }
-
-//   return subarrays;
-// }
 
 export default function booksPage() {
   const { currentUser } = useAuthContext();
@@ -39,17 +28,13 @@ export default function booksPage() {
   const [searchTerms, SetSearchTerms] = useState(
     searchValue !== null ? { name: searchValue, categories: undefined, language: undefined } : undefined
   );
-  // if( searchValue !== null && searchTerms && searchValue !== searchTerms.name  ){
-
-  // }
+  
   const [urlSearch, setUrlSearch] = useState(undefined);
   const [startAtBook, setStartAtBook] = useState<string>(undefined);
   const endAt = 10;
 
   const fetchSerchedBooks = async () => {
-    //console.log('herererererererer', searchTerms);
-    // setSearchedBooks(undefined);
-
+   
     console.log(searchTerms);
     let mixedSearch = searchTerms?.name ? searchTerms?.name.toLowerCase().split(' ') : undefined;
     if (mixedSearch) {
@@ -75,21 +60,6 @@ export default function booksPage() {
         value: searchTerms?.language !== 'any' ? searchTerms?.language : undefined,
         comparison: '==',
       },
-      // {
-      //   feild: 'isbn',
-      //   value: '' + searchTerms?.title,
-      //   comparison: '==',
-      // },
-      // {
-      //   feild: 'isbn13',
-      //   value: '' + searchTerms?.title,
-      //   comparison: '==',
-      // },
-      // {
-      //   feild: 'searchableTerms',
-      //   value: searchTerms?searchTerms?.author.split(',') :undefined ,
-      //   comparison: 'array-contains-any',
-      // },
     ];
 
     const results = await getManyDocs(
@@ -211,7 +181,7 @@ export default function booksPage() {
         {/* <div className='bg-gray-50 shadow-md w-auto flex justify-center'>
     <AddBook/>
   </div> */}
-        {bookCount && <h1 className="mb-4 ml-4 mr-auto mt-52 text-center text-4xl">{bookCount} Books :</h1>}
+        {bookCount && <h1 className="mb-4 ml-4 mr-auto mt-44 text-center text-4xl">{bookCount} Books :</h1>}
         <div className={`${!loadedBooks?.length ? 'mt-52' : ''}  flex flex-wrap justify-center`}>
           {bookCount > 0 ? (
             loadedBooks?.length > 0 || searchedBooks?.length > 0 ? (

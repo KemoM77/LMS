@@ -21,7 +21,7 @@ export default async function getManyDocs(
   relation: 'And' | 'Or' = 'And',
   orderContraint: OrderContraint = undefined,
   limitTo: number = undefined,
-  startafter: any = 0
+  startafter: any = ''
 ) {
   let queryConstraints: QueryFieldFilterConstraint[] = [];
   constraints.forEach((con) => {
@@ -66,6 +66,7 @@ export default async function getManyDocs(
             orderBy(orderContraint.feild, orderContraint.method),
             startAfter(startafter)
           ));
+  }
 
     // finalQuery = query(
     //   collectionRef,
@@ -73,8 +74,7 @@ export default async function getManyDocs(
     //   limit(limitTo),
     //   orderBy(orderContraint.feild, orderContraint.method)
     // );
-  }
-   //const tempQ = query(collectionRef,where('isLibrarian','==',false))
+   //const tempQ = query(collectionRef, limit(10), orderBy('requestedAt'))
   const querySnapshot = await getDocs(finalQuery);
   console.log('hereeeeee', querySnapshot.docs);
   const Count = await getCountFromServer(query(collectionRef, ...queryConstraints));
