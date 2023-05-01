@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useAuthContext } from '@/app/context/AuthContext';
 import getManyDocs from '@/app/firebase/firestore/getManyDocs';
 import { Button } from '@material-tailwind/react';
@@ -14,6 +14,9 @@ import ApproveBook from './approveBook';
 import Link from 'next/link';
 import getData from '@/app/firebase/firestore/getData';
 import { BookInfo } from '../books/book';
+import getDailyFees from '@/app/firebase/firestore/getDailyFees';
+import getCurrency from '@/app/firebase/firestore/getCurrency';
+import { CircularProgress } from '@mui/material';
 
 function getStatusColor(status: RequestStatus): string {
   switch (status) {
@@ -32,12 +35,20 @@ function getStatusColor(status: RequestStatus): string {
   }
 }
 
-export function isDateLate(date: Date): boolean {
+export function delayDays(date: Date): number {
   const currentDate = new Date();
-  return date < currentDate;
+  if (date >= currentDate) {
+    return 0;
+  }
+
+  const millisecondsInADay = 1000 * 60 * 60 * 24;
+  const delayInMilliseconds = currentDate.getTime() - date.getTime();
+  const delayInDays = Math.floor(delayInMilliseconds / millisecondsInADay);
+
+  return delayInDays;
 }
 
-export default function RequestsList({ userInfo }) {
+export default function RequestsList({ userInfo, onChange = ()=>{} }) {
   const USER_REQUESTS_URL = `users/${userInfo.id.trim()}/requests`;
   const [userRequests, setUserRequests] = useState<BookRequest[]>(undefined);
   const [isApproveRequestDialogOpen, setIsApproveRequestDialogOpen] = useState<boolean>(false);
@@ -45,6 +56,20 @@ export default function RequestsList({ userInfo }) {
   const [choosenReq, setChoosenReq] = useState<BookRequest>(undefined);
   const { currentUser } = useAuthContext();
   const router = useRouter();
+  const [finesCurrency, setFinesCurrency] = useState<string>('USD');
+  const [delayFees, setDelayFees] = useState<number>(undefined);
+  
+  const fetchCurrency = async () => {
+      const { currency, error } = await getCurrency();
+      setFinesCurrency(currency.currency);
+      return { currency, error };
+    };
+    
+  const fetchDailyFees = async () => {
+    const { dailyFees, error } = await getDailyFees();
+    setDelayFees(dailyFees.fee);
+    return { dailyFees, error };
+  };
 
   const fetchRequests = async () => {
     const { querySnapshot, docsCount } = await getManyDocs(
@@ -74,6 +99,7 @@ export default function RequestsList({ userInfo }) {
         theme: 'dark',
       });
       router.refresh();
+      onChange()
     });
   };
   const handleReturnBook = (req: BookRequest) => {
@@ -81,7 +107,7 @@ export default function RequestsList({ userInfo }) {
       const { docData, error } = await getData('books', req.bookId);
 
       if (!error) {
-        const newAddedBook: BookInfo = { ...docData, in_stock: parseInt(docData.in_stock) + 1 };
+        const newAddedBook: BookInfo = { ...docData, in_stock: parseInt(docData?.in_stock) + 1 };
 
         await addData('books', req.bookId, newAddedBook);
         req.status = 'RETURNED';
@@ -99,11 +125,12 @@ export default function RequestsList({ userInfo }) {
           theme: 'dark',
         });
         router.refresh();
+        onChange()
       }
     });
   };
   const handleAcceptRequest = (req: BookRequest) => {
-    console.log(req);
+    //_//console.log(req);
 
     if (req?.type === 'BORROW') {
       setChoosenReq(req), setIsApproveRequestDialogOpen(true);
@@ -124,26 +151,31 @@ export default function RequestsList({ userInfo }) {
           theme: 'dark',
         });
         router.refresh();
+        onChange()
+
       });
     }
   };
   useEffect(() => {
     if (!loaded) {
+    fetchCurrency();
+    fetchDailyFees()
       let docs: BookRequest[] = [];
       fetchRequests().then((result) => {
         result.querySnapshot.docs.forEach((req) => {
           docs.push(req.data() as BookRequest);
         });
         setUserRequests(docs);
-        console.log(docs);
+        //_//console.log(docs);
       });
       setLoaded(true);
     }
     router.refresh();
-    console.log('should refresh');
-  }, [currentUser, isApproveRequestDialogOpen]);
+    onChange()
+    //_//console.log('should refresh');
+  }, [currentUser, isApproveRequestDialogOpen , finesCurrency,delayFees]);
 
-  return (
+  return loaded ?(
     <div className="mb-9  flex items-center justify-center">
       <ActionDialog
         title={'Set deadline'}
@@ -155,6 +187,7 @@ export default function RequestsList({ userInfo }) {
               setIsApproveRequestDialogOpen(false);
               setLoaded(false);
               router.refresh();
+              onChange()
             }}
           />
         }
@@ -189,9 +222,17 @@ export default function RequestsList({ userInfo }) {
                         .toDate()
                         .toLocaleString()
                     : new Date(req?.until).toLocaleString()}
-                  {isDateLate(
+                  {delayDays(
                     Timestamp.fromMillis(req.until.seconds * 1000 + req.until.nanoseconds / 1000000).toDate()
-                  ) && <p className="text-red-700">(LATE)</p>}
+                  ) > 0 && (
+                    <p className="text-red-700">
+                      {'( ' +
+                        delayDays(
+                          Timestamp.fromMillis(req.until.seconds * 1000 + req.until.nanoseconds / 1000000).toDate()
+                        ) +
+                        ' days late )'}
+                    </p>
+                  )}
                 </div>
               )}
               <div className={`${getStatusColor(req.status)} mr-3 font-semibold`}>
@@ -205,6 +246,11 @@ export default function RequestsList({ userInfo }) {
                       : new Date(req?.managedAt).toLocaleString())
                   : ''}
               </div>
+              {req.until && <div className={`mr-3 font-semibold text-red-700`}>
+               {'-'}{delayFees *
+                  delayDays(Timestamp.fromMillis(req.until?.seconds * 1000 + req.until?.nanoseconds / 1000000).toDate())}
+                 {' '}{finesCurrency}
+              </div>}
               {req.managedBy && <div className="mr-3">By:{req.managedBy}</div>}
               <div className="flex justify-center">
                 {req.status === 'PENDING' && (
@@ -233,5 +279,5 @@ export default function RequestsList({ userInfo }) {
           ))}
       </div>
     </div>
-  );
+  ) : <CircularProgress size={50}/>;
 }

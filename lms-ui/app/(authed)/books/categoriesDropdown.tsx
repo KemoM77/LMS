@@ -23,7 +23,7 @@ const CategoriesDropdown = ({ onChange , value =[] }) => {
     if(initCategories.length)
     if (typeof onChange === "function") {
       onChange([...selected.map(cat => cat.label)]);
-      console.log(selected);
+      //_//console.log(selected);
       
     }
   }, [selected]);

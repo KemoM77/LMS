@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { confirmDialog } from '../../(shared)/confirmDialog/dialog';
 import { useAuthContext } from '@/app/context/AuthContext';
 import { deleteData } from '@/app/firebase/firestore/deleteData';
@@ -12,6 +12,10 @@ import AddBook from '../editBook';
 import { Button } from '@material-tailwind/react';
 import { getLanguageLabel } from './getLangLabel';
 import { toast } from 'react-toastify';
+import { BookRequest } from '../../profile/request';
+import { serverTimestamp } from 'firebase/firestore';
+import { addBook } from '../addBooktoDB';
+import getLifeTime from '@/app/firebase/firestore/getLifetime';
 
 type Props = {
   bookInfo: BookInfo;
@@ -20,14 +24,22 @@ type Props = {
 export default function BookDetails({ bookInfo }: Props) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const { user, signout, loading, currentUser } = useAuthContext();
+  const [reqLifeTime, setReqLifeTime] = useState<number>(72);
   const router = useRouter();
 
-  console.log(bookInfo);
+  //_//console.log(bookInfo);
 
   // if (bookInfo === null) {
   //   const { docData, error } = await getData('users', user.uid);
   //   bookInfo = docData;
   // }
+
+  const fetchLifeTime = async () => {
+    const { lifeTime, error } = await getLifeTime();
+    return { lifeTime, error };
+  };
+
+
 
   const handleDeleteBook = () => {
     confirmDialog('Do you really want to delete this book?', async () => {
@@ -45,48 +57,97 @@ export default function BookDetails({ bookInfo }: Props) {
       });
     });
   };
-  
+
   const handleBorrowBook = () => {
-    confirmDialog(`Do you really want to send a borrow request for this book?(request will be auto-cancelled in ${72} hours if not processed)`, async () => {
-      deleteData(bookInfo?.id, 'books');
-      router.push('/books');
-      toast('Book was deleted from database successfully', {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    });
+    confirmDialog(
+      `Do you really want to send a buy request for this book?(request will be auto-cancelled in ${reqLifeTime} hours if not processed)`,
+      async () => {
+        //deleteData(bookInfo?.id, 'books');
+        // router.push('/books');
+        const request: BookRequest = {
+          id: bookInfo.isbn13 + bookInfo.in_stock + '',
+          uid: currentUser.id,
+          bookId: bookInfo.id,
+          bookName: bookInfo.title,
+          status: 'PENDING',
+          requestedAt: serverTimestamp(),
+          type: 'BORROW',
+        };
+        const updatedBook = {
+          ...bookInfo,
+          in_stock: bookInfo.in_stock - 1,
+        };
+        addBook(updatedBook);
+        await addData(`users/${currentUser.id}/requests`, request.id, request);
+        toast('Book was deleted from database successfully', {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
+        router.refresh();
+      }
+    );
   };
 
   const handleBuyBook = () => {
-    confirmDialog(`Do you really want to send a buy request for this book?(request will be auto-cancelled in ${72} hours if not processed)`, async () => {
-      deleteData(bookInfo?.id, 'books');
-      router.push('/books');
-      toast('Book was deleted from database successfully', {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    });
+    confirmDialog(
+      `Do you really want to send a buy request for this book?(request will be auto-cancelled in ${reqLifeTime} hours if not processed)`,
+      async () => {
+        //deleteData(bookInfo?.id, 'books');
+        // router.push('/books');
+        const request: BookRequest = {
+          id: bookInfo.isbn13 + bookInfo.in_stock + '',
+          uid: currentUser.id,
+          bookId: bookInfo.id,
+          bookName: bookInfo.title,
+          status: 'PENDING',
+          requestedAt: serverTimestamp(),
+          type: 'BUY',
+        };
+        const updatedBook = {
+          ...bookInfo,
+          in_stock: bookInfo.in_stock - 1,
+        };
+        addBook(updatedBook);
+        await addData(`users/${currentUser.id}/requests`, request.id, request);
+        toast('Book was deleted from database successfully', {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
+        router.refresh();
+      }
+    );
   };
 
   //   const handleActivate = () => {
   //     confirmDialog(`Do you really want to ${bookInfo.isActive ? 'suspend' : 'activate'} this accout?`, async () => {
   //       await addData('users', bookInfo.id, { isActive: !bookInfo.isActive });
   //       router.refresh();
-  //       console.log(33333);
+  //       //_//console.log(33333);
   //     });
   //   };
+
+
+  useEffect(()=>{
+   fetchLifeTime().then(({lifeTime})=>{
+    //_//console.log(lifeTime);
+    
+    setReqLifeTime(lifeTime.lifetime)
+   });
+
+  },[reqLifeTime])
+
 
   return !loading && currentUser.id !== user.uid && !currentUser.isLibrarian ? (
     <h1>Unauthorized to view this page!</h1>
@@ -167,6 +228,7 @@ export default function BookDetails({ bookInfo }: Props) {
                   <Button
                     color="green"
                     onClick={handleBuyBook}
+                    disabled={bookInfo.in_stock <= 0 || !currentUser.isActive}
                     //className="transform rounded bg-gray-700 px-4 py-2 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-lg"
                   >
                     Buy Book
@@ -175,6 +237,7 @@ export default function BookDetails({ bookInfo }: Props) {
                 {!currentUser?.isLibrarian && (
                   <Button
                     onClick={handleBorrowBook}
+                    disabled={bookInfo.in_stock <= 0 || !currentUser.isActive}
                     //className="transform rounded bg-gray-700 px-4 py-2 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-lg"
                   >
                     Borrow Book
@@ -203,6 +266,9 @@ export default function BookDetails({ bookInfo }: Props) {
               ) : (
                 <p className="mt-3 font-semibold text-black">Not for Sale.</p>
               )}
+              { !currentUser.isActive &&<p className="text-red-700">
+                NOTE: YOU ARE SUSBENDED, YOU WON'T BE ABLE SEND BUY/BORROW REQUESTS,PLEASE CONTACT COSTUMER SERVICE.
+              </p>}
             </div>
             <div className="mt-12 flex flex-col justify-center">
               <p className="text-center font-light text-gray-600 lg:px-16"></p>

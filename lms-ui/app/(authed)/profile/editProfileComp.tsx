@@ -24,7 +24,7 @@ export default function EditProfileComp({ uid ,onSubmit=()=>{} }) {
       setUserData(docData);
       fields.forEach((field) => (fieldsState[field.id] = docData[field.id]));
       fields.forEach((field) => {
-        console.log(docData[field.id]);
+        //_//console.log(docData[field.id]);
       });
     }
 
@@ -57,10 +57,10 @@ export default function EditProfileComp({ uid ,onSubmit=()=>{} }) {
     });
     if (user.uid === userData.id) {
       setCurrentUser({ ...currentUser ,...editProfileState });
-      console.log('same');
+      //_//console.log('same');
     }
 
-    console.log('load off');
+    //_//console.log('load off');
     router.refresh();
     onSubmit();
     setLoading(false);

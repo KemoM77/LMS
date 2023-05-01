@@ -1,29 +1,4 @@
-// import React from "react";
-// import { Bars3Icon } from "@heroicons/react/24/outline";
-// import classNames from "classnames";
-// type Props = {
-//   onMenuButtonClick(): void;
-// };
-// const Navbar = (props: Props) => {
-//   return (
-//     <nav
-//       className={classNames({
-//         "bg-white text-zinc-500": true, // colors
-//         "flex items-center": true, // layout
-//         "w-full fixed z-10 px-4 shadow-sm h-16": true, //positioning & styling
-//       })}
-//     >
-//       <div className="font-bold text-lg">My Logo</div>
-//       <div className="flex-grow"></div> {/** spacer */}
-//       <button className="md:hidden" onClick={props.onMenuButtonClick}>
-//         <Bars3Icon className="h-6 w-6" />
-//       </button>
-//     </nav>
-//   );
-// };
-// export default Navbar;
-'use client'
-
+'use client';
 import * as React from 'react';
 import { styled, alpha, createTheme, ThemeProvider } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -41,7 +16,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { redirect ,useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 const theme = createTheme({
   palette: {
     primary: {
@@ -109,12 +84,11 @@ export default function PrimarySearchAppBar(props: Props) {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const router = useRouter()
-  
+  const router = useRouter();
 
   const handleProfileClick = () => {
     handleMenuClose();
-    console.log(435454534);
+    //_//console.log(435454534);
     redirect('/admin');
   };
 
@@ -132,7 +106,7 @@ export default function PrimarySearchAppBar(props: Props) {
   };
   const handleKeyUp = (event) => {
     if (event.key === 'Enter') {
-      router.push('/books?search='+event.target.value)
+      router.push('/books?search=' + event.target.value);
       event.target.value = '';
     }
   };
@@ -191,14 +165,6 @@ export default function PrimarySearchAppBar(props: Props) {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={34} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
         <IconButton size="large" aria-label="show 21 new notifications" color="inherit">
           <Badge badgeContent={77} color="error">
             <NotificationsIcon />
@@ -256,7 +222,7 @@ export default function PrimarySearchAppBar(props: Props) {
               </div>
               <div
                 onClick={() => {
-                  console.log('filter');
+                  //_//console.log('filter');
                   router.push('/books');
                 }}
               >
@@ -265,11 +231,6 @@ export default function PrimarySearchAppBar(props: Props) {
             </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
               <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
                 <Badge badgeContent={21} color="error">
                   <NotificationsIcon />

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserInfo } from './user';
 import { confirmDialog } from '../(shared)/confirmDialog/dialog';
 import { useAuthContext } from '@/app/context/AuthContext';
@@ -9,9 +9,14 @@ import EditProfileComp from './editProfileComp';
 import ActionDialog from '../(shared)/dialog/dialog';
 import { useRouter } from 'next/navigation';
 import addData from '@/app/firebase/firestore/addData';
-import RequestsList from './requestsList';
+import RequestsList, { delayDays } from './requestsList';
 import { Timestamp } from 'firebase/firestore';
 import ActivateMember from './activateMemeberForm';
+import getCurrency from '@/app/firebase/firestore/getCurrency';
+import getDailyFees from '@/app/firebase/firestore/getDailyFees';
+import getManyDocs from '@/app/firebase/firestore/getManyDocs';
+import { FeildQueryConstraint, QueryConstraint } from '@/app/firebase/firestore/constraints';
+import { BookRequest } from './request';
 
 type Props = {
   userInfo: UserInfo;
@@ -20,14 +25,84 @@ type Props = {
 export default function Profile({ userInfo }: Props) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [activateDialogOpen, setActivateDialogOpen] = useState<boolean>(false);
+
+  const [borrowedBooks, setBorrowedBooks] = useState<number>();
+  const [pendingRequests, setPendingRequests] = useState<number>();
+  const [fines, setFines] = useState<number>(0);
   const { user, signout, loading, currentUser } = useAuthContext();
   const router = useRouter();
-  // console.log(userInfo?.date_of_registration);
 
-  // if (userInfo === null) {
-  //   const { docData, error } = await getData('users', user.uid);
-  //   userInfo = docData;
-  // }
+  const [finesCurrency, setFinesCurrency] = useState<string>('USD');
+  const [delayFees, setDelayFees] = useState<number>(undefined);
+
+  const fetchDailyFees = async () => {
+    const { dailyFees, error } = await getDailyFees();
+    setDelayFees(dailyFees.fee);
+    return { dailyFees, error };
+  };
+
+  const calcTotalFines = async () => {
+    const contraints: FeildQueryConstraint[] = [
+      {
+        feild: 'type',
+        value: 'BORROW',
+        comparison: '==',
+      },
+      {
+        feild: 'status',
+        value: 'ACCEPTED',
+        comparison: '==',
+      },
+    ];
+    const { docsCount, querySnapshot } = await getManyDocs(`users/${userInfo.id.trim()}/requests`, contraints, 'And');
+    setBorrowedBooks(docsCount)
+
+    let totalFine = 0;
+    querySnapshot.docs.forEach((doc) => {
+      //_//console.log(delayFees);
+      
+      //_//console.log( delayDays(
+        Timestamp.fromMillis(
+          (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
+        ).toDate()
+      ) );
+      
+      totalFine +=
+        delayDays(
+          Timestamp.fromMillis(
+            (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
+          ).toDate()
+        ) * delayFees;
+        //_//console.log(totalFine);
+        
+    });
+
+    setFines(totalFine);
+  };
+  const calcPendingReqs = async () => {
+    const contraints: FeildQueryConstraint[] = [
+      {
+        feild: 'type',
+        value: 'BORROW',
+        comparison: '==',
+      },
+      {
+        feild: 'status',
+        value: 'PENDING',
+        comparison: '==',
+      },
+    ];
+    const { docsCount } = await getManyDocs(`users/${userInfo.id.trim()}/requests`, contraints, 'And',{feild:'id' , method:'asc'},1);
+    setPendingRequests(docsCount)
+  };
+  
+
+  const fetchCurrency = async () => {
+    const { currency, error } = await getCurrency();
+    setFinesCurrency(currency.currency);
+    return { currency, error };
+  };
+
   const handleDeleteAccount = () => {
     confirmDialog('Do you really want to delete your accout?', async () => {
       deleteData(userInfo?.id, 'users');
@@ -42,13 +117,19 @@ export default function Profile({ userInfo }: Props) {
       confirmDialog(`Do you really want to suspend this accout?`, async () => {
         await addData('users', userInfo.id, { isActive: false });
         router.refresh();
-        console.log(33333);
+        //_//console.log(33333);
       });
     } else {
       setActivateDialogOpen(true);
     }
   };
 
+  // useEffect(() => {
+  // },[fines,finesCurrency,delayFees,pendingRequests,borrowedBooks]);
+  fetchDailyFees();
+  calcPendingReqs();
+  fetchCurrency();
+  calcTotalFines();
   return !loading && currentUser.id !== user.uid && !currentUser.isLibrarian ? (
     <h1>Unauthorized to view this page!</h1>
   ) : !loading && !userInfo ? (
@@ -92,18 +173,18 @@ export default function Profile({ userInfo }: Props) {
             <div className="grid grid-cols-1 lg:grid-cols-3">
               <div className="order-last mt-20 grid grid-cols-3 text-center lg:order-first lg:mt-0">
                 <div className="mr-2 rounded-md border-0 border-red-700">
-                  <p className={`text-xl font-bold ${userInfo.fines > 0 ? 'text-red-700' : 'text-green-700'}  `}>
-                    {userInfo.fines > 0 ? '-' : ''}
-                    {userInfo?.fines || 0} Ft
+                  <p className={`text-xl font-bold ${fines > 0 ? 'text-red-700' : 'text-green-700'}  `}>
+                    {fines > 0 ? '-' : ''}
+                    {fines} {finesCurrency}
                   </p>
                   <p className="text-gray-400">Fines</p>
                 </div>
                 <div className="mr-3">
-                  <p className="text-xl font-bold text-blue-800">{userInfo?.borrowed_books}</p>{' '}
+                  <p className="text-xl font-bold text-blue-800">{borrowedBooks}</p>{' '}
                   <p className="text-gray-400">Borrowed books</p>
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-blue-800">{userInfo?.pending_requests}</p>
+                  <p className="text-xl font-bold text-blue-800">{pendingRequests}</p>
                   <p className="text-gray-400">Pending requests</p>
                 </div>
               </div>
@@ -139,7 +220,7 @@ export default function Profile({ userInfo }: Props) {
                 <button
                   onClick={() => {
                     setIsEditDialogOpen(true);
-                    console.log(isEditDialogOpen);
+                    //_//console.log(isEditDialogOpen);
                   }}
                   className="transform rounded bg-gray-700 px-4 py-2 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-lg"
                 >
@@ -154,13 +235,14 @@ export default function Profile({ userInfo }: Props) {
                 className={`text-xl font-medium ${userInfo.isActive ? 'text-green-500' : 'text-red-600'} text-gray-700`}
               >
                 Status: {userInfo?.isActive ? 'Active' : 'Inactive'} <br />
-                {userInfo?.isActive &&  userInfo?.valid_until &&('Until: ' +
+                {userInfo?.isActive &&
+                  userInfo?.valid_until &&
+                  'Until: ' +
                     Timestamp.fromMillis(
                       userInfo.valid_until.seconds * 1000 + userInfo.valid_until.nanoseconds / 1000000
                     )
                       .toDate()
-                      .toLocaleDateString())
-                  }
+                      .toLocaleDateString()}
               </h3>
               <p className="mt-5 font-light text-gray-600">{'Date of birth: ' + userInfo?.date_of_birth}</p>
               <p className="mt-8 text-gray-500">{userInfo?.email}</p>
@@ -188,7 +270,7 @@ export default function Profile({ userInfo }: Props) {
             </div>
           </div>
         </div>
-        <RequestsList userInfo={userInfo} />
+        { !userInfo.isLibrarian&&<RequestsList userInfo={userInfo} onChange={()=>{router.refresh()}} />}
       </>
     )
   );

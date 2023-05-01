@@ -19,9 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [showSidebar, setShowSidebar] = useState(window.innerWidth < 700 ? false : true);
 
   useEffect(() => {
-    //console.log(user);
+    ////_//console.log(user);
     function handleResize() {
-      console.log(window.innerWidth);
+      //_//console.log(window.innerWidth);
       
       if (window.innerWidth < 700) setShowSidebar(false);
     }

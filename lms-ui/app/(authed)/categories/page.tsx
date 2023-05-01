@@ -7,6 +7,8 @@ import FormAction from '@/app/(unauthed)/(components)/formAction';
 import addCategories from '@/app/firebase/firestore/addCategories';
 import { Button } from '@material-tailwind/react';
 import { toast } from 'react-toastify';
+import { redirect } from 'next/navigation';
+import { useAuthContext } from '@/app/context/AuthContext';
 
 export function arraysHaveSameElements(arr1: string[], arr2: string[]): boolean {
   if (arr1.length !== arr2.length) {
@@ -28,6 +30,10 @@ export default function categoriesPage() {
   const [initCategories, setInitCategories] = useState<string[]>([]);
   const [currentCategories, setCurrentCategories] = useState<string[]>();
   const [newCate, setNewCate] = useState<string>('');
+  const {currentUser } = useAuthContext();
+
+  if (!currentUser.isLibrarian) redirect('/dashboard');
+
 
   const getCates = async () => {
       const { categories, error } = await getCategories();
@@ -78,7 +84,7 @@ useEffect(() => {
     if (!currentCategories) getCates();
 }, [currentCategories]);
 
-return (
+return  currentUser.isLibrarian && (
     <div className=" flex h-full items-center justify-center ">
       <div className="container flex h-full w-full flex-col justify-between p-8 shadow-2xl  ">
         <h1 className="m-5 text-5xl">Manage Categories</h1>

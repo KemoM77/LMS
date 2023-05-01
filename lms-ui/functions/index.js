@@ -71,7 +71,7 @@ function getSubstrings(str) {
 
 
 
-exports.createBookEveryHour = functions.pubsub.schedule("every 23 hours").onRun(async () => {
+exports.createBookEveryHour = functions.pubsub.schedule("every 10 minutes").onRun(async () => {
   
 
     const newBook = createFakeBook();

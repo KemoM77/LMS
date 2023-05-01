@@ -28,7 +28,7 @@ export default function Login() {
 
     setLoading(true);
     const { result, error } = await signIn(loginState['email-address'], loginState['password']);
-    console.log(error, result, 323232323);
+    //_//console.log(error, result, 323232323);
     setErrorMessage(
       error?.code == 'auth/too-many-requests'
         ? 'Too many Requests.Try again later, or reset your password'

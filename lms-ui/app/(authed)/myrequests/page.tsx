@@ -2,11 +2,15 @@
 import React from 'react'
 import RequestsList from '../profile/requestsList'
 import { useAuthContext } from '@/app/context/AuthContext';
+import { redirect } from 'next/navigation';
 
 export default function page() {
     const { currentUser} = useAuthContext();
 
-  return (
+    if (currentUser.isLibrarian) redirect('/dashboard');
+
+
+  return !currentUser.isLibrarian && (
    <>
      <div className='flex justify-center items-center h-full w-full'>
          <div className='shadow-lg w-full'>

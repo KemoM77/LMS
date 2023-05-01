@@ -8,7 +8,7 @@ export interface BookRequest {
     uid:string,
     bookId:string,
     requestedAt:any,
-    until:any,
+    until?:any,
     type:Operation,
     status:RequestStatus,
     managedBy?:string,

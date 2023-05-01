@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import FilteredSearch from '../(shared)/FilteredSearch/FilteredSearch';
 import ActionDialog from '../(shared)/dialog/dialog';
 import Signup from '@/app/(unauthed)/(components)/signup';
@@ -17,21 +17,23 @@ export type SearchTerms = {
 };
 
 function Page() {
-  const {loading } = useAuthContext();
   const [searchTerms, SetSearchTerms] = useState<SearchTerms>(undefined);
-  const [searchResults, setSearchResults] = useState<UserInfo[]>([]);
+  const [searchResults, setSearchResults] = useState<UserInfo[]>(undefined);
   const [usersCount, setUsersCount] = useState<number>(undefined);
   const [startAfter, setStartAfter] = useState<string>(undefined);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
-
+  
+  const {loading ,currentUser } = useAuthContext();
   const router = useRouter();
+
+  if (!currentUser.isLibrarian) redirect('/dashboard');
 
   const options = ['Librarians', 'Users'];
 
   const fetchUsers = async () => {
-    // setSearchResults(undefined);
-    console.log(searchTerms);
+    setSearchResults(undefined);
+    //_//console.log(searchTerms);
 
     const constraints: FeildQueryConstraint[] = [
       {
@@ -59,7 +61,7 @@ function Page() {
   };
 
   const handleLoadMore = () => {
-    //console.log('loaded more');
+    ////_//console.log('loaded more');
     setLoadingMore(true);
     setStartAfter(searchResults[searchResults?.length - 1]?.first_name || '');
   };
@@ -70,7 +72,7 @@ function Page() {
       fetchUsers().then((value) => {
         const snapDocs = value.docs;
         snapDocs.forEach((doc) => {
-          console.log(doc.data());
+          //_//console.log(doc.data());
           docs.push(doc.data() as UserInfo);
         });
         // docs =
@@ -79,15 +81,15 @@ function Page() {
         //     : docs.filter((doc) => doc.isLibrarian === (searchTerms.filterOption === 'users' ? false : true));
         setSearchResults([...searchResults, ...docs]);
         setLoadingMore(false);
-        console.log('SearchResults:', searchResults);
+        //_//console.log('SearchResults:', searchResults);
       });
     }
   }, [searchTerms, startAfter]);
 
-  console.log(searchTerms);
+  //_//console.log(searchTerms);
 
   return (
-    !loading && (
+    !loading && currentUser.isLibrarian && (
       <>
         <ActionDialog
           title={'Add Librarian/User'}
@@ -129,7 +131,7 @@ function Page() {
           {/* results */}
           {!searchTerms && <h1 className="mt-10 text-center text-5xl font-semibold">Search to view users</h1>}
           {searchTerms &&
-            (searchResults ? (
+            (searchResults !== undefined ? (
               <>
                 {' '}
                 <h1 className=" ml-14 mt-10 text-3xl">

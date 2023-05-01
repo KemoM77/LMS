@@ -10,12 +10,24 @@ import modifyLifeTime from '@/app/firebase/firestore/modifyLifetime';
 import getCurrency from '@/app/firebase/firestore/getCurrency';
 import modifyCurrency from '@/app/firebase/firestore/modifyCurrency';
 import CurrencyCodesDropdown from './currencyDropdown';
+import { redirect, useRouter } from 'next/navigation';
+import { useAuthContext } from '@/app/context/AuthContext';
 
 export default function categoriesPage() {
   const [dailyFess, setDailyFess] = useState<number>(2);
   const [lifeTimeState, setLifeTime] = useState<number>(72);
   const [currencyState, setCurrency] = useState<string>('USD');
   const [loaded, setLoaded] = useState<boolean>(false);
+
+  const { loading, currentUser } = useAuthContext();
+  const router = useRouter();
+
+
+///REDIRECTING
+  if (!currentUser.isLibrarian) redirect('/dashboard');
+
+
+
 
   const fetchDailyFees = async () => {
     const { dailyFees, error } = await getDailyFees();
@@ -35,7 +47,7 @@ export default function categoriesPage() {
   };
 
   const handleTimeChange = (event) => {
-    console.log(event.target.value);
+    //_//console.log(event.target.value);
 
     setLifeTime(event.target.value);
   };
@@ -55,30 +67,30 @@ export default function categoriesPage() {
       });
     });
     await modifyLifeTime(lifeTimeState).then(() => {
-      console.log('added life time');
+      //_//console.log('added life time');
     });
     await modifyCurrency(currencyState).then(() => {
-      console.log('added cur');
+      //_//console.log('added cur');
     });
   };
   useEffect(() => {
     if (!loaded) {
       fetchCurrency().then((result) => {
-        console.log(result.currency);
+        //_//console.log(result.currency);
         setCurrency(result.currency.currency);
       });
       fetchDailyFees().then((result) => {
-        console.log(result.dailyFees);
+        //_//console.log(result.dailyFees);
         setDailyFess(result.dailyFees.fee);
       });
       fetchLifeTime().then((result) => {
         setLifeTime(result.lifeTime.lifetime);
       });
-      setLoaded(true)
+      setLoaded(true);
     }
   }, [loaded]);
 
-  return (
+  return currentUser.isLibrarian && (
     <div className=" flex h-full items-center justify-center ">
       <div className="container flex h-full w-full flex-col justify-center p-8 shadow-2xl  ">
         <h1 className="m-5 text-5xl">Manage Settings and Variables</h1>

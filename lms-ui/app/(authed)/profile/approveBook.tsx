@@ -25,15 +25,15 @@ export default function approveBook({ requestInfo, userInfo, onSubmit }) {
   const USER_REQUESTS_URL = `users/${requestInfo.uid.trim()}/requests`;
 
   const handleChange = (event) => {
-    console.log(event.target.value);
+    //_//console.log(event.target.value);
     setDeadline(event.target.value);
     setIsDisabled(isDateInFuture(event.target.value));
   };
   const handleApprove = async (event) => {
     event.preventDefault();
-    console.log('aprroved');
+    //_//console.log('aprroved');
     const date = new Date(deadline);
-    console.log(Timestamp.fromDate(date));
+    //_//console.log(Timestamp.fromDate(date));
     const newReqData: BookRequest = {
       ...requestInfo,
       status: 'ACCEPTED',
@@ -41,8 +41,8 @@ export default function approveBook({ requestInfo, userInfo, onSubmit }) {
       until: Timestamp.fromDate(date),
       managedAt: serverTimestamp(),
     };
-    console.log(newReqData);
-    console.log(USER_REQUESTS_URL);
+    //_//console.log(newReqData);
+    //_//console.log(USER_REQUESTS_URL);
 
     await addData(USER_REQUESTS_URL, newReqData.id.trim(), newReqData);
     toast('Borrow request approved Successfully', {

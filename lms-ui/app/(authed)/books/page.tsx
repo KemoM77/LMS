@@ -35,14 +35,14 @@ export default function booksPage() {
 
   const fetchSerchedBooks = async () => {
    
-    console.log(searchTerms);
+    //_//console.log(searchTerms);
     let mixedSearch = searchTerms?.name ? searchTerms?.name.toLowerCase().split(' ') : undefined;
     if (mixedSearch) {
       searchTerms?.categories?.forEach((cat) => {
         mixedSearch.push(`cat#${cat.toLowerCase()}`);
       });
     }
-    console.log(mixedSearch);
+    //_//console.log(mixedSearch);
 
     const constraints: FeildQueryConstraint[] = [
       {
@@ -88,7 +88,7 @@ export default function booksPage() {
   };
 
   const handleLoadMore = () => {
-    //console.log('loaded more');
+    ////_//console.log('loaded more');
     setLoadingMore(true);
     if (loadedBooks)
       setStartAtBook(loadedBooks[loadedBooks?.length - 1].title || searchedBooks[searchedBooks?.length - 1].title);
@@ -96,7 +96,7 @@ export default function booksPage() {
   };
 
   const handleAddBooks = () => {
-    //console.log('Added books');
+    ////_//console.log('Added books');
     setIsAddBooksDialogOpen(true);
   };
 
@@ -108,30 +108,30 @@ export default function booksPage() {
     if (searchTerms) {
       setLoadedBooks(undefined);
       let docs: BookInfo[] = searchedBooks && loadingMore ? searchedBooks : [];
-      console.log('im from if', urlSearch, searchTerms);
+      //_//console.log('im from if', urlSearch, searchTerms);
 
       fetchSerchedBooks().then(({ results }) => {
         const snapDocs = results.querySnapshot.docs;
         snapDocs.forEach((doc) => {
-          // //console.log(doc.data());
+          // ////_//console.log(doc.data());
           docs.push(doc.data() as BookInfo);
         });
 
         setSearchedBooks(docs);
-        //console.log('searched books are:', docs);
+        ////_//console.log('searched books are:', docs);
         setBookCount(results.docsCount);
         setLoadingMore(false);
       });
     } else {
       getDocsCount().then((numOfDocs) => {
-        console.log('im from else', searchTerms);
+        //_//console.log('im from else', searchTerms);
         setBookCount(numOfDocs);
         let tempBooks: BookInfo[] = loadedBooks ? loadedBooks : [];
         fetchRandomBooks().then(({ querySnapshot }) => {
           setSearchedBooks(undefined);
           const snapDocs = querySnapshot.docs;
           snapDocs.forEach((doc) => {
-            //console.log(doc.data());
+            ////_//console.log(doc.data());
             tempBooks.push(doc.data() as BookInfo);
             setLoadedBooks(tempBooks);
             setLoadingMore(false);
@@ -139,8 +139,8 @@ export default function booksPage() {
         });
       });
     }
-    //console.log('book count: ', bookCount, 'arraycount: ', searchedBooks?.length || 0);
-    //console.log(loadedBooks, searchedBooks);
+    ////_//console.log('book count: ', bookCount, 'arraycount: ', searchedBooks?.length || 0);
+    ////_//console.log(loadedBooks, searchedBooks);
   }, [searchTerms, startAtBook]);
 
   return (
