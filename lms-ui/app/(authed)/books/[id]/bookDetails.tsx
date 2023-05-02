@@ -16,6 +16,7 @@ import { BookRequest } from '../../profile/request';
 import { serverTimestamp } from 'firebase/firestore';
 import { addBook } from '../addBooktoDB';
 import getLifeTime from '@/app/firebase/firestore/getLifetime';
+import getCurrency from '@/app/firebase/firestore/getCurrency';
 
 type Props = {
   bookInfo: BookInfo;
@@ -25,9 +26,11 @@ export default function BookDetails({ bookInfo }: Props) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const { user, signout, loading, currentUser } = useAuthContext();
   const [reqLifeTime, setReqLifeTime] = useState<number>(72);
+  const [finesCurrency, setFinesCurrency] = useState<string>('USD');
+
   const router = useRouter();
 
-  //_//console.log(bookInfo);
+  console.log(bookInfo);
 
   // if (bookInfo === null) {
   //   const { docData, error } = await getData('users', user.uid);
@@ -134,14 +137,20 @@ export default function BookDetails({ bookInfo }: Props) {
   //     confirmDialog(`Do you really want to ${bookInfo.isActive ? 'suspend' : 'activate'} this accout?`, async () => {
   //       await addData('users', bookInfo.id, { isActive: !bookInfo.isActive });
   //       router.refresh();
-  //       //_//console.log(33333);
+  //       console.log(33333);
   //     });
   //   };
+  const fetchCurrency = async () => {
+    const { currency, error } = await getCurrency();
+    setFinesCurrency(currency.currency);
+    return { currency, error };
+  };
 
 
   useEffect(()=>{
+  fetchCurrency()
    fetchLifeTime().then(({lifeTime})=>{
-    //_//console.log(lifeTime);
+    console.log(lifeTime);
     
     setReqLifeTime(lifeTime.lifetime)
    });
@@ -173,8 +182,8 @@ export default function BookDetails({ bookInfo }: Props) {
         />
         <div className="p-16">
           <div className="mt-24 rounded-md bg-white p-8 shadow-xl">
-            <div className="grid grid-cols-1 md:grid-cols-3">
-              <div className="order-last mt-20 grid grid-cols-3 text-center md:order-first md:mt-0">
+            <div className="grid grid-cols-1 lg:grid-cols-3">
+              <div className="order-last mt-20 grid grid-cols-3 text-center lg:order-first lg:mt-0">
                 <div className="mr-2 rounded-md border-0 border-red-700">
                   <p className={`text-xl font-bold text-blue-800 `}>
                     {getLanguageLabel(bookInfo?.language) || 'English'}
@@ -203,7 +212,7 @@ export default function BookDetails({ bookInfo }: Props) {
                   <img src={bookInfo?.cover_img} alt="profile image" className="h-72 w-56 cursor-pointer rounded-md" />
                 </div>
               </div>
-              <div className="mt-32 flex justify-between space-x-8 md:mt-0 md:justify-center ">
+              <div className="mt-52 flex justify-between space-x-8 lg:mt-0 lg:justify-center ">
                 {/* {currentUser?.isLibrarian && bookInfo.id !== currentUser.id && (
                 <button
                   onClick={handleActivate}
@@ -246,7 +255,7 @@ export default function BookDetails({ bookInfo }: Props) {
               </div>
             </div>
             <div className="mt-44  border-b pb-12 text-center">
-              <h1 className="text-4xl font-medium text-gray-700 md:mt-10">{bookInfo?.title}</h1>
+              <h1 className="text-4xl font-medium text-gray-700 lg:mt-10">{bookInfo?.title}</h1>
               <h3
                 className={`text-xl font-bold ${
                   bookInfo.in_stock > 0 ? 'text-green-500' : 'text-red-600'
@@ -262,7 +271,7 @@ export default function BookDetails({ bookInfo }: Props) {
                 ISBN/ISBN13: {bookInfo?.isbn}/{bookInfo?.isbn13}
               </p>
               {bookInfo.sellable ? (
-                <p className="mt-3 font-semibold text-black">Price: {bookInfo?.price}$</p>
+                <p className="mt-3 font-semibold text-black">Price: {bookInfo?.price}{finesCurrency}</p>
               ) : (
                 <p className="mt-3 font-semibold text-black">Not for Sale.</p>
               )}

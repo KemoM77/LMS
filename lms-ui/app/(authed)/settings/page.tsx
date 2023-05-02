@@ -47,7 +47,7 @@ export default function categoriesPage() {
   };
 
   const handleTimeChange = (event) => {
-    //_//console.log(event.target.value);
+    console.log(event.target.value);
 
     setLifeTime(event.target.value);
   };
@@ -67,20 +67,20 @@ export default function categoriesPage() {
       });
     });
     await modifyLifeTime(lifeTimeState).then(() => {
-      //_//console.log('added life time');
+      console.log('added life time');
     });
     await modifyCurrency(currencyState).then(() => {
-      //_//console.log('added cur');
+      console.log('added cur');
     });
   };
   useEffect(() => {
     if (!loaded) {
       fetchCurrency().then((result) => {
-        //_//console.log(result.currency);
+        console.log(result.currency);
         setCurrency(result.currency.currency);
       });
       fetchDailyFees().then((result) => {
-        //_//console.log(result.dailyFees);
+        console.log(result.dailyFees);
         setDailyFess(result.dailyFees.fee);
       });
       fetchLifeTime().then((result) => {

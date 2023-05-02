@@ -1,6 +1,7 @@
 import addData from "@/app/firebase/firestore/addData";
 import { BookInfo } from "./book";
 import { getSubstrings } from "@/app/firebase/auth/signup";
+import { serverTimestamp } from "firebase/firestore";
 
 export async function addBook(bookInfo:BookInfo)
 {
@@ -12,6 +13,7 @@ export async function addBook(bookInfo:BookInfo)
     bookInfo.categories.forEach((cat)=>{
         bookInfo.searchableTerms.push(`cat#${cat.toLowerCase()}`);
     })    
+    bookInfo.addedAT = serverTimestamp();
     console.log(bookInfo);
     
     const {result , error} = await addData('books',bookInfo.id,bookInfo);

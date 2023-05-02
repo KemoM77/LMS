@@ -30,7 +30,7 @@ type Props = {
   onSubmit: () => void;
 };
 export default function AddBook({ BookData = undefined, onSubmit = () => {} }: Props) {
-  //_//console.log(BookData);
+  console.log(BookData);
 
   const [addBookState, SetaddBookState] = useState<BookInfo>(BookData ? BookData : (fieldsState as BookInfo));
 
@@ -72,12 +72,12 @@ export default function AddBook({ BookData = undefined, onSubmit = () => {} }: P
       searchableTerms: undefined,
     };
 
-    //_//console.log(updated);
+    console.log(updated);
     SetaddBookState(updated as BookInfo);
 
     const { result, error } = await addBook(updated);
 
-    //     ////_//console.log(94949494949449);
+    //     //console.log(94949494949449);
     //     setErrorMessage(
     //       addBookState['password'].length < 6
     //         ? 'Password must be more than 6 characters'
@@ -86,11 +86,11 @@ export default function AddBook({ BookData = undefined, onSubmit = () => {} }: P
     //         : ''
     //     );
     //     if (addBookState['password'].length < 6 || addBookState['password'] !== addBookState['confirm-password']) return;
-    //     //_//console.log(addBookState);
+    //     console.log(addBookState);
 
     //     const { result, error } = await signUp(addBookState,byLibrarian);
 
-    //    // //_//console.log(error, result, 323232323);
+    //    // console.log(error, result, 323232323);
     //     // alert(
     //     //   error?.code == 'auth/too-many-requests'
     //     //     ? 'Too many Requests.Try again later, or reset your password'

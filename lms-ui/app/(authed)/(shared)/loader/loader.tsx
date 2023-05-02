@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 export default function Loader({size = 10}) {
-    //_//console.log(`h-[${size}px] w-[${size}px]`);
+    console.log(`h-[${size}px] w-[${size}px]`);
     //h-[${size}px] w-[${size}px]
   return (
     <>

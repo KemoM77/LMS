@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { BookRequest } from './request';
 import { UserInfo } from './user';
+import addNotification from '@/app/firebase/firestore/addNotification';
 
 export function isDateInFuture(dateString: string): boolean {
   if (!dateString) return false;
@@ -26,25 +27,31 @@ export default function ActivateMember({ userInfo, onSubmit }) {
   const USER_URL = `users`;
 
   const handleChange = (event) => {
-    //_//console.log(event.target.value);
+    console.log(event.target.value);
     setDeadline(event.target.value);
     setIsDisabled(isDateInFuture(event.target.value));
   };
   const handleApprove = async (event) => {
     event.preventDefault();
-    //_//console.log('aprroved');
+    console.log('aprroved');
     const date = new Date(deadline);
-    //_//console.log(Timestamp.fromDate(date));
+    console.log(Timestamp.fromDate(date));
 
-     userInfo = {
+    userInfo = {
       ...userInfo,
-      isActive:true,
-      valid_until: Timestamp.fromDate(date)
+      isActive: true,
+      valid_until: Timestamp.fromDate(date),
     };
 
-    //_//console.log(userInfo);
+    console.log(userInfo);
 
     await addData(USER_URL, userInfo.id.trim(), userInfo);
+    await addNotification(
+      userInfo.id,
+      'Account Activated',
+      `Your account has been Activated, we wish you a great time, please consider the revalidation date: ${date.toLocaleDateString()} !`
+    );
+
     toast('User Activated Successfully', {
       position: 'top-center',
       autoClose: 4000,

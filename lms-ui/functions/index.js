@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const faker = require('@faker-js/faker');
-const admin = require('firebase-admin')
+const admin = require('firebase-admin');
 // // Create and deploy your first functions
 // // https://firebase.google.com/docs/functions/get-started
 //
@@ -54,6 +54,7 @@ const createFakeBook = () => {
     in_stock: parseInt(faker.faker.random.numeric(3))%30,
     price: parseFloat(faker.faker.commerce.price()),
     searchableTerms: [' '],
+    addedAT:admin.firestore.Timestamp.now()
   };
 };
 
@@ -71,7 +72,7 @@ function getSubstrings(str) {
 
 
 
-exports.createBookEveryHour = functions.pubsub.schedule("every 10 minutes").onRun(async () => {
+exports.createBookEveryHour = functions.pubsub.schedule("every 1 minutes").onRun(async () => {
   
 
     const newBook = createFakeBook();

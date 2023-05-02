@@ -25,19 +25,19 @@ function BooksSearchBar({ onSearch, barSearch = '' }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // //_//console.log(author);
+    // console.log(author);
 
     onSearch({ name: name, categories: selectedCategories, language: selectedLanguage });
   };
 
   const CategoriesHandle = (selected) => {
-    //_//console.log(selected);
+    console.log(selected);
     setSelectedCategories(selected);
   };
 
   useEffect(() => {
     if (barSearch) {
-      //_//console.log('changed');
+      console.log('changed');
       setName(barSearch);
       //onSearch({ name:name });
     }

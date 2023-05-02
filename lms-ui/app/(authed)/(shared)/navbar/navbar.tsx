@@ -17,6 +17,12 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { redirect, useRouter } from 'next/navigation';
+import NotificationList from '../../profile/notificationList';
+import ActionDialog from '../dialog/dialog';
+import getManyDocs from '@/app/firebase/firestore/getManyDocs';
+import { useAuthContext } from '@/app/context/AuthContext';
+import { QueryConstraint } from 'firebase/firestore';
+import { FeildQueryConstraint } from '@/app/firebase/firestore/constraints';
 const theme = createTheme({
   palette: {
     primary: {
@@ -81,14 +87,38 @@ type Props = {
 export default function PrimarySearchAppBar(props: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [isNotificationDialogOpen, setIsNotificationDialogOpen] = React.useState<boolean>(false);
+  const [unReadCount, setUnReadCount] = React.useState<number>(0);
+  const { currentUser } = useAuthContext();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const router = useRouter();
 
+  const fetchUnReadCount = async () => {
+    const constraints: FeildQueryConstraint = {
+      feild: 'isRead',
+      comparison: '==',
+      value: false,
+    };
+
+    const { docsCount } = await getManyDocs(
+      `users/${currentUser.id}/notifications`,
+      [constraints],
+      'And',
+      { feild: 'id', method: 'desc' },
+      1
+    );
+    console.log(docsCount);
+
+    setUnReadCount(docsCount);
+  };
+
+  fetchUnReadCount();
+
   const handleProfileClick = () => {
     handleMenuClose();
-    //_//console.log(435454534);
+    console.log(435454534);
     redirect('/admin');
   };
 
@@ -141,10 +171,7 @@ export default function PrimarySearchAppBar(props: Props) {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
+    ></Menu>
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -164,9 +191,13 @@ export default function PrimarySearchAppBar(props: Props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 21 new notifications" color="inherit">
-          <Badge badgeContent={77} color="error">
+      <MenuItem
+        onClick={() => {
+          setIsNotificationDialogOpen(true);
+        }}
+      >
+        <IconButton size="large" aria-label="show notifications" color="inherit">
+          <Badge badgeContent={unReadCount} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -189,6 +220,14 @@ export default function PrimarySearchAppBar(props: Props) {
 
   return (
     <Box sx={{ position: 'fixed', flexGrow: 1 }}>
+      <ActionDialog
+        title={' '}
+        content={<NotificationList />}
+        isOpen={isNotificationDialogOpen}
+        onClose={() => {
+          setIsNotificationDialogOpen(false);
+        }}
+      />
       <ThemeProvider theme={theme}>
         <AppBar position="fixed" color="primary">
           <Toolbar>
@@ -222,7 +261,7 @@ export default function PrimarySearchAppBar(props: Props) {
               </div>
               <div
                 onClick={() => {
-                  //_//console.log('filter');
+                  console.log('filter');
                   router.push('/books');
                 }}
               >
@@ -231,8 +270,15 @@ export default function PrimarySearchAppBar(props: Props) {
             </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={21} color="error">
+              <IconButton
+                onClick={() => {
+                  setIsNotificationDialogOpen(true);
+                }}
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={unReadCount} color="error">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>

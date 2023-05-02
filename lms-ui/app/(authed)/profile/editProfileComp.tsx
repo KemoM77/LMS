@@ -10,6 +10,7 @@ import getData from '@/app/firebase/firestore/getData';
 import addData from '@/app/firebase/firestore/addData';
 import { toast } from 'react-toastify';
 import { UserInfo } from './user';
+import addNotification from '@/app/firebase/firestore/addNotification';
 
 const fields = editProfileFields;
 let fieldsState = {};
@@ -24,7 +25,7 @@ export default function EditProfileComp({ uid ,onSubmit=()=>{} }) {
       setUserData(docData);
       fields.forEach((field) => (fieldsState[field.id] = docData[field.id]));
       fields.forEach((field) => {
-        //_//console.log(docData[field.id]);
+        console.log(docData[field.id]);
       });
     }
 
@@ -43,6 +44,7 @@ export default function EditProfileComp({ uid ,onSubmit=()=>{} }) {
     e.preventDefault();
     setLoading(true);
     const { result, error } = await addData('users', uid, editProfileState);
+    await addNotification(userData.id,'Profile Updated','Your account information has been updated successfully.')
 
     setSuccessful(false);
     toast('User Information Updated', {
@@ -57,10 +59,10 @@ export default function EditProfileComp({ uid ,onSubmit=()=>{} }) {
     });
     if (user.uid === userData.id) {
       setCurrentUser({ ...currentUser ,...editProfileState });
-      //_//console.log('same');
+      console.log('same');
     }
 
-    //_//console.log('load off');
+    console.log('load off');
     router.refresh();
     onSubmit();
     setLoading(false);

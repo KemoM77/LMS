@@ -1,864 +1,192 @@
-'use client'
-import Button from "@mui/material/Button";
-import addData from "../../firebase/firestore/addData";
-import Head from "next/head";
-import { NextSeo } from "next-seo";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { Card, Typography } from '@material-tailwind/react';
+import { CardContent } from '@mui/material';
+import { useAuthContext } from '@/app/context/AuthContext';
+import { BookRequest } from '../profile/request';
+import { myToDate } from '../profile/notificationList';
+import { delayDays } from '../profile/requestsList';
+import { Timestamp } from 'firebase/firestore';
+import getDailyFees from '@/app/firebase/firestore/getDailyFees';
+import { FeildQueryConstraint } from '@/app/firebase/firestore/constraints';
+import getManyDocs from '@/app/firebase/firestore/getManyDocs';
+import { getQueryCount } from '@/app/firebase/firestore/getPaginatedDocs';
+import getCurrency from '@/app/firebase/firestore/getCurrency';
+import { BookInfo } from '../books/book';
+import BookCard from '../books/bookCard';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-export default function Home() {
-  
-  return ( <>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="outlined">Outlined</Button>
-    </>)
-}
+const Dashboard = () => {
+  const { currentUser } = useAuthContext();
+  const [reminders, setReminders] = useState<BookRequest[]>([]);
+  const [newBooks, setNewBooks] = useState<BookInfo[]>([]);
+  const [numOfBooks, setNumOfBooks] = useState<number>(0);
+  const [numOfUsers, setNumOfUsers] = useState<number>(0);
+  const [fines, setFines] = useState<number>(0);
+  const [finesCurrency, setFinesCurrency] = useState<string>('USD');
+  const [delayFees, setDelayFees] = useState<number>(undefined);
+  const router = useRouter();
+  const fetchDailyFees = async () => {
+    const { dailyFees, error } = await getDailyFees();
+    setDelayFees(dailyFees.fee);
+    return { dailyFees, error };
+  };
+
+  const fetchCurrency = async () => {
+    const { currency, error } = await getCurrency();
+    setFinesCurrency(currency.currency);
+    return { currency, error };
+    router.refresh();
+  };
+
+  const calcBooks = async () => {
+    const { count } = await getQueryCount('books');
+    setNumOfBooks(count);
+    router.refresh();
+  };
+
+  const calcUsers = async () => {
+    const { count } = await getQueryCount('users');
+    setNumOfUsers(count);
+    router.refresh();
+  };
+
+  const fetchNewBooks = async () => {
+    const { querySnapshot } = await getManyDocs('books', [], 'And', { feild: 'addedAT', method: 'desc' }, 4);
+
+    //console.log(34546343234567654357756355,querySnapshot.docs[0].data());
+
+    let rems: BookInfo[] = [];
+    querySnapshot.docs.forEach((doc) => {
+      console.log(delayFees);
+      rems.push(doc.data() as BookInfo);
+      console.log('hererer', doc.data());
+    });
+
+    setNewBooks(rems);
+    router.refresh();
+  };
+
+  const fetchRemindersAndFines = async () => {
+    const contraints: FeildQueryConstraint[] = [
+      {
+        feild: 'type',
+        value: 'BORROW',
+        comparison: '==',
+      },
+      {
+        feild: 'status',
+        value: 'ACCEPTED',
+        comparison: '==',
+      },
+    ];
+    const { querySnapshot } = await getManyDocs(`users/${currentUser.id.trim()}/requests`, contraints, 'And', {
+      feild: 'until',
+      method: 'asc',
+    });
+
+    let totalFine = 0;
+    let rems: BookRequest[] = [];
+    querySnapshot.docs.forEach((doc) => {
+      console.log(delayFees);
+
+      rems.push(doc.data() as BookRequest);
+      totalFine += delayDays(myToDate(doc?.data().until)) * delayFees;
+      console.log(doc.data());
+    });
+
+    setReminders(rems);
+    setFines(totalFine);
+    router.refresh();
+  };
+
+  useEffect(() => {
+    {
+      fetchDailyFees().then(() => {
+        fetchCurrency();
+        calcBooks();
+        calcUsers();
+        fetchRemindersAndFines();
+        fetchNewBooks();
+      });
+    }
+  }, [fines]);
+  return (
+    <div className="min-h-screen bg-gray-100 p-4">
+      <div className="flex h-full ">
+        <div className="flex-1 lg:mr-72">
+          <div className="mb-4 max-h-96">
+            <Card>
+              <CardContent>
+                <h1 className="text-5xl">
+                  {' '}
+                  Welcome, {currentUser?.first_name}! &#128075; <br />
+                </h1>
+                Current Status: {currentUser.isActive ? 'Active :) ' : 'Suspended :('} <br />
+                {currentUser.isActive && currentUser.valid_until
+                  ? 'Until: ' + myToDate(currentUser.valid_until).toLocaleDateString()
+                  : ''}
+              </CardContent>
+            </Card>
+          </div>
+          <div className="mb-4">
+            <Card>
+              <CardContent>
+                <h1 className="text-3xl">Library Information</h1>
+                <ul>
+                  <li>Total Books: {numOfBooks} </li>
+                  <li>Total Users: {numOfUsers} </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+          {!currentUser.isLibrarian && (
+            <div className="mb-4">
+              <Card>
+                <CardContent>
+                  <h1 className="text-3xl">Your Fines</h1>-{fines || 0}
+                  {finesCurrency}
+                </CardContent>
+              </Card>
+            </div>
+          )}
+          <Card className="mb-4 ">
+            <CardContent>
+              <div className="flex flex-col bg-white">
+                <h1 className="text-3xl">Recently Added Books: </h1>
+
+                <div className="flex flex-wrap justify-center">
+                  {newBooks.map((doc) => (
+                    <BookCard BookDetails={doc} />
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+      <div>
+        <Card className=" h-full shadow-md lg:fixed lg:right-0  lg:top-0 lg:mt-16 ">
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              Reminders
+            </Typography>
+            <ul className="max-h-[700px] overflow-auto lg:w-64 ">
+              {reminders.map((reminder, index) => (
+                <li color="green" key={index} className="mt-2">
+                  <Link className="text-blue-900" href={'books/' + reminder.bookId}>
+                    {reminder.bookName}{' '}
+                  </Link>
+                  - Due {myToDate(reminder.until).toLocaleDateString()}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

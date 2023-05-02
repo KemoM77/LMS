@@ -17,6 +17,7 @@ import { BookInfo } from '../books/book';
 import getDailyFees from '@/app/firebase/firestore/getDailyFees';
 import getCurrency from '@/app/firebase/firestore/getCurrency';
 import { CircularProgress } from '@mui/material';
+import addNotification from '@/app/firebase/firestore/addNotification';
 
 function getStatusColor(status: RequestStatus): string {
   switch (status) {
@@ -48,7 +49,7 @@ export function delayDays(date: Date): number {
   return delayInDays;
 }
 
-export default function RequestsList({ userInfo, onChange = ()=>{} }) {
+export default function RequestsList({ userInfo, onChange = () => {} }) {
   const USER_REQUESTS_URL = `users/${userInfo.id.trim()}/requests`;
   const [userRequests, setUserRequests] = useState<BookRequest[]>(undefined);
   const [isApproveRequestDialogOpen, setIsApproveRequestDialogOpen] = useState<boolean>(false);
@@ -58,13 +59,13 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
   const router = useRouter();
   const [finesCurrency, setFinesCurrency] = useState<string>('USD');
   const [delayFees, setDelayFees] = useState<number>(undefined);
-  
+
   const fetchCurrency = async () => {
-      const { currency, error } = await getCurrency();
-      setFinesCurrency(currency.currency);
-      return { currency, error };
-    };
-    
+    const { currency, error } = await getCurrency();
+    setFinesCurrency(currency.currency);
+    return { currency, error };
+  };
+
   const fetchDailyFees = async () => {
     const { dailyFees, error } = await getDailyFees();
     setDelayFees(dailyFees.fee);
@@ -82,8 +83,15 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
     return { querySnapshot, docsCount };
   };
 
+  const handleExtendBook = (req: BookRequest) => {
+    setChoosenReq(req), setIsApproveRequestDialogOpen(true);
+  };
+
   const handleRejectAccount = (req: BookRequest) => {
     confirmDialog('Do you really want to cancel this request ?', async () => {
+      const { docData, error } = await getData('books', req.bookId);
+      const newAddedBook: BookInfo = { ...docData, in_stock: parseInt(docData?.in_stock) + 1 };
+      await addData('books', req.bookId, newAddedBook);
       req.status = currentUser.isLibrarian ? 'REJECTED' : 'CANCELED';
       req.managedBy = currentUser.first_name + ' ' + currentUser.last_name;
       req.managedAt = serverTimestamp();
@@ -98,8 +106,13 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
         progress: undefined,
         theme: 'dark',
       });
+      await addNotification(
+        userInfo.id,
+        'Request Rejected',
+        `Sorry, your request for (${req.bookName}) has been rejected, please review your requests.`
+      );
       router.refresh();
-      onChange()
+      onChange();
     });
   };
   const handleReturnBook = (req: BookRequest) => {
@@ -108,7 +121,6 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
 
       if (!error) {
         const newAddedBook: BookInfo = { ...docData, in_stock: parseInt(docData?.in_stock) + 1 };
-
         await addData('books', req.bookId, newAddedBook);
         req.status = 'RETURNED';
         req.managedBy = currentUser.first_name + ' ' + currentUser.last_name;
@@ -124,13 +136,18 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
           progress: undefined,
           theme: 'dark',
         });
+        await addNotification(
+          userInfo.id,
+          'Book Returned',
+          `Thanks for returning (${req.bookName}), we hope you enjoyed it!`
+        );
         router.refresh();
-        onChange()
+        onChange();
       }
     });
   };
-  const handleAcceptRequest = (req: BookRequest) => {
-    //_//console.log(req);
+  const handleAcceptRequest = async (req: BookRequest) => {
+    console.log(req);
 
     if (req?.type === 'BORROW') {
       setChoosenReq(req), setIsApproveRequestDialogOpen(true);
@@ -151,43 +168,47 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
           theme: 'dark',
         });
         router.refresh();
-        onChange()
-
+        onChange();
       });
+      await addNotification(
+        userInfo.id,
+        'Buy Request Approved',
+        `Thanks for buying (${req.bookName}), we hope you will enjoy it!`
+      );
     }
   };
   useEffect(() => {
     if (!loaded) {
-    fetchCurrency();
-    fetchDailyFees()
+      fetchCurrency();
+      fetchDailyFees();
       let docs: BookRequest[] = [];
       fetchRequests().then((result) => {
         result.querySnapshot.docs.forEach((req) => {
           docs.push(req.data() as BookRequest);
         });
         setUserRequests(docs);
-        //_//console.log(docs);
+        console.log(docs);
       });
       setLoaded(true);
     }
     router.refresh();
-    onChange()
-    //_//console.log('should refresh');
-  }, [currentUser, isApproveRequestDialogOpen , finesCurrency,delayFees]);
+    onChange();
+    console.log('should refresh');
+  }, [currentUser, isApproveRequestDialogOpen, finesCurrency, delayFees]);
 
-  return loaded ?(
+  return loaded ? (
     <div className="mb-9  flex items-center justify-center">
       <ActionDialog
         title={'Set deadline'}
         content={
           <ApproveBook
-            userInfo={currentUser}
+            userInfo={userInfo}
             requestInfo={choosenReq}
             onSubmit={() => {
               setIsApproveRequestDialogOpen(false);
               setLoaded(false);
               router.refresh();
-              onChange()
+              onChange();
             }}
           />
         }
@@ -246,11 +267,16 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
                       : new Date(req?.managedAt).toLocaleString())
                   : ''}
               </div>
-              {req.until && <div className={`mr-3 font-semibold text-red-700`}>
-               {'-'}{delayFees *
-                  delayDays(Timestamp.fromMillis(req.until?.seconds * 1000 + req.until?.nanoseconds / 1000000).toDate())}
-                 {' '}{finesCurrency}
-              </div>}
+              {req.until && (
+                <div className={`mr-3 font-semibold text-red-700`}>
+                  {'-'}
+                  {delayFees *
+                    delayDays(
+                      Timestamp.fromMillis(req.until?.seconds * 1000 + req.until?.nanoseconds / 1000000).toDate()
+                    )}{' '}
+                  {finesCurrency}
+                </div>
+              )}
               {req.managedBy && <div className="mr-3">By:{req.managedBy}</div>}
               <div className="flex justify-center">
                 {req.status === 'PENDING' && (
@@ -270,6 +296,11 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
                   </Button>
                 )}
                 {currentUser.isLibrarian && req.status === 'ACCEPTED' && req.type === 'BORROW' && (
+                  <Button onClick={() => handleExtendBook(req)} color="blue">
+                    Extend
+                  </Button>
+                )}
+                {currentUser.isLibrarian && req.status === 'ACCEPTED' && req.type === 'BORROW' && (
                   <Button onClick={() => handleReturnBook(req)} color="orange">
                     Return
                   </Button>
@@ -279,5 +310,7 @@ export default function RequestsList({ userInfo, onChange = ()=>{} }) {
           ))}
       </div>
     </div>
-  ) : <CircularProgress size={50}/>;
+  ) : (
+    <CircularProgress size={50} />
+  );
 }

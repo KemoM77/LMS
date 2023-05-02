@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { BookRequest } from './request';
+import addNotification from '@/app/firebase/firestore/addNotification';
+import { useAuthContext } from '@/app/context/AuthContext';
 
 export function isDateInFuture(dateString: string): boolean {
   if (!dateString) return false;
@@ -18,33 +20,45 @@ export function isDateInFuture(dateString: string): boolean {
   return inputDate < currentDate;
 }
 
-export default function approveBook({ requestInfo, userInfo, onSubmit }) {
+export default function approveBook({ requestInfo, userInfo ,  onSubmit }) {
   const [deadline, setDeadline] = useState<string>(undefined);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const router = useRouter();
+  const { currentUser } = useAuthContext();
+
   const USER_REQUESTS_URL = `users/${requestInfo.uid.trim()}/requests`;
 
   const handleChange = (event) => {
-    //_//console.log(event.target.value);
+    console.log(event.target.value);
     setDeadline(event.target.value);
     setIsDisabled(isDateInFuture(event.target.value));
   };
   const handleApprove = async (event) => {
     event.preventDefault();
-    //_//console.log('aprroved');
+    //console.log('aprroved');
     const date = new Date(deadline);
-    //_//console.log(Timestamp.fromDate(date));
+    console.log(Timestamp.fromDate(date));
     const newReqData: BookRequest = {
       ...requestInfo,
       status: 'ACCEPTED',
-      managedBy: userInfo.first_name + ' ' + userInfo.last_name,
+      managedBy: currentUser.first_name + ' ' + currentUser.last_name,
       until: Timestamp.fromDate(date),
       managedAt: serverTimestamp(),
     };
-    //_//console.log(newReqData);
-    //_//console.log(USER_REQUESTS_URL);
+    console.log(newReqData);
+    console.log(USER_REQUESTS_URL);
 
     await addData(USER_REQUESTS_URL, newReqData.id.trim(), newReqData);
+    await addNotification(
+      userInfo.id,
+      requestInfo.type === 'ACCEPTED' ? `Deadline Extended` : 'Request Accepted',
+      (requestInfo.type === 'ACCEPTED'
+        ? `Deadline for (${requestInfo.bookName}) extended`
+        : `Borrow request Approved for(${requestInfo.bookName})`) +
+        ' we hope you will enjoy it! consider the deadline ' +
+        date.toLocaleDateString() +
+        ' !'
+    );
     toast('Borrow request approved Successfully', {
       position: 'top-center',
       autoClose: 4000,

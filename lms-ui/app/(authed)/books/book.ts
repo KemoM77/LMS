@@ -15,5 +15,6 @@ export interface BookInfo {
     description?:string,
     in_stock:number,
     price:number,
-    searchableTerms:string[]
+    searchableTerms:string[],
+    addedAT:any
 }

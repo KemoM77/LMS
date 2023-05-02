@@ -33,7 +33,7 @@ function Page() {
 
   const fetchUsers = async () => {
     setSearchResults(undefined);
-    //_//console.log(searchTerms);
+    console.log(searchTerms);
 
     const constraints: FeildQueryConstraint[] = [
       {
@@ -61,7 +61,7 @@ function Page() {
   };
 
   const handleLoadMore = () => {
-    ////_//console.log('loaded more');
+    //console.log('loaded more');
     setLoadingMore(true);
     setStartAfter(searchResults[searchResults?.length - 1]?.first_name || '');
   };
@@ -72,7 +72,7 @@ function Page() {
       fetchUsers().then((value) => {
         const snapDocs = value.docs;
         snapDocs.forEach((doc) => {
-          //_//console.log(doc.data());
+          console.log(doc.data());
           docs.push(doc.data() as UserInfo);
         });
         // docs =
@@ -81,12 +81,12 @@ function Page() {
         //     : docs.filter((doc) => doc.isLibrarian === (searchTerms.filterOption === 'users' ? false : true));
         setSearchResults([...searchResults, ...docs]);
         setLoadingMore(false);
-        //_//console.log('SearchResults:', searchResults);
+        console.log('SearchResults:', searchResults);
       });
     }
   }, [searchTerms, startAfter]);
 
-  //_//console.log(searchTerms);
+  console.log(searchTerms);
 
   return (
     !loading && currentUser.isLibrarian && (

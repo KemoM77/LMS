@@ -13,15 +13,15 @@ import { CircularProgress } from '@mui/material';
 // };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const { user, signout, currentUser, loading } = useAuthContext();
+  const { user, loading ,currentUser } = useAuthContext();
   if (!loading && !user) redirect('/signin');
 
-  const [showSidebar, setShowSidebar] = useState(window.innerWidth < 700 ? false : true);
+  const [showSidebar, setShowSidebar] = useState(window.innerWidth < 1000 ? false : true);
 
   useEffect(() => {
-    ////_//console.log(user);
+    //console.log(user);
     function handleResize() {
-      //_//console.log(window.innerWidth);
+      console.log(window.innerWidth);
       
       if (window.innerWidth < 700) setShowSidebar(false);
     }
@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, [user]);
 
   return (
-    !loading ? <>
+    !loading  && currentUser !== null ? <>
       <ConfirmDialog />
       <div className="grid  grid-rows-header">
         <div className=" z-20 bg-white shadow-sm">

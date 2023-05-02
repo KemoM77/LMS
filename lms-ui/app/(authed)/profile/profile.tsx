@@ -17,6 +17,7 @@ import getDailyFees from '@/app/firebase/firestore/getDailyFees';
 import getManyDocs from '@/app/firebase/firestore/getManyDocs';
 import { FeildQueryConstraint, QueryConstraint } from '@/app/firebase/firestore/constraints';
 import { BookRequest } from './request';
+import addNotification from '@/app/firebase/firestore/addNotification';
 
 type Props = {
   userInfo: UserInfo;
@@ -28,10 +29,10 @@ export default function Profile({ userInfo }: Props) {
 
   const [borrowedBooks, setBorrowedBooks] = useState<number>();
   const [pendingRequests, setPendingRequests] = useState<number>();
-  const [fines, setFines] = useState<number>(0);
   const { user, signout, loading, currentUser } = useAuthContext();
   const router = useRouter();
-
+  
+  const [fines, setFines] = useState<number>(0);
   const [finesCurrency, setFinesCurrency] = useState<string>('USD');
   const [delayFees, setDelayFees] = useState<number>(undefined);
 
@@ -59,9 +60,9 @@ export default function Profile({ userInfo }: Props) {
 
     let totalFine = 0;
     querySnapshot.docs.forEach((doc) => {
-      //_//console.log(delayFees);
+      console.log(delayFees);
       
-      //_//console.log( delayDays(
+      console.log( delayDays(
         Timestamp.fromMillis(
           (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
         ).toDate()
@@ -73,7 +74,7 @@ export default function Profile({ userInfo }: Props) {
             (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
           ).toDate()
         ) * delayFees;
-        //_//console.log(totalFine);
+        console.log(totalFine);
         
     });
 
@@ -116,8 +117,9 @@ export default function Profile({ userInfo }: Props) {
     if (userInfo.isActive) {
       confirmDialog(`Do you really want to suspend this accout?`, async () => {
         await addData('users', userInfo.id, { isActive: false });
+        await addNotification(userInfo.id,'Account Suspended','Your account has been suspended, please contact the library service to re-activate.')
         router.refresh();
-        //_//console.log(33333);
+        console.log(33333);
       });
     } else {
       setActivateDialogOpen(true);
@@ -220,7 +222,7 @@ export default function Profile({ userInfo }: Props) {
                 <button
                   onClick={() => {
                     setIsEditDialogOpen(true);
-                    //_//console.log(isEditDialogOpen);
+                    console.log(isEditDialogOpen);
                   }}
                   className="transform rounded bg-gray-700 px-4 py-2 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-lg"
                 >
