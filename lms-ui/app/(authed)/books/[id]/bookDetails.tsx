@@ -82,7 +82,7 @@ export default function BookDetails({ bookInfo }: Props) {
         };
         addBook(updatedBook);
         await addData(`users/${currentUser.id}/requests`, request.id, request);
-        toast('Book was deleted from database successfully', {
+        toast('A borrow request has been sent successfully', {
           position: 'top-center',
           autoClose: 5000,
           hideProgressBar: true,
@@ -118,7 +118,7 @@ export default function BookDetails({ bookInfo }: Props) {
         };
         addBook(updatedBook);
         await addData(`users/${currentUser.id}/requests`, request.id, request);
-        toast('Book was deleted from database successfully', {
+        toast('Buy request has been sent successfully', {
           position: 'top-center',
           autoClose: 5000,
           hideProgressBar: true,

@@ -32,6 +32,8 @@ export default function approveBook({ requestInfo, userInfo ,  onSubmit }) {
     console.log(event.target.value);
     setDeadline(event.target.value);
     setIsDisabled(isDateInFuture(event.target.value));
+    console.log(requestInfo);
+    
   };
   const handleApprove = async (event) => {
     event.preventDefault();
@@ -51,15 +53,15 @@ export default function approveBook({ requestInfo, userInfo ,  onSubmit }) {
     await addData(USER_REQUESTS_URL, newReqData.id.trim(), newReqData);
     await addNotification(
       userInfo.id,
-      requestInfo.type === 'ACCEPTED' ? `Deadline Extended` : 'Request Accepted',
-      (requestInfo.type === 'ACCEPTED'
+      requestInfo.status === 'ACCEPTED' ? `Deadline Extended` : 'Request Accepted',
+      (requestInfo.status === 'ACCEPTED'
         ? `Deadline for (${requestInfo.bookName}) extended`
         : `Borrow request Approved for(${requestInfo.bookName})`) +
         ' we hope you will enjoy it! consider the deadline ' +
         date.toLocaleDateString() +
         ' !'
     );
-    toast('Borrow request approved Successfully', {
+    toast('Successful', {
       position: 'top-center',
       autoClose: 4000,
       hideProgressBar: true,

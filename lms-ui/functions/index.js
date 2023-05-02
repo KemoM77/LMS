@@ -72,7 +72,7 @@ function getSubstrings(str) {
 
 
 
-exports.createBookEveryHour = functions.pubsub.schedule("every 1 minutes").onRun(async () => {
+exports.createBook = functions.pubsub.schedule("every 24 hours").onRun(async () => {
   
 
     const newBook = createFakeBook();
@@ -91,3 +91,205 @@ exports.createBookEveryHour = functions.pubsub.schedule("every 1 minutes").onRun
       console.error("Error adding new book:", error);
     }
   });
+
+// const THIRTY_DAYS_IN_MILLISECONDS = 30 * 24 * 60 * 60 * 1000;
+// const HOUR_IN_MILLISECONDS =  60 * 60 * 1000;
+
+// const functions = require('firebase-functions');
+// const admin = require('firebase-admin');
+// admin.initializeApp();
+
+exports.deleteOldNotifications = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
+  const usersRef = admin.firestore().collection('users');
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+  try {
+    const usersSnapshot = await usersRef.get();
+    if (usersSnapshot.empty) {
+      console.log('No users found.');
+      return null;
+    }
+
+    usersSnapshot.forEach(async (userDoc) => {
+      const notificationsRef = userDoc.ref.collection('notifications');
+      const oldNotificationsQuery = notificationsRef.where('createdAt', '<', oneMonthAgo);
+      const oldNotificationsSnapshot = await oldNotificationsQuery.get();
+
+      if (oldNotificationsSnapshot.empty) {
+        console.log(`No old notifications found for user: ${userDoc.id}`);
+        return null;
+      }
+
+      oldNotificationsSnapshot.forEach(async (notificationDoc) => {
+        await notificationDoc.ref.delete();
+        console.log(`Deleted old notification: ${notificationDoc.id} for user: ${userDoc.id}`);
+      });
+    });
+
+  } catch (error) {
+    console.error('Error deleting old notifications:', error);
+  }
+});
+
+
+exports.cancelOldPendingRequests = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
+  const systemRef = admin.firestore().collection('system');
+  const usersRef = admin.firestore().collection('users');
+
+  try {
+    // Get the lifetime value from the 'requestsLifeTime' document
+    const requestsLifeTimeDoc = await systemRef.doc('requestsLifeTime').get();
+    const lifetimeHours = requestsLifeTimeDoc.data().lifetime;
+
+    // Calculate the specific time based on the lifetime value
+    const specificTime = new Date();
+    specificTime.setHours(specificTime.getHours() - lifetimeHours);
+
+    const usersSnapshot = await usersRef.get();
+
+    if (usersSnapshot.empty) {
+      console.log('No users found.');
+      return null;
+    }
+
+    usersSnapshot.forEach(async (userDoc) => {
+      const requestsRef = userDoc.ref.collection('requests');
+      const oldPendingRequestsQuery = requestsRef.where('status', '==', 'PENDING').where('requestedAt', '<', specificTime);
+      const oldPendingRequestsSnapshot = await oldPendingRequestsQuery.get();
+
+      if (oldPendingRequestsSnapshot.empty) {
+        console.log(`No old pending requests found for user: ${userDoc.id}`);
+        return null;
+      }
+
+      oldPendingRequestsSnapshot.forEach(async (requestDoc) => {
+        await requestDoc.ref.update({ status: 'CANCELED',managedBy: 'System', managedAt: admin.firestore.Timestamp.now() });
+        console.log(`Canceled old pending request: ${requestDoc.id} for user: ${userDoc.id}`);
+      });
+    });
+
+  } catch (error) {
+    console.error('Error canceling old pending requests:', error);
+  }
+});
+
+exports.cancelOldPendingRequests = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
+  const systemRef = admin.firestore().collection('system');
+  const usersRef = admin.firestore().collection('users');
+  const booksRef = admin.firestore().collection('books');
+
+  try {
+    // Get the lifetime value from the 'requestsLifeTime' document
+    const requestsLifeTimeDoc = await systemRef.doc('requestsLifeTime').get();
+    const lifetimeHours = requestsLifeTimeDoc.data().lifetime;
+
+    // Calculate the specific time based on the lifetime value in minutes
+    const specificTime = new Date();
+    specificTime.setMinutes(specificTime.getMinutes() - (lifetimeHours * 60));
+
+    const usersSnapshot = await usersRef.get();
+
+    if (usersSnapshot.empty) {
+      console.log('No users found.');
+      return null;
+    }
+
+    usersSnapshot.forEach(async (userDoc) => {
+      const requestsRef = userDoc.ref.collection('requests');
+      const oldPendingRequestsQuery = requestsRef.where('status', '==', 'PENDING').where('requestedAt', '<', specificTime);
+      const oldPendingRequestsSnapshot = await oldPendingRequestsQuery.get();
+
+      if (oldPendingRequestsSnapshot.empty) {
+        console.log(`No old pending requests found for user: ${userDoc.id}`);
+        return null;
+      }
+
+      oldPendingRequestsSnapshot.forEach(async (requestDoc) => {
+        // Cancel the request
+        await requestDoc.ref.update({ status: 'CANCELED', managedBy: 'System', managedAt: admin.firestore.Timestamp.now() });
+        console.log(`Canceled old pending request: ${requestDoc.id} for user: ${userDoc.id}`);
+
+        // Update the book's in_stock field
+        const bookId = requestDoc.data().bookId;
+        const bookDoc = await booksRef.doc(bookId).get();
+        const currentInStock = bookDoc.data().in_stock;
+
+        await booksRef.doc(bookId).update({ in_stock: currentInStock + 1 });
+        console.log(`Updated in_stock for book: ${bookId}`);
+
+        // Add a notification for the canceled request
+        const notificationsRef = userDoc.ref.collection('notifications');
+        const newNotification = {
+          title: "Request was Dismissed",
+          content: `Sorry, your request for (${requestDoc.data().bookName}) has been canceled, please review your requests.`,
+          isRead: false,
+          createdAt: admin.firestore.Timestamp.now(),
+          id: admin.firestore().collection('_').doc().id,
+        };
+
+        await notificationsRef.doc(newNotification.id).set(newNotification);
+        console.log(`Added notification for user: ${userDoc.id} regarding canceled request: ${requestDoc.id}`);
+      });
+    });
+
+  } catch (error) {
+    console.error('Error canceling old pending requests and updating book stock:', error);
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exports.deactivateExpiredSubscriptions = functions.pubsub.schedule('every 1 hours').onRun(async (context) => {
+  const usersRef = admin.firestore().collection('users');
+
+  try {
+    const currentTime = new Date();
+
+    // Query for non-librarian users
+    const nonLibrarianUsersQuery = usersRef.where('isLibrarian', '==', false).where('isActive', '==', true);
+    const nonLibrarianUsersSnapshot = await nonLibrarianUsersQuery.get();
+
+    if (nonLibrarianUsersSnapshot.empty) {
+      console.log('No non-librarian users found.');
+      return null;
+    }
+
+    nonLibrarianUsersSnapshot.forEach(async (userDoc) => {
+      const validUntil = userDoc.data().valid_until.toDate();
+
+      if (currentTime > validUntil) {
+        // Update isActive to false if the current time is past the valid_until timestamp
+        await userDoc.ref.update({ isActive: false });
+        console.log(`Deactivated expired subscription for user: ${userDoc.id}`);
+
+        // Add a new notification to the 'notifications' sub-collection
+        const notification = {
+          title: "Account suspended",
+          content: "Your account has been suspended, please contact the library service to re-activate.",
+          isRead: false,
+          createdAt: admin.firestore.Timestamp.now(),
+          id: admin.firestore().collection('_').doc().id,
+        };
+
+        await userDoc.ref.collection('notifications').doc(notification.id).set(notification);
+        console.log(`Added suspension notification for user: ${userDoc.id}`);
+      }
+    });
+
+  } catch (error) {
+    console.error('Error deactivating expired subscriptions and adding notifications:', error);
+  }
+});
+

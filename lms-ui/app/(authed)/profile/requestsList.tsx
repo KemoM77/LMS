@@ -108,8 +108,8 @@ export default function RequestsList({ userInfo, onChange = () => {} }) {
       });
       await addNotification(
         userInfo.id,
-        'Request Rejected',
-        `Sorry, your request for (${req.bookName}) has been rejected, please review your requests.`
+        'Request was Dismissed ',
+        `Sorry, your request for (${req.bookName}) has been canceled, please review your requests.`
       );
       router.refresh();
       onChange();
