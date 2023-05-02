@@ -74,7 +74,7 @@ export default function CountriesDropdown({
       <option value="Congo, The Democratic Republic of The">Congo, The Democratic Republic of The</option>
       <option value="Cook Islands">Cook Islands</option>
       <option value="Costa Rica">Costa Rica</option>
-      <option value="Cote D'ivoire">Cote D'ivoire</option>
+      <option value="Cote D&apos;ivoire">Cote D&apos;ivoire</option>
       <option value="Croatia">Croatia</option>
       <option value="Cuba">Cuba</option>
       <option value="Cyprus">Cyprus</option>
@@ -136,11 +136,11 @@ export default function CountriesDropdown({
       <option value="Kazakhstan">Kazakhstan</option>
       <option value="Kenya">Kenya</option>
       <option value="Kiribati">Kiribati</option>
-      <option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option>
+      <option value="Korea, Democratic People's Republic of">Korea, Democratic People&apos;s Republic of</option>
       <option value="Korea, Republic of">Korea, Republic of</option>
       <option value="Kuwait">Kuwait</option>
       <option value="Kyrgyzstan">Kyrgyzstan</option>
-      <option value="Lao People's Democratic Republic">Lao People's Democratic Republic</option>
+      <option value="Lao People&apos;s Democratic Republic">Lao People&apos;s Democratic Republic</option>
       <option value="Latvia">Latvia</option>
       <option value="Lebanon">Lebanon</option>
       <option value="Lesotho">Lesotho</option>

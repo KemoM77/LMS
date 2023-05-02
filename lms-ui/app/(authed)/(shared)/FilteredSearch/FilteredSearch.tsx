@@ -6,12 +6,12 @@ type Props = {
   onSearch: Dispatch<any>;
 };
 
-export default function filteredSearch ({ options = [], onSearch }: Props) {
+export default function FilteredSearch({ options = [], onSearch }: Props) {
   const [searchState, setSearchState] = useState<SearchTerms>({ searchText: '', filterOption: 'all' });
 
   const handleChange = (e) => {
     setSearchState({ ...searchState, [e.target.name]: e.target.value });
-   // onSearch({ ...searchState, [e.target.name]: e.target.value })
+    // onSearch({ ...searchState, [e.target.name]: e.target.value })
   };
 
   const handleKeyUp = (event: KeyboardEvent) => {
@@ -56,9 +56,7 @@ export default function filteredSearch ({ options = [], onSearch }: Props) {
               onChange={handleChange}
               className="bg-transparent text-sm outline-none focus:outline-none"
             >
-              <option value="all" >
-                All
-              </option>
+              <option value="all">All</option>
               {options.map((option) => (
                 <option
                   key={option.toLowerCase()}

@@ -17,7 +17,7 @@ import BookCard from '../books/bookCard';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const Dashboard = () => {
+export default function Page() {
   const { currentUser } = useAuthContext();
   const [reminders, setReminders] = useState<BookRequest[]>([]);
   const [newBooks, setNewBooks] = useState<BookInfo[]>([]);
@@ -158,7 +158,7 @@ const Dashboard = () => {
 
                 <div className="flex flex-wrap justify-center">
                   {newBooks.map((doc) => (
-                    <BookCard BookDetails={doc} />
+                    <BookCard key={doc.id } BookDetails={doc} />
                   ))}
                 </div>
               </div>
@@ -189,4 +189,3 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;

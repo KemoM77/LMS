@@ -24,9 +24,6 @@ export default function EditProfileComp({ uid ,onSubmit=()=>{} }) {
       const { docData, error } = await getData('users', uid);
       setUserData(docData);
       fields.forEach((field) => (fieldsState[field.id] = docData[field.id]));
-      fields.forEach((field) => {
-        console.log(docData[field.id]);
-      });
     }
 
     fetchUser();

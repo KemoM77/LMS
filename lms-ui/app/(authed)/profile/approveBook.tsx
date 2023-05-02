@@ -20,7 +20,7 @@ export function isDateInFuture(dateString: string): boolean {
   return inputDate < currentDate;
 }
 
-export default function approveBook({ requestInfo, userInfo ,  onSubmit }) {
+export default function ApproveBook({ requestInfo, userInfo ,  onSubmit }) {
   const [deadline, setDeadline] = useState<string>(undefined);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const router = useRouter();
@@ -32,7 +32,7 @@ export default function approveBook({ requestInfo, userInfo ,  onSubmit }) {
     console.log(event.target.value);
     setDeadline(event.target.value);
     setIsDisabled(isDateInFuture(event.target.value));
-    console.log(requestInfo);
+   // console.log(requestInfo);
     
   };
   const handleApprove = async (event) => {
@@ -47,8 +47,8 @@ export default function approveBook({ requestInfo, userInfo ,  onSubmit }) {
       until: Timestamp.fromDate(date),
       managedAt: serverTimestamp(),
     };
-    console.log(newReqData);
-    console.log(USER_REQUESTS_URL);
+    // console.log(newReqData);
+    // console.log(USER_REQUESTS_URL);
 
     await addData(USER_REQUESTS_URL, newReqData.id.trim(), newReqData);
     await addNotification(

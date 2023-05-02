@@ -276,7 +276,7 @@ export default function BookDetails({ bookInfo }: Props) {
                 <p className="mt-3 font-semibold text-black">Not for Sale.</p>
               )}
               { !currentUser.isActive &&<p className="text-red-700">
-                NOTE: YOU ARE SUSBENDED, YOU WON'T BE ABLE SEND BUY/BORROW REQUESTS,PLEASE CONTACT COSTUMER SERVICE.
+                NOTE: YOU ARE SUSBENDED, YOU WILL NOT BE ABLE SEND BUY/BORROW REQUESTS,PLEASE CONTACT COSTUMER SERVICE.
               </p>}
             </div>
             <div className="mt-12 flex flex-col justify-center">

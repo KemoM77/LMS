@@ -76,7 +76,7 @@ export default async function getManyDocs(
     // );
    //const tempQ = query(collectionRef, limit(10), orderBy('requestedAt'))
   const querySnapshot = await getDocs(finalQuery);
-  console.log('hereeeeee', querySnapshot.docs);
+  //console.log('hereeeeee', querySnapshot.docs);
   const Count = await getCountFromServer(query(collectionRef, ...queryConstraints));
   const docsCount = Count.data().count;
   return { querySnapshot, docsCount };

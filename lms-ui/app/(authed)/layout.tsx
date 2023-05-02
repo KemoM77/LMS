@@ -16,12 +16,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const { user, loading ,currentUser } = useAuthContext();
   if (!loading && !user) redirect('/signin');
 
-  const [showSidebar, setShowSidebar] = useState(window.innerWidth < 1000 ? false : true);
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  useEffect(() => {
+    setShowSidebar(window.innerWidth < 1000 ? false : true);
+  }, []);
 
   useEffect(() => {
     //console.log(user);
     function handleResize() {
-      console.log(window.innerWidth);
       
       if (window.innerWidth < 700) setShowSidebar(false);
     }

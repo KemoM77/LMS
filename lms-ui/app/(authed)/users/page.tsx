@@ -72,7 +72,7 @@ function Page() {
       fetchUsers().then((value) => {
         const snapDocs = value.docs;
         snapDocs.forEach((doc) => {
-          console.log(doc.data());
+         // console.log(doc.data());
           docs.push(doc.data() as UserInfo);
         });
         // docs =
@@ -86,7 +86,6 @@ function Page() {
     }
   }, [searchTerms, startAfter]);
 
-  console.log(searchTerms);
 
   return (
     !loading && currentUser.isLibrarian && (

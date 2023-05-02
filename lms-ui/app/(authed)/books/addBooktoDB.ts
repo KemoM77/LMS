@@ -14,7 +14,6 @@ export async function addBook(bookInfo:BookInfo)
         bookInfo.searchableTerms.push(`cat#${cat.toLowerCase()}`);
     })    
     bookInfo.addedAT = serverTimestamp();
-    console.log(bookInfo);
     
     const {result , error} = await addData('books',bookInfo.id,bookInfo);
 

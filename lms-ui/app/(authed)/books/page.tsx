@@ -15,7 +15,7 @@ import { CircularProgress } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 
 
-export default function booksPage() {
+export default function BooksPage() {
   const { currentUser } = useAuthContext();
 
   const [isAddBooksDialogOpen, setIsAddBooksDialogOpen] = useState<boolean>(false);
@@ -35,14 +35,14 @@ export default function booksPage() {
 
   const fetchSerchedBooks = async () => {
    
-    console.log(searchTerms);
+    //console.log(searchTerms);
     let mixedSearch = searchTerms?.name ? searchTerms?.name.toLowerCase().split(' ') : undefined;
     if (mixedSearch) {
       searchTerms?.categories?.forEach((cat) => {
         mixedSearch.push(`cat#${cat.toLowerCase()}`);
       });
     }
-    console.log(mixedSearch);
+    //console.log(mixedSearch);
 
     const constraints: FeildQueryConstraint[] = [
       {

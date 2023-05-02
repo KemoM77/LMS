@@ -13,7 +13,7 @@ import CurrencyCodesDropdown from './currencyDropdown';
 import { redirect, useRouter } from 'next/navigation';
 import { useAuthContext } from '@/app/context/AuthContext';
 
-export default function categoriesPage() {
+export default function SettingsPage() {
   const [dailyFess, setDailyFess] = useState<number>(2);
   const [lifeTimeState, setLifeTime] = useState<number>(72);
   const [currencyState, setCurrency] = useState<string>('USD');

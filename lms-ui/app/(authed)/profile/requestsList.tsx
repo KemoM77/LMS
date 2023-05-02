@@ -147,7 +147,7 @@ export default function RequestsList({ userInfo, onChange = () => {} }) {
     });
   };
   const handleAcceptRequest = async (req: BookRequest) => {
-    console.log(req);
+    //console.log(req);
 
     if (req?.type === 'BORROW') {
       setChoosenReq(req), setIsApproveRequestDialogOpen(true);
@@ -187,7 +187,7 @@ export default function RequestsList({ userInfo, onChange = () => {} }) {
           docs.push(req.data() as BookRequest);
         });
         setUserRequests(docs);
-        console.log(docs);
+       // console.log(docs);
       });
       setLoaded(true);
     }

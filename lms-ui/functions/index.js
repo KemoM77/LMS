@@ -240,17 +240,6 @@ exports.cancelOldPendingRequests = functions.pubsub.schedule('every 24 hours').o
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 exports.deactivateExpiredSubscriptions = functions.pubsub.schedule('every 1 hours').onRun(async (context) => {
   const usersRef = admin.firestore().collection('users');
 

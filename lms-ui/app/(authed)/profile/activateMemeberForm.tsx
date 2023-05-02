@@ -43,7 +43,7 @@ export default function ActivateMember({ userInfo, onSubmit }) {
       valid_until: Timestamp.fromDate(date),
     };
 
-    console.log(userInfo);
+    //console.log(userInfo);
 
     await addData(USER_URL, userInfo.id.trim(), userInfo);
     await addNotification(

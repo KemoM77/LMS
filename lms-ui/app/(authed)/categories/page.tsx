@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { redirect } from 'next/navigation';
 import { useAuthContext } from '@/app/context/AuthContext';
 
-export function arraysHaveSameElements(arr1: string[], arr2: string[]): boolean {
+function arraysHaveSameElements(arr1: string[], arr2: string[]): boolean {
   if (arr1.length !== arr2.length) {
     return false;
   }
@@ -26,7 +26,7 @@ export function arraysHaveSameElements(arr1: string[], arr2: string[]): boolean 
   return true;
 }
 
-export default function categoriesPage() {
+export default function CategoriesPage() {
   const [initCategories, setInitCategories] = useState<string[]>([]);
   const [currentCategories, setCurrentCategories] = useState<string[]>();
   const [newCate, setNewCate] = useState<string>('');
@@ -109,8 +109,8 @@ return  currentUser.isLibrarian && (
         </form>
 
         <div id="cateGoriesList" className="mt-6 flex max-h-[500px] flex-wrap  justify-center overflow-y-auto  ">
-          {currentCategories?.map((cat) => (
-            <div className=" animate__animated animate__fadeIn m-5 flex w-96 justify-between rounded-md border-2 border-blue-gray-100 p-2">
+          {currentCategories?.map((cat,index) => (
+            <div key={cat+ index} className=" animate__animated animate__fadeIn m-5 flex w-96 justify-between rounded-md border-2 border-blue-gray-100 p-2">
               <p>{cat}</p>
               <MinusCircleIcon
                 onClick={() => {

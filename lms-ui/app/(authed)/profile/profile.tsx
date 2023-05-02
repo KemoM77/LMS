@@ -60,13 +60,13 @@ export default function Profile({ userInfo }: Props) {
 
     let totalFine = 0;
     querySnapshot.docs.forEach((doc) => {
-      console.log(delayFees);
+     // console.log(delayFees);
       
-      console.log( delayDays(
-        Timestamp.fromMillis(
-          (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
-        ).toDate()
-      ) );
+      // console.log( delayDays(
+      //   Timestamp.fromMillis(
+      //     (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
+      //   ).toDate()
+      // ) );
       
       totalFine +=
         delayDays(
@@ -74,7 +74,7 @@ export default function Profile({ userInfo }: Props) {
             (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
           ).toDate()
         ) * delayFees;
-        console.log(totalFine);
+       // console.log(totalFine);
         
     });
 
@@ -119,7 +119,7 @@ export default function Profile({ userInfo }: Props) {
         await addData('users', userInfo.id, { isActive: false });
         await addNotification(userInfo.id,'Account Suspended','Your account has been suspended, please contact the library service to re-activate.')
         router.refresh();
-        console.log(33333);
+       // console.log(33333);
       });
     } else {
       setActivateDialogOpen(true);
