@@ -1,21 +1,22 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { loginFields } from '../(constants)/feilds';
 import Input from './input';
 import FormExtra from './formExtra';
 import FormAction from './formAction';
 import signIn from '../../firebase/auth/signin';
-import { useRouter } from 'next/navigation';
-import Loader from '@/app/(authed)/(shared)/loader/loader';
+import { useRouter, redirect } from 'next/navigation';
 import { CircularProgress } from '@mui/material';
+import { useAuthContext } from '@/app/context/AuthContext';
 
 const fields = loginFields;
 let fieldsState = {};
 fields.forEach((field) => (fieldsState[field.id] = ''));
 
 export default function Login() {
-  const { push } = useRouter();
+  const router = useRouter();
   const [loginState, setLoginState] = useState(fieldsState);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isloading, setLoading] = useState<boolean>(false);
   const [successful, setSuccessful] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -28,7 +29,7 @@ export default function Login() {
 
     setLoading(true);
     const { result, error } = await signIn(loginState['email-address'], loginState['password']);
-    console.log(error, result, 323232323);
+    // console.log(323232323);
     setErrorMessage(
       error?.code == 'auth/too-many-requests'
         ? 'Too many Requests.Try again later, or reset your password'
@@ -38,11 +39,11 @@ export default function Login() {
         ? 'User does not exist, sign up first'
         : 'Login Error, try again later.'
     );
-  //  setErrorMessage(loginState['password'].length < 6 ? 'Password must be more than 6 characters' : '');
+    //  setErrorMessage(loginState['password'].length < 6 ? 'Password must be more than 6 characters' : '');
     //alert(error.code)
     if (result) {
-      push('/dashboard');
       setSuccessful(true);
+      router.push('/dashboard');
     }
     setLoading(false);
   };
@@ -51,7 +52,7 @@ export default function Login() {
     setLoginState({ ...loginState, [e.target.id]: e.target.value });
   };
 
-  return !loading && !successful ? (
+  return !isloading && !successful ? (
     <>
       <form onSubmit={handleSubmit} className="mt-8 min-w-full space-y-6">
         <div className="text-center text-red-600">{errorMessage}</div>
@@ -74,16 +75,16 @@ export default function Login() {
         </div>
 
         <FormExtra />
-        <FormAction handleSubmit={handleSubmit} text="Login" disable={loginState['password']< 6} />
+        <FormAction handleSubmit={handleSubmit} text="Login" disable={loginState['password'] < 6} />
       </form>
     </>
-  ) : !successful && loading ? (
+  ) : !successful && isloading ? (
     <div>
-     <CircularProgress size={100}/>
+      <CircularProgress size={100} />
     </div>
   ) : (
     <div>
-      Redirecting... <CircularProgress size={100}/>
+      Redirecting... <CircularProgress size={100} />
     </div>
   );
 }

@@ -19,12 +19,11 @@ const fields = signupFields;
 let fieldsState = {}; //:SignUpData;
 
 fields.forEach((field) => {
-  fieldsState[field.name] =  field.value;
+  fieldsState[field.name] = field.value;
 });
 fieldsState['userType'] = 'user';
 
-export default function Signup({ byLibrarian = false ,onSubmit=()=>{} }) {
-  
+export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
   const [signupState, setSignupState] = useState(fieldsState);
   const [loading, setLoading] = useState<boolean>(false);
   const [successful, setSuccessful] = useState<boolean>(false);
@@ -47,18 +46,7 @@ export default function Signup({ byLibrarian = false ,onSubmit=()=>{} }) {
     setLoading(true);
     console.log(signupState);
 
-    const { result, error } = await signUp(signupState,byLibrarian);
-
-   // console.log(error, result, 323232323);
-    // alert(
-    //   error?.code == 'auth/too-many-requests'
-    //     ? 'Too many Requests.Try again later, or reset your password'
-    //     : error.code == 'auth/wrong-password'
-    //     ? 'Invalid email or password'
-    //     : error.code === 'auth/user-not-found'
-    //     ? 'User does not exist, sign up first'
-    //     : 'Login Error, try again later.'
-    // );
+    const { result, error } = await signUp(signupState, byLibrarian);
 
     setErrorMessage(
       error?.code == 'auth/too-many-requests'
@@ -72,10 +60,10 @@ export default function Signup({ byLibrarian = false ,onSubmit=()=>{} }) {
 
     // alert(error.code)
     if (result) {
-      if(!byLibrarian)push('/dashboard');
+      if (!byLibrarian) push('/dashboard');
       setSuccessful(true);
     }
-    if(!error)onSubmit();
+    if (!error) onSubmit();
     setLoading(false);
   };
 
@@ -107,16 +95,30 @@ export default function Signup({ byLibrarian = false ,onSubmit=()=>{} }) {
 
           {byLibrarian && (
             <section className="flex gap-3">
-              <p className="text-sm text-slate-500">Sign up as : </p>
+              <p className="text-slate-500 text-sm">Sign up as : </p>
               <section className="flex gap-2">
-                <input type="radio" id="librarian" name="userType" value="librarian" onClick={handleChange} checked={signupState['userType']==='librarian'}/>
-                <label className="text-sm text-slate-500" htmlFor="librarian">
+                <input
+                  type="radio"
+                  id="librarian"
+                  name="userType"
+                  value="librarian"
+                  onClick={handleChange}
+                  checked={signupState['userType'] === 'librarian'}
+                />
+                <label className="text-slate-500 text-sm" htmlFor="librarian">
                   Librarian
                 </label>
               </section>
               <section className="flex gap-2">
-                <input type="radio" id="user" name="userType" value="user" onClick={handleChange} checked={signupState['userType']==='user'}  />
-                <label className="text-sm text-slate-500" htmlFor="user">
+                <input
+                  type="radio"
+                  id="user"
+                  name="userType"
+                  value="user"
+                  onClick={handleChange}
+                  checked={signupState['userType'] === 'user'}
+                />
+                <label className="text-slate-500 text-sm" htmlFor="user">
                   User
                 </label>
               </section>

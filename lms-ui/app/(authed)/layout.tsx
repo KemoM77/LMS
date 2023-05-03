@@ -22,12 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     setShowSidebar(window.innerWidth < 1000 ? false : true);
   }, []);
 
+  function handleResize() {
+    
+    if (window.innerWidth < 700) setShowSidebar(false);
+  }
   useEffect(() => {
     //console.log(user);
-    function handleResize() {
-      
-      if (window.innerWidth < 700) setShowSidebar(false);
-    }
 
     window.addEventListener('resize', handleResize);
   }, [user]);

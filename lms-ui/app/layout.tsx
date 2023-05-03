@@ -1,6 +1,6 @@
 'use client';
-
 import './globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthContextProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 
@@ -13,12 +13,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
       <ToastContainer
       />
-
         <AuthContextProvider>
             {children}
         </AuthContextProvider>
         <ToastContainer/>
-
       </body>
     </html>
   );

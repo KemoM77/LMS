@@ -75,9 +75,9 @@ export default function NotificationList() {
     <div>
       <div className=" grid h-full place-items-center overflow-auto md:w-[500px] ">
         <div className=" rounded-xl border bg-white p-10 shadow-md dark:bg-gray-800 md:w-full ">
-          <div className="inline-flex items-center justify-between sm:w-fit md:w-full">
-            <h3 className="text-xl font-bold text-gray-800 dark:text-white sm:text-2xl">Notifications</h3>
-            <p>(Notifications older than 30 days will be automatically deleted)</p>
+          <div className=" flex flex-col items-center justify-between sm:w-fit md:w-full">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white sm:text-2xl">Notifications</h3> <br />
+            <p className='text-xs'>(Notifications older than 30 days will be automatically deleted)</p>
           </div>
 
           {notifications.length > 0 ? (
