@@ -15,9 +15,9 @@ import { CircularProgress } from '@mui/material';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { user, loading ,currentUser } = useAuthContext();
   if (!loading && !user) redirect('/signin');
-
+  
   const [showSidebar, setShowSidebar] = useState(false);
-
+  
   useEffect(() => {
     setShowSidebar(window.innerWidth < 1000 ? false : true);
   }, []);

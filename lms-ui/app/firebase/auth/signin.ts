@@ -1,5 +1,4 @@
 import {firebase_app} from "@/app/firebase";
-import { Hash } from "crypto";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 
 const auth = getAuth(firebase_app);

@@ -63,7 +63,7 @@ export default function BookDetails({ bookInfo }: Props) {
 
   const handleBorrowBook = () => {
     confirmDialog(
-      `Do you really want to send a buy request for this book?(request will be auto-cancelled in ${reqLifeTime} hours if not processed)`,
+      `Do you really want to send a borrow request for this book?(request will be auto-cancelled in ${reqLifeTime} hours if not processed)`,
       async () => {
         //deleteData(bookInfo?.id, 'books');
         // router.push('/books');

@@ -44,7 +44,7 @@ export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
     );
     if (signupState['password'].length < 6 || signupState['password'] !== signupState['confirm-password']) return;
     setLoading(true);
-    console.log(signupState);
+    //console.log(signupState);
 
     const { result, error } = await signUp(signupState, byLibrarian);
 
@@ -55,7 +55,7 @@ export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
         ? 'Email already exists, please login instead'
         : error?.code === 'auth/user-not-found'
         ? 'User does not exist, sign up first'
-        : 'Login Error, try again later.'
+        : 'Sign up Error, try again later.'
     );
 
     // alert(error.code)
@@ -71,7 +71,8 @@ export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
 
   return !loading && !successful ? (
     <>
-      <form className="mt-1" onSubmit={handleSubmit}>
+      <form className="mt-1" onSubmit={handleSubmit}       data-testid="signup-component"
+ >
         <div className="text-center text-red-600">{errorMessage}</div>
         <div className="">
           {fields.map(
@@ -129,13 +130,12 @@ export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
       </form>
     </>
   ) : !successful && loading ? (
-    <div>
+    <div  data-testid="loading-indicator"  >
       <Loader size={100} />
     </div>
   ) : (
-    <div>
-      {' '}
-      Redirecting... <Loader size={100} />{' '}
+    <div >
+      Redirecting... <br /> <Loader size={100} />{' '}
     </div>
   );
 }

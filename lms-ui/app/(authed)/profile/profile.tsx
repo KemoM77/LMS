@@ -132,7 +132,7 @@ export default function Profile({ userInfo }: Props) {
   calcPendingReqs();
   fetchCurrency();
   calcTotalFines();
-  return !loading && currentUser.id !== user.uid && !currentUser.isLibrarian ? (
+  return !loading && currentUser?.id !== user?.uid && !currentUser.isLibrarian ? (
     <h1>Unauthorized to view this page!</h1>
   ) : !loading && !userInfo ? (
     <p className="text-center text-4xl">User not Found</p>
@@ -261,7 +261,7 @@ export default function Profile({ userInfo }: Props) {
                     .toDate()
                     .toLocaleString()}
               </p>
-              {currentUser?.isLibrarian && userInfo?.id === currentUser?.id && (
+              {userInfo?.id === currentUser?.id && (
                 <button
                   onClick={handleDeleteAccount}
                   className="mt-4 w-40 border border-red-600 px-4 py-2 font-medium text-red-600 hover:bg-red-600 hover:text-white"

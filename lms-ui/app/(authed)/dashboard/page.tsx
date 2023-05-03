@@ -172,7 +172,7 @@ export default function Page() {
             <Typography variant="h5" component="h2">
               Reminders
             </Typography>
-            <ul className="max-h-[700px] overflow-auto lg:w-64 ">
+            {reminders.length>0?<ul className="max-h-[700px] overflow-auto lg:w-64 ">
               {reminders.map((reminder, index) => (
                 <li color="green" key={index} className="mt-2">
                   <Link className="text-blue-900" href={'books/' + reminder.bookId}>
@@ -181,7 +181,7 @@ export default function Page() {
                   - Due {myToDate(reminder.until).toLocaleDateString()}
                 </li>
               ))}
-            </ul>
+            </ul>:<p>No reminders available currently.</p>}
           </CardContent>
         </Card>
       </div>

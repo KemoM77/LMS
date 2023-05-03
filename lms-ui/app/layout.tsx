@@ -3,6 +3,7 @@ import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContextProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
+// import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 
@@ -14,7 +15,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <ToastContainer
       />
         <AuthContextProvider>
+        {/* <RouterContext.Provider value={makePub({})}> */}
             {children}
+          {/* </RouterContext.Provider> */}
         </AuthContextProvider>
         <ToastContainer/>
       </body>

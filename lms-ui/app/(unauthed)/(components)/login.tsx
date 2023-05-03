@@ -5,9 +5,8 @@ import Input from './input';
 import FormExtra from './formExtra';
 import FormAction from './formAction';
 import signIn from '../../firebase/auth/signin';
-import { useRouter, redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { CircularProgress } from '@mui/material';
-import { useAuthContext } from '@/app/context/AuthContext';
 
 const fields = loginFields;
 let fieldsState = {};
@@ -19,6 +18,7 @@ export default function Login() {
   const [isloading, setLoading] = useState<boolean>(false);
   const [successful, setSuccessful] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +54,7 @@ export default function Login() {
 
   return !isloading && !successful ? (
     <>
-      <form onSubmit={handleSubmit} className="mt-8 min-w-full space-y-6">
+      <form onSubmit={handleSubmit} className="mt-8 min-w-full space-y-6" data-testid="login-component">
         <div className="text-center text-red-600">{errorMessage}</div>
         <div className="-space-y-px">
           {fields.map((field) => (
