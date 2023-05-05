@@ -53,6 +53,8 @@ export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
         ? 'Too many Requests.Try again later, or reset your password'
         : error?.code === 'auth/email-already-in-use'
         ? 'Email already exists, please login instead'
+        : error?.message === 'Invalid date of birth'
+        ? 'Please enter a valid date of birth in the past!'
         : error?.code === 'auth/user-not-found'
         ? 'User does not exist, sign up first'
         : 'Sign up Error, try again later.'

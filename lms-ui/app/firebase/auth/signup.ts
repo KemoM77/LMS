@@ -23,6 +23,10 @@ export default async function signUp(data,byLabrarian = false) {
     let result = null,
     error = null;
     try {
+        if( new Date(data['date-of-birth']) >= new Date()  )
+        {
+            throw Error('Invalid date of birth');
+        }
         result = await createUserWithEmailAndPassword(auth, data['email-address'], data['password']);
         console.log(result);
         
@@ -30,8 +34,6 @@ export default async function signUp(data,byLabrarian = false) {
         error = e;
     }
     if(!error){
-        //let date = new Date();
-       // date.toLocaleString
        let terms  = getSubstrings(data['first-name'] +' '+ data['last-name'])
         const registerationData  : UserInfo = {
             id:result.user.uid,

@@ -245,6 +245,40 @@ test('displays the correct error message based on the error code', async () => {
     expect(signUpMock).toHaveBeenCalled();
   });
   ////////////////////////////////////////////////////////////////////////////////
+  test('displays the correct error message when entering a date of birth in the future', async () => {
+    const signUpMock = (signUpModule.default as Mock).mockImplementation(() =>
+      Promise.resolve({ result: null, error: { message: 'Invalid date of birth' } })
+    );
+  
+    render(
+      <AppRouterContext.Provider value={createMockRouter({})}>
+        <Signup />
+      </AppRouterContext.Provider>
+    );
+  
+    const firstNameInput = screen.getByLabelText('First name*:');
+    const lastNameInput = screen.getByLabelText('Last name*:');
+    const dateOfBirthInput = screen.getByLabelText('Date of birth*:');
+    const emailAddressInput = screen.getByLabelText('Email address*:');
+    const passwordInput = screen.getByLabelText('Password*:');
+    const confirmPasswordInput = screen.getByLabelText('Confirm Password*:');
+
+    fireEvent.change(firstNameInput, { target: { value: 'John' } });
+    fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
+    fireEvent.change(dateOfBirthInput, { target: { value: '2990-01-01' } });
+    fireEvent.change(emailAddressInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'password' } });  
+    const signupButton = screen.getByRole('button', { name: /signup/i });
+    fireEvent.click(signupButton);
+  
+    await waitFor(() => {
+      expect(screen.getByText(/Please enter a valid date of birth in the past!/i)).toBeInTheDocument();
+    });
+  
+    expect(signUpMock).toHaveBeenCalled();
+  });
+  ////////////////////////////////////////////////////////////////////////////////
   test('displays the correct error message when user does not exist', async () => {
     const signUpMock = (signUpModule.default as Mock).mockImplementation(() =>
       Promise.resolve({ result: null, error: { code: 'auth/user-not-found' } })
@@ -359,6 +393,21 @@ test('displays user type selection and submits correct user type when byLibraria
       );
     });
   });
+  //////////////////////////////////////////////////////////////
+  test('user type selection is not displayed when byLibrarian prop is not passed', () => {
+    render(
+      <AppRouterContext.Provider value={createMockRouter({})}>
+        <Signup />
+      </AppRouterContext.Provider>
+    );
+
+    const librarianRadio = screen.queryByLabelText('Librarian');
+    const userRadio = screen.queryByLabelText('User');
+
+    expect(librarianRadio).not.toBeInTheDocument();
+    expect(userRadio).not.toBeInTheDocument();
+  });
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
   // Continue adding the test cases similar to the Login component tests

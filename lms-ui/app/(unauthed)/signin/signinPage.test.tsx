@@ -4,13 +4,6 @@ import '@testing-library/jest-dom';
 import LoginPage from './page';
 import { AppRouterContext } from 'next/dist/shared/lib/app-router-context';
 import { createMockRouter } from '@/app/test-utils/createMockRouter';
-import userEvent from '@testing-library/user-event';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import * as signInModule from '../../firebase/auth/signin';
-import { waitFor } from '@testing-library/react';
-
-// jest.mock('../../firebase');
-// jest.mock('firebase/auth');
 
 
 jest.mock('../../firebase');

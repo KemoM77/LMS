@@ -18,7 +18,7 @@ export const deleteData = async (id: any, collectionName: string) => {
     
   } catch (error) {
     console.log(error);
-    e = error.code;
+    e = error;
   }
   return { e };
 };

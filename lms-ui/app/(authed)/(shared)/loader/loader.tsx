@@ -9,6 +9,7 @@ export default function Loader({size = 10}) {
           className={`mr-2 inline h-[${size}px] w-[${size}px]  animate-spin fill-blue-600 text-gray-200 dark:text-gray-600`}
           viewBox="0 0 100 101"
           fill="none"
+          role='img'
           xmlns="http://www.w3.org/2000/svg"
         >
           <path

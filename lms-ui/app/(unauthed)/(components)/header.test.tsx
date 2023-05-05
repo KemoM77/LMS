@@ -30,4 +30,16 @@ describe('Header Component', () => {
     const menuBookIcon = screen.getByTestId('MenuBookIcon');
     expect(menuBookIcon).toBeInTheDocument();
   });
+  ////////////////////////////////////////////////////////////////////////
+  test('renders the header without linkUrl prop', () => {
+    const heading = 'Test Heading';
+    const paragraph = 'Test Paragraph ';
+    const linkName = 'Test Link';
+  
+    render(<Header heading={heading} paragraph={paragraph} linkName={linkName} />);
+  
+    const link = screen.getByText(linkName);
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', '#');
+  });
 });

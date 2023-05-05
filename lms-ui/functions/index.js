@@ -133,48 +133,7 @@ exports.deleteOldNotifications = functions.pubsub.schedule('every 24 hours').onR
 });
 
 
-exports.cancelOldPendingRequests = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
-  const systemRef = admin.firestore().collection('system');
-  const usersRef = admin.firestore().collection('users');
-
-  try {
-    // Get the lifetime value from the 'requestsLifeTime' document
-    const requestsLifeTimeDoc = await systemRef.doc('requestsLifeTime').get();
-    const lifetimeHours = requestsLifeTimeDoc.data().lifetime;
-
-    // Calculate the specific time based on the lifetime value
-    const specificTime = new Date();
-    specificTime.setHours(specificTime.getHours() - lifetimeHours);
-
-    const usersSnapshot = await usersRef.get();
-
-    if (usersSnapshot.empty) {
-      console.log('No users found.');
-      return null;
-    }
-
-    usersSnapshot.forEach(async (userDoc) => {
-      const requestsRef = userDoc.ref.collection('requests');
-      const oldPendingRequestsQuery = requestsRef.where('status', '==', 'PENDING').where('requestedAt', '<', specificTime);
-      const oldPendingRequestsSnapshot = await oldPendingRequestsQuery.get();
-
-      if (oldPendingRequestsSnapshot.empty) {
-        console.log(`No old pending requests found for user: ${userDoc.id}`);
-        return null;
-      }
-
-      oldPendingRequestsSnapshot.forEach(async (requestDoc) => {
-        await requestDoc.ref.update({ status: 'CANCELED',managedBy: 'System', managedAt: admin.firestore.Timestamp.now() });
-        console.log(`Canceled old pending request: ${requestDoc.id} for user: ${userDoc.id}`);
-      });
-    });
-
-  } catch (error) {
-    console.error('Error canceling old pending requests:', error);
-  }
-});
-
-exports.cancelOldPendingRequests = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
+exports.cancelOldPendingRequests = functions.pubsub.schedule('every 1 hours').onRun(async (context) => {
   const systemRef = admin.firestore().collection('system');
   const usersRef = admin.firestore().collection('users');
   const booksRef = admin.firestore().collection('books');
@@ -240,7 +199,7 @@ exports.cancelOldPendingRequests = functions.pubsub.schedule('every 24 hours').o
 
 
 
-exports.deactivateExpiredSubscriptions = functions.pubsub.schedule('every 1 hours').onRun(async (context) => {
+exports.deactivateExpiredSubscriptions = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
   const usersRef = admin.firestore().collection('users');
 
   try {

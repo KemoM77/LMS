@@ -267,7 +267,7 @@ export default function RequestsList({ userInfo, onChange = () => {} }) {
                       : new Date(req?.managedAt).toLocaleString())
                   : ''}
               </div>
-              {req.until && (
+              {req.until && req.status ==='ACCEPTED' &&(
                 <div className={`mr-3 font-semibold text-red-700`}>
                   {'-'}
                   {delayFees *
