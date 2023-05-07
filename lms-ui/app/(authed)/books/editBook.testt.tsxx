@@ -1,0 +1,87 @@
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import AddBook from './editBook';
+import { BookInfo } from './book';
+import { createMockRouter } from '@/app/test-utils/createMockRouter';
+import { AppRouterContext } from 'next/dist/shared/lib/app-router-context';
+import getCurrency from '@/app/firebase/firestore/getCurrency';
+
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
+  useRouter: () => ({
+    push: jest.fn(),
+    refresh: jest.fn(),
+  }),
+}));
+// editBook.test.tsx
+
+// Your test cases
+
+jest.mock('@/app/firebase/firestore/getCurrency', () => ({
+  getCurrency: jest.fn().mockResolvedValue({ currency: 'USD' }),
+}));
+jest.mock('@/app/firebase/firestore/getCurrency', () => ({
+  __esModule: true,
+  default: jest.fn(() => Promise.resolve({ currency: { currency: 'USD' }, error: null })),
+}));
+
+jest.mock('./addBooktoDB', () => ({
+  addBook: jest.fn().mockResolvedValue({ result: 'success', error: null }),
+}));
+
+jest.mock('./categoriesDropdown', () => require('./categoriesDropdown.mock'));
+
+
+describe('AddBook component', () => {
+  const testBook: BookInfo = {
+    id: '1',
+    title: 'Test Book',
+    published: 2023,
+    authors: ['Author1', 'Author2'],
+    isbn: 1234567890,
+    isbn13: 1234567890123,
+    categories: ['Category1', 'Category2'],
+    borrowable: true,
+    sellable: true,
+    language: 'en',
+    location: 'Test Location',
+    pages: 100,
+    cover_img: 'https://test.com/test.jpg',
+    description: 'Test description',
+    in_stock: 10,
+    price: 19.99,
+    searchableTerms: ['test', 'book'],
+    addedAT: new Date(),
+  };
+  // test('renders Add Book form correctly and submits successfully', async () => {
+  //   // Render the component
+  //   await waitFor(()=>{
+  //     render(
+  //       <AppRouterContext.Provider value={createMockRouter({})}>
+  //         <AddBook BookData={testBook} onSubmit={jest.fn()} />
+  //       </AppRouterContext.Provider>
+  //     );
+
+  //   })
+
+  //   // Verify form elements
+  //   expect(screen.getByLabelText(/ISBN13/i)).toBeInTheDocument();
+  //   expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
+  //   expect(screen.getByLabelText(/Authors/i)).toBeInTheDocument();
+  //   // ... and other form fields
+
+  //   // Fill out the form
+  //   fireEvent.change(screen.getByLabelText(/ISBN13/i), { target: { value: '9781234567890' } });
+  //   fireEvent.change(screen.getByLabelText(/Title/i), { target: { value: 'Sample Book' } });
+  //   fireEvent.change(screen.getByLabelText(/Authors/i), { target: { value: 'John Doe' } });
+  //   // ... and other form fields
+
+  //   // Submit the form
+  //   fireEvent.click(screen.getByText(/Edit Book/i));
+
+  //   // Wait for the form to be submitted and verify the results
+  //   await waitFor(() => {
+  //     expect(screen.queryByText(/New Book Added Successfully/i)).toBeInTheDocument();
+  //   });
+  // });
+});

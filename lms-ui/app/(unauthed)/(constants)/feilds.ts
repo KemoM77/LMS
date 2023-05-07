@@ -168,7 +168,7 @@ const addBookFields=[
         placeholder:"Authors"   
     },
     {
-        labelText:"Price(USD)",
+        labelText:"Price",
         labelFor:"price",
         id:"price",
         name:"price",

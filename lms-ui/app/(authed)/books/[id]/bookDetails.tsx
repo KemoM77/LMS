@@ -58,6 +58,7 @@ export default function BookDetails({ bookInfo }: Props) {
         progress: undefined,
         theme: 'dark',
       });
+      router.refresh();
     });
   };
 

@@ -1,5 +1,6 @@
-import React, { Dispatch, KeyboardEvent, useState } from 'react';
+import React, { Dispatch, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { SearchTerms } from '../../users/page';
+import { debounce } from '@mui/material';
 
 type Props = {
   options: string[];
@@ -8,11 +9,24 @@ type Props = {
 
 export default function FilteredSearch({ options = [], onSearch }: Props) {
   const [searchState, setSearchState] = useState<SearchTerms>({ searchText: '', filterOption: 'all' });
-
+  const debouncedOnSearch = useCallback(debounce(onSearch, 500), [onSearch]);
   const handleChange = (e) => {
     setSearchState({ ...searchState, [e.target.name]: e.target.value });
+    debouncedOnSearch({ ...searchState, [e.target.name]: e.target.value });
     // onSearch({ ...searchState, [e.target.name]: e.target.value })
   };
+
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
 
   const handleKeyUp = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
@@ -55,6 +69,7 @@ export default function FilteredSearch({ options = [], onSearch }: Props) {
               id="filterOption"
               onChange={handleChange}
               className="bg-transparent text-sm outline-none focus:outline-none"
+              data-testid="typeDrop"
             >
               <option value="all">All</option>
               {options.map((option) => (

@@ -1,0 +1,164 @@
+import React from 'react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
+import BooksPage from './page';
+import { AuthContext } from '@/app/context/AuthContext';
+import { AppRouterContext } from 'next/dist/shared/lib/app-router-context';
+import { createMockRouter } from '@/app/test-utils/createMockRouter';
+import { createMockAuthContext } from '@/app/test-utils/createMockAuthContext';
+import * as getCategoriesModule from '../../firebase/firestore/addCategories';
+import getPaginatedDocs, * as getPaginatedDocsModule from '../../firebase/firestore/getPaginatedDocs';
+import { DocumentData, QuerySnapshot } from 'firebase/firestore';
+import { getQueryCount } from '../../firebase/firestore/getPaginatedDocs';
+import { Mock } from 'jest-mock';
+import getManyDocs from '../../firebase/firestore/getManyDocs';
+
+
+jest.mock('next/navigation');
+(useRouter as jest.Mock).mockImplementation(() => ({
+  ...mockRouter,
+  refresh: jest.fn(),
+})); 
+
+jest.mock('../../firebase/firestore/addCategories');
+jest.mock('../../firebase');
+jest.mock('firebase/auth');
+
+jest.mock('next/navigation', () => ({
+  useSearchParams: () => {
+    return new URLSearchParams('1');
+  },
+}));
+jest.mock('next/navigation');
+
+jest.mock('./../../firebase/firestore/getPaginatedDocs', () => {
+  return {
+    __esModule: true,
+    default: jest.fn(),
+    getQueryCount: jest.fn(),
+  };
+});
+jest.mock('../../firebase/firestore/getManyDocs', () => {
+  return {
+    __esModule: true,
+    default: jest.fn(),
+    // getQueryCount: jest.fn(),
+  };
+});
+
+jest.mock('./categoriesDropdown', () => require('./categoriesDropdown.mock'));
+
+describe('BooksPage component', () => {
+  beforeEach(() => {
+    jest
+      .spyOn(getCategoriesModule, 'default')
+      .mockImplementation(() => Promise.resolve({ addResult: ['Category 1', 'Category 2'], addError: null }));
+
+    jest.spyOn(getPaginatedDocsModule, 'default').mockImplementation(() =>
+      Promise.resolve({
+        querySnapshot: {
+          docs: [
+            {
+              id: '1',
+              data: () => {
+                return { id: '1', title: 'mybook' };
+              },
+            },
+          ],
+        } as QuerySnapshot<DocumentData>,
+      })
+    );
+
+    jest.spyOn(getPaginatedDocsModule, 'getQueryCount').mockImplementation(() =>
+      Promise.resolve({
+        count: 10, // Return the mock count here
+      })
+    );
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  const mockRouter = createMockRouter({});
+  const mockAuth = createMockAuthContext({});
+
+  it('renders correctly', async () => {
+    render(
+      <AppRouterContext.Provider value={mockRouter}>
+        <AuthContext.Provider value={mockAuth}>
+          <BooksPage />
+        </AuthContext.Provider>
+      </AppRouterContext.Provider>
+    );
+
+    expect(screen.getByText(/Books/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Title, Author/i)).toBeInTheDocument();
+  });
+
+  it('handles Load more button', async () => {
+    const mockBooks = Array(15).map((_, index) => {
+      return {
+       // id: index,
+       // data: () => {
+        //  return {
+            id: index + 1,
+            title: `Book ${index + 1}`,
+            author: [`Author ${index + 1}`],
+            isbn: index + 19999,
+            in_stock: 39,
+            categories: ['cat1'],
+            // Add other fields required by your component here
+       //  }
+     //   },
+      };
+    });
+   // (fetchRandomBooks as Mock).mockResolvedValue({querySnapshot: { docs: mockBooks }})
+    (getManyDocs as Mock).mockResolvedValue({ querySnapshot: { docs: mockBooks }, docsCount: 15 });
+    (getPaginatedDocs as Mock).mockResolvedValue({ querySnapshot: { docs: mockBooks } });
+    (getQueryCount as Mock).mockResolvedValue({ count: mockBooks.length });
+
+    await waitFor(async () => {
+       render(
+        <AppRouterContext.Provider value={mockRouter}>
+          <AuthContext.Provider value={mockAuth}>
+            <BooksPage />
+          </AuthContext.Provider>
+        </AppRouterContext.Provider>
+      );
+    });
+
+    await waitFor(() => {
+      const loadMoreButton = screen.getByText(/Load more/i);
+      fireEvent.click(loadMoreButton);
+      expect(screen.getByText(/Load more/i)).toBeInTheDocument();
+    });
+  });
+
+
+  // ///////////////
+  it('renders Add Books button for librarians', async () => {
+    const librarianAuth = createMockAuthContext({ currentUser: { isLibrarian: true } });
+    render(
+      <AppRouterContext.Provider value={mockRouter}>
+        <AuthContext.Provider value={librarianAuth}>
+          <BooksPage />
+        </AuthContext.Provider>
+      </AppRouterContext.Provider>
+    );
+
+    const addBooksButton = screen.getByText(/Add Books/i);
+    expect(addBooksButton).toBeInTheDocument();
+  });
+  // /////////////////////////////////
+  it('does not render Add Books button for non-librarians', async () => {
+    const librarianAuth = createMockAuthContext({ currentUser: { isLibrarian: false } });
+    render(
+      <AppRouterContext.Provider value={mockRouter}>
+        <AuthContext.Provider value={librarianAuth}>
+          <BooksPage />
+        </AuthContext.Provider>
+      </AppRouterContext.Provider>
+    );
+
+    const addBooksButton = screen.queryByRole('button', { name: /Add Books/i });
+    expect(addBooksButton).not.toBeInTheDocument();
+  });
+});

@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import BooksSearchBar from '../(shared)/FilteredSearch/booksSearchBar';
-import Link from 'next/link';
 import AddBook from './editBook';
 import BookCard from './bookCard';
 import { Button } from '@material-tailwind/react/components/Button';

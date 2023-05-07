@@ -8,8 +8,8 @@ const CategoriesDropdown = ({ onChange, value = [] }) => {
   const [selected, setSelected] = React.useState(value);
 
   const getCates = async () => {
-    const { categories, error } = await getCategories();
-    setInitCategories(categories?.categories.sort());
+   // const { categories, error } = await getCategories();
+    setInitCategories(['cat1','cat2']);
   };
 
   const options = initCategories.map((genre) => ({

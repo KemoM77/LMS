@@ -1,4 +1,3 @@
-import { limit } from 'firebase/firestore';
 export type FeildQueryConstraint = {
     feild:string,
     comparison: '=='|'<='|'>='|'!='|'>='| 'array-contains' | 'array-contains-any' | 'in' | 'not-in',

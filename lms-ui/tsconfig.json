@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "downlevelIteration": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -23,6 +24,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(authed)/users/page.tsx", "app/layout.tsx", "functions/index.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(authed)/users/page.tsx", "app/layout.tsx", "functions/index.js", "app/(authed)/books/page.testt.tsxx", "app/(authed)/books/editBook.testt.tsxx"],
   "exclude": ["node_modules"]
 }

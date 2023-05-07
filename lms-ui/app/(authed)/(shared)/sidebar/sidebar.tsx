@@ -52,7 +52,7 @@ const Sidebar = ({ open, navItems = defaultNavItems, setOpen }: Props) => {
         className={classNames({
           'flex flex-col justify-between': true, // layout
           'border-t-[0.5px] bg-[#07074c] text-zinc-50 shadow-sm ': true, // colors
-          'fixed top-16 z-10 lg:sticky max-[1100px]:z-20  max-[600px]:top-14': true, // positioning
+          'fixed top-16 z-40 lg:sticky max-[1100px]:z-40  max-[600px]:top-14': true, // positioning
           'min-h-[calc(100vh_-_64px)] max-[600px]:min-h-[calc(100vh_-_54px)] animate__animated    animate__slideInLeft animate__faster': true,
           'w-[250px] min-[800px]:w-[300px] ': open,
           'min-[800px]:w-[0px]': !open,

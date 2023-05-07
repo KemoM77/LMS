@@ -2,7 +2,7 @@
 import { useAuthContext } from '@/app/context/AuthContext';
 import getManyDocs from '@/app/firebase/firestore/getManyDocs';
 import { Button } from '@material-tailwind/react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { confirmDialog } from '../(shared)/confirmDialog/dialog';
 import addData from '@/app/firebase/firestore/addData';
 import { BookRequest, RequestStatus } from './request';
@@ -222,7 +222,7 @@ export default function RequestsList({ userInfo, onChange = () => {} }) {
 
         {userRequests &&
           userRequests.map((req) => (
-            <div key={req.id.trim()} className="mx-1 flex flex-wrap justify-between border-t-2 p-2">
+            <div  key={req.id.trim()} className="mx-1  flex flex-wrap justify-between border-t-2 p-5 py-11 border">
               <Link href={'/books/' + req.bookId} className="mr-3 truncate font-semibold text-blue-500">
                 {req.bookName}
               </Link>
@@ -235,14 +235,14 @@ export default function RequestsList({ userInfo, onChange = () => {} }) {
                       .toLocaleString()
                   : new Date(req?.requestedAt).toLocaleString()}
               </div>
-              {req.type === 'BORROW' && req.until && (
+              {req.type === 'BORROW' && req.until && req.status === 'ACCEPTED' && (
                 <div className="mr-3 font-semibold">
                   Deadline:
                   {req?.until instanceof Timestamp
                     ? Timestamp.fromMillis(req.until.seconds * 1000 + req.until.nanoseconds / 1000000)
                         .toDate()
-                        .toLocaleString()
-                    : new Date(req?.until).toLocaleString()}
+                        .toLocaleDateString()
+                    : new Date(req?.until).toLocaleDateString()}
                   {delayDays(
                     Timestamp.fromMillis(req.until.seconds * 1000 + req.until.nanoseconds / 1000000).toDate()
                   ) > 0 && (

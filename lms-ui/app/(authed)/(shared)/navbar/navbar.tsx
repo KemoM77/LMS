@@ -12,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -21,7 +20,6 @@ import NotificationList from '../../profile/notificationList';
 import ActionDialog from '../dialog/dialog';
 import getManyDocs from '@/app/firebase/firestore/getManyDocs';
 import { useAuthContext } from '@/app/context/AuthContext';
-import { QueryConstraint } from 'firebase/firestore';
 import { FeildQueryConstraint } from '@/app/firebase/firestore/constraints';
 const theme = createTheme({
   palette: {
@@ -122,9 +120,6 @@ export default function PrimarySearchAppBar(props: Props) {
     redirect('/admin');
   };
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -145,16 +140,7 @@ export default function PrimarySearchAppBar(props: Props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  // const theme = createTheme({
-  //   palette: {
-  //     primary: {
-  //       main: purple[500],
-  //     },
-  //     secondary: {
-  //       main: '#ffffff',
-  //     },
-  //   },
-  // });
+  
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -203,18 +189,7 @@ export default function PrimarySearchAppBar(props: Props) {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      {/* <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem> */}
+     
     </Menu>
   );
 
@@ -282,17 +257,6 @@ export default function PrimarySearchAppBar(props: Props) {
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              {/* <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              {/* <AccountCircle /> */}
-              {/* </IconButton>  */}
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton

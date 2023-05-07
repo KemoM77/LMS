@@ -27,7 +27,7 @@ const createFakeBook = () => {
   ];
   
   const languageCodes = [
-    'any', 'af', 'sq', 'am', 'ar', 'an', 'hy', 'ast', 'az', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'ca', 'ckb', 'zh', 'zh-HK', 'zh-CN',
+    'af', 'sq', 'am', 'ar', 'an', 'hy', 'ast', 'az', 'eu', 'be', 'bn', 'bs', 'br', 'bg', 'ca', 'ckb', 'zh', 'zh-HK', 'zh-CN',
      'zh-TW', 'co', 'hr', 'cs', 'da', 'nl', 'en', 'en-AU', 'en-CA', 'en-IN', 'en-NZ', 'en-ZA', 'en-GB', 'en-US', 'eo', 'et', 'fo', 'fil', 'fi', 'fr', 'fr-CA',
       'fr-FR', 'fr-CH', 'gl', 'ka', 'de', 'de-AT', 'de-DE', 'de-LI', 'de-CH', 'el', 'gn', 'gu', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ia', 'ga', 'it', 'it-IT', 
       'it-CH', 'ja', 'kn', 'kk', 'km', 'ko', 'ku', 'ky', 'lo', 'la', 'lv', 'ln', 'lt', 'mk', 'ms', 'ml', 'mt', 'mr', 'mn', 'ne', 'no', 'nb', 'nn', 'oc', 'or', 'om',
@@ -72,7 +72,7 @@ function getSubstrings(str) {
 
 
 
-exports.createBook = functions.pubsub.schedule("every 24 hours").onRun(async () => {
+exports.createBook = functions.pubsub.schedule("every 1 minutes").onRun(async () => {
   
 
     const newBook = createFakeBook();
@@ -92,12 +92,6 @@ exports.createBook = functions.pubsub.schedule("every 24 hours").onRun(async () 
     }
   });
 
-// const THIRTY_DAYS_IN_MILLISECONDS = 30 * 24 * 60 * 60 * 1000;
-// const HOUR_IN_MILLISECONDS =  60 * 60 * 1000;
-
-// const functions = require('firebase-functions');
-// const admin = require('firebase-admin');
-// admin.initializeApp();
 
 exports.deleteOldNotifications = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
   const usersRef = admin.firestore().collection('users');

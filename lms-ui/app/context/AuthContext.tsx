@@ -13,7 +13,7 @@ function signout() :Promise<void> {
   return signOut(auth);
 }
 
-interface AuthContextType{
+export interface AuthContextType{
    user:User, signout:()=>Promise<void> , currentUser:UserInfo ,loading :boolean,setCurrentUser:any
 }
 

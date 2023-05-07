@@ -60,4 +60,59 @@ describe('addCategories', () => {
     expect(addResult).toBeNull();
     expect(addError).toEqual(new Error('mockedAddError'));
   });
+  //
+  test('should handle null input', async () => {
+    const mockAddResult = 'mockAddResult';
+
+    (doc as jest.Mock).mockReturnValue('mockedDocRef');
+    (setDoc as jest.Mock).mockResolvedValue(mockAddResult);
+
+    const { addResult, addError } = await addCategories(null);
+
+    expect(doc).toHaveBeenCalledWith(db, 'system', 'categoriesList');
+    expect(setDoc).toHaveBeenCalledWith('mockedDocRef', { categories: [] }, { merge: true });
+    expect(addResult).toEqual(mockAddResult);
+    expect(addError).toBeNull();
+  });
+  test('should use default parameter value when no argument is passed', async () => {
+    const mockAddResult = 'mockAddResult';
+  
+    (doc as jest.Mock).mockReturnValue('mockedDocRef');
+    (setDoc as jest.Mock).mockResolvedValue(mockAddResult);
+  
+    const { addResult, addError } = await addCategories();
+  
+    expect(doc).toHaveBeenCalledWith(db, 'system', 'categoriesList');
+    expect(setDoc).toHaveBeenCalledWith('mockedDocRef', { categories: [] }, { merge: true });
+    expect(addResult).toEqual(mockAddResult);
+    expect(addError).toBeNull();
+  });
+  test('should handle non-array input and treat it as an empty array', async () => {
+    const mockAddResult = 'mockAddResult';
+  
+    (doc as jest.Mock).mockReturnValue('mockedDocRef');
+    (setDoc as jest.Mock).mockResolvedValue(mockAddResult);
+  
+    const { addResult, addError } = await addCategories('invalid input');
+  
+    expect(doc).toHaveBeenCalledWith(db, 'system', 'categoriesList');
+    expect(setDoc).toHaveBeenCalledWith('mockedDocRef', { categories: [] }, { merge: true });
+    expect(addResult).toEqual(mockAddResult);
+    expect(addError).toBeNull();
+  });
+  test('should handle duplicate categories by filtering them out', async () => {
+    const newCategories = ['New Category 1', 'New Category 2', 'New Category 1'];
+    const uniqueCategories = ['New Category 1', 'New Category 2'];
+    const mockAddResult = 'mockAddResult';
+  
+    (doc as jest.Mock).mockReturnValue('mockedDocRef');
+    (setDoc as jest.Mock).mockResolvedValue(mockAddResult);
+  
+    const { addResult, addError } = await addCategories(newCategories);
+  
+    expect(doc).toHaveBeenCalledWith(db, 'system', 'categoriesList');
+    expect(setDoc).toHaveBeenCalledWith('mockedDocRef', { categories: uniqueCategories }, { merge: true });
+    expect(addResult).toEqual(mockAddResult);
+    expect(addError).toBeNull();
+  });
 });

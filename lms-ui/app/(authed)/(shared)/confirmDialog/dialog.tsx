@@ -7,13 +7,13 @@ import { Close } from '@mui/icons-material';
 import { create } from 'zustand';
 import { Alert } from '@mui/material';
 
-type ConfirmDialogStore = {
+export type ConfirmDialogStore = {
   message: string;
   onSubmit?: () => void;
   close: () => void;
 };
 
-const useConfirmDialogStore = create<ConfirmDialogStore>((set) => ({
+export const useConfirmDialogStore = create<ConfirmDialogStore>((set) => ({
   message: '',
   onSubmit: undefined,
   close: () => set({ onSubmit: undefined }),
@@ -22,8 +22,7 @@ const useConfirmDialogStore = create<ConfirmDialogStore>((set) => ({
 export const confirmDialog = (message: string, onSubmit: () => void) => {
   useConfirmDialogStore.setState({
     message,
-    onSubmit,
-  });
+    onSubmit: onSubmit || (() => {})  });
 };
 
 // const useStyles = makeStyles((theme) => {
@@ -45,14 +44,14 @@ const ConfirmDialog = () => {
           <Close />
         </IconButton>
       </Box>
-      <DialogContent>
+      <DialogContent data-testid="DialogContent">
         <Alert severity="error">{message}</Alert>
       </DialogContent>
-      <DialogActions className='m-2 mr-4'>
+      <DialogActions data-testid="DialogActions" className='m-2 mr-4'>
         <Button className='bg-zinc-500 scale-110 p-3 bg-gray-600  hover:bg-gray-400 text-white rounded-xl mr-3'  onClick={close}>
           Cancel
         </Button>
-        <Button
+        <Button data-testid="confirm"
           className='bg-blue-500 scale-110 p-3 hover:bg-blue-700 text-white rounded-xl' 
           onClick={() => {
             if (onSubmit) {

@@ -12,6 +12,8 @@ export default async function getLifeTime() {
   } catch (e) {
     error = e;
   }
-  const lifeTime = result?.data();
+
+  const lifeTime = error ? null : result?.data();
   return { lifeTime, error };
 }
+

@@ -1,5 +1,4 @@
-import { firebase_app } from '../../firebase';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from './getData';
 
 export default async function getCategories() {

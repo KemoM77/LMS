@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addBookFields } from '@/app/(unauthed)/(constants)/feilds';
 import FormAction from '@/app/(unauthed)/(components)/formAction';
 import Input from '@/app/(unauthed)/(components)/input';
@@ -12,6 +12,7 @@ import { Label } from '@mui/icons-material';
 import addData from '@/app/firebase/firestore/addData';
 import { addBook } from './addBooktoDB';
 import { toast } from 'react-toastify';
+import getCurrency from '@/app/firebase/firestore/getCurrency';
 
 const fields = addBookFields;
 let fieldsState = {}; //:;
@@ -54,6 +55,19 @@ export default function AddBook({ BookData = undefined, onSubmit = () => {} }: P
   const [successful, setSuccessful] = useState<boolean>(false);
   const { push, refresh } = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
+  const [loadingCurrency, setLoadingCurrency] = useState<boolean>(false);
+
+  const [finesCurrency, setFinesCurrency] = useState<string>('USD');
+  
+  const fetchCurrency = async () => {
+    const { currency, error } = await getCurrency();
+    if(currency){
+
+      setFinesCurrency(currency.currency);
+      setLoadingCurrency(true);
+    }
+    return { currency, error };
+  };
 
   const handleChange = (e) => SetaddBookState({ ...addBookState, [e.target.name]: e.target.value });
   const handleAuthorsChange = (e) => setAuthors(e.target.value);
@@ -77,45 +91,8 @@ export default function AddBook({ BookData = undefined, onSubmit = () => {} }: P
 
     const { result, error } = await addBook(updated);
 
-    //     //console.log(94949494949449);
-    //     setErrorMessage(
-    //       addBookState['password'].length < 6
-    //         ? 'Password must be more than 6 characters'
-    //         : addBookState['password'] !== addBookState['confirm-password']
-    //         ? "Passwords don't match"
-    //         : ''
-    //     );
-    //     if (addBookState['password'].length < 6 || addBookState['password'] !== addBookState['confirm-password']) return;
-    //     console.log(addBookState);
-
-    //     const { result, error } = await signUp(addBookState,byLibrarian);
-
-    //    // console.log(error, result, 323232323);
-    //     // alert(
-    //     //   error?.code == 'auth/too-many-requests'
-    //     //     ? 'Too many Requests.Try again later, or reset your password'
-    //     //     : error.code == 'auth/wrong-password'
-    //     //     ? 'Invalid email or password'
-    //     //     : error.code === 'auth/user-not-found'
-    //     //     ? 'User does not exist, sign up first'
-    //     //     : 'Login Error, try again later.'
-    //     // );
-
     setErrorMessage(error?.code);
-    //       error?.code == 'auth/too-many-requests'
-    //         ? 'Too many Requests.Try again later, or reset your password'
-    //         : error?.code === 'auth/email-already-in-use'
-    //         ? 'Email already exists, please login instead'
-    //         : error?.code === 'auth/user-not-found'
-    //         ? 'User does not exist, sign up first'
-    //         : 'Login Error, try again later.'
-    //     );
-
-    //     // alert(error.code)
-    //     if (result) {
-    //       if(!byLibrarian)push('/dashboard');
-    //       setSuccessful(true);
-    //     }
+   
     if (!error) onSubmit();
     setLoading(false);
     toast(BookData?'Book data was edited successfully':'New Book Added Successfully', {
@@ -133,7 +110,13 @@ export default function AddBook({ BookData = undefined, onSubmit = () => {} }: P
 
   //handle Signup API Integration here
 
-  return !loading && !successful ? (
+
+  useEffect(()=>{
+    fetchCurrency();
+  })
+
+
+  return !loading && !successful &&loadingCurrency ? (
     <>
       <form className="mt-1 rounded-sm bg-gray-50 p-5" onSubmit={handleSubmit}>
         <div className="text-center text-red-600">{errorMessage}</div>
@@ -143,7 +126,7 @@ export default function AddBook({ BookData = undefined, onSubmit = () => {} }: P
               key={field.id}
               handleChange={field.id === 'authors' ? handleAuthorsChange : handleChange}
               value={field.id === 'authors' ? authors : addBookState[field.id]}
-              labelText={field.id === 'authors' ? field.labelText + '(names seperated by , )' : field.labelText}
+              labelText={field.id === 'authors' ? field.labelText + '(names seperated by , )' : field.id === 'price'? `${field.labelText}(${finesCurrency})`   : field.labelText}
               labelFor={field.labelFor}
               id={field.id}
               name={field.name}

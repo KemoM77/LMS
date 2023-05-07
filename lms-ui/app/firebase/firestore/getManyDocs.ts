@@ -33,23 +33,19 @@ export default async function getManyDocs(
 
   let finalQuery: Query<DocumentData>;
   if (!orderContraint && !limitTo) {
-    console.log(1);
     finalQuery =
       relation === 'And' ? query(collectionRef, ...queryConstraints) : query(collectionRef, or(...queryConstraints));
   } else if (orderContraint && !limitTo) {
-    console.log(2);
     finalQuery =
       relation === 'And'
         ? query(collectionRef, ...queryConstraints, orderBy(orderContraint.feild, orderContraint.method))
         : query(collectionRef, or(...queryConstraints), orderBy(orderContraint.feild, orderContraint.method));
   } else if (!orderContraint && limitTo) {
-    console.log(3);
     finalQuery =
       relation === 'And'
         ? query(collectionRef, ...queryConstraints, limit(limitTo))
         : query(collectionRef, or(...queryConstraints), limit(limitTo));
   } else {
-    console.log(4, relation);
     finalQuery =
       relation === 'And'
         ? (finalQuery = query(
@@ -77,7 +73,17 @@ export default async function getManyDocs(
    //const tempQ = query(collectionRef, limit(10), orderBy('requestedAt'))
   const querySnapshot = await getDocs(finalQuery);
   //console.log('hereeeeee', querySnapshot.docs);
+// Inside getManyDocs function, before the return statement
+let countError = null;
+let docsCount = 0;
+
+try {
   const Count = await getCountFromServer(query(collectionRef, ...queryConstraints));
-  const docsCount = Count.data().count;
-  return { querySnapshot, docsCount };
+  docsCount = Count.data().count;
+} catch (e) {
+  countError = e;
+}
+
+return { querySnapshot, docsCount, countError };
+
 }

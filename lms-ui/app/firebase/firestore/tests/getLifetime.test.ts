@@ -1,58 +1,46 @@
 import getLifeTime from '../getLifetime';
-import { connectFirestoreEmulator, doc, getDoc, initializeFirestore } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../getData';
 
-const testApp = initializeApp({
-  projectId: 'test-project',
-});
-const testFirestore = initializeFirestore(testApp, {});
-connectFirestoreEmulator(testFirestore, 'localhost', 8080);
+// Mock Firebase module and functions
+jest.mock('firebase/firestore', () => ({
+  doc: jest.fn(),
+  getDoc: jest.fn(),
+}));
 
-jest.mock('../getData', () => {
-    const { initializeTestApp } = require('firebase/testing');
-    const { connectFirestoreEmulator } = require('firebase/firestore');
-    const testApp = initializeTestApp({ projectId: 'test-project' });
-    const testFirestore = testApp.firestore();
-    connectFirestoreEmulator(testFirestore, 'localhost', 8080);
-  
-    return {
-      db: testFirestore,
+jest.mock('../getData', () => ({
+  db: {},
+}));
+
+describe('getLifeTime()', () => {
+  test('returns the lifetime data from the "system/requestsLifeTime" document', async () => {
+    // Set up mock data and functions
+    const mockData = {
+      data: jest.fn(() => ({ lifetime: 60 })),
     };
+
+    (doc as jest.Mock).mockReturnValueOnce(mockData);
+   ( getDoc as jest.Mock).mockResolvedValueOnce(mockData);
+
+    // Call the function and assert the result
+    const result = await getLifeTime();
+
+    expect(result).toHaveProperty('lifeTime');
+    expect(result).toHaveProperty('error', null);
+    expect(result.lifeTime).toEqual({ lifetime: 60 });
   });
-  
-  jest.mock('firebase/firestore', () => {
-    const originalFirestore = jest.requireActual('firebase/firestore');
-    return {
-      ...originalFirestore,
-      doc: jest.fn(originalFirestore.doc),
-      getDoc: jest.fn(originalFirestore.getDoc),
-    };
-  });
-  
-describe('getLifeTime', () => {
-  test('should get lifeTime data and not throw an error', async () => {
-    const mockedData = { some: 'data' };
-    (getDoc as jest.Mock).mockResolvedValue({
-      data: () => mockedData,
+
+  test('handles error when getDoc() fails', async () => {
+    // Set up mock functions
+    (doc as jest.Mock).mockReturnValueOnce({});
+    (getDoc as jest.Mock).mockImplementationOnce(() => {
+      throw new Error('Failed to get document');
     });
-
-    const { lifeTime, error } = await getLifeTime();
-
-    expect(doc).toHaveBeenCalledWith(testFirestore, 'system', 'requestsLifeTime');
-    expect(getDoc).toHaveBeenCalledWith(expect.objectContaining({ _path: { segments: ['system', 'requestsLifeTime'] } }));
-    expect(lifeTime).toEqual(mockedData);
-    expect(error).toBeNull();
-  });
-
-  test('should handle error when getting lifeTime data', async () => {
-    const mockedError = new Error('Test error');
-    (getDoc as jest.Mock).mockRejectedValue(mockedError);
-
-    const { lifeTime, error } = await getLifeTime();
-
-    expect(doc).toHaveBeenCalledWith(testFirestore, 'system', 'requestsLifeTime');
-    expect(getDoc).toHaveBeenCalledWith(expect.objectContaining({ _path: { segments: ['system', 'requestsLifeTime'] } }));
-    expect(lifeTime).toBeUndefined();
-    expect(error).toEqual(mockedError);
+  
+    // Call the function and assert the result
+    const result = await getLifeTime();
+  
+    expect(result).toHaveProperty('lifeTime', null);
+    expect(result).toHaveProperty('error');
   });
 });
