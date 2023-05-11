@@ -5,7 +5,7 @@ import { useAuthContext } from '@/app/context/AuthContext';
 import { deleteData } from '@/app/firebase/firestore/deleteData';
 import { deleteUser } from 'firebase/auth';
 import ActionDialog from '../../(shared)/dialog/dialog';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import addData from '@/app/firebase/firestore/addData';
 import { BookInfo } from '../book';
 import AddBook from '../editBook';
@@ -17,6 +17,7 @@ import { serverTimestamp } from 'firebase/firestore';
 import { addBook } from '../addBooktoDB';
 import getLifeTime from '@/app/firebase/firestore/getLifetime';
 import getCurrency from '@/app/firebase/firestore/getCurrency';
+import BorrowsList from './borrowsList';
 
 type Props = {
   bookInfo: BookInfo;
@@ -41,8 +42,6 @@ export default function BookDetails({ bookInfo }: Props) {
     const { lifeTime, error } = await getLifeTime();
     return { lifeTime, error };
   };
-
-
 
   const handleDeleteBook = () => {
     confirmDialog('Do you really want to delete this book?', async () => {
@@ -107,6 +106,7 @@ export default function BookDetails({ bookInfo }: Props) {
         const request: BookRequest = {
           id: bookInfo.isbn13 + bookInfo.in_stock + '',
           uid: currentUser.id,
+          userName: currentUser.first_name + ' ' + currentUser.last_name,
           bookId: bookInfo.id,
           bookName: bookInfo.title,
           status: 'PENDING',
@@ -147,17 +147,14 @@ export default function BookDetails({ bookInfo }: Props) {
     return { currency, error };
   };
 
+  useEffect(() => {
+    fetchCurrency();
+    fetchLifeTime().then(({ lifeTime }) => {
+      console.log(lifeTime);
 
-  useEffect(()=>{
-  fetchCurrency()
-   fetchLifeTime().then(({lifeTime})=>{
-    console.log(lifeTime);
-    
-    setReqLifeTime(lifeTime.lifetime)
-   });
-
-  },[reqLifeTime])
-
+      setReqLifeTime(lifeTime.lifetime);
+    });
+  }, [reqLifeTime]);
 
   return !loading && currentUser.id !== user.uid && !currentUser.isLibrarian ? (
     <h1>Unauthorized to view this page!</h1>
@@ -272,13 +269,19 @@ export default function BookDetails({ bookInfo }: Props) {
                 ISBN/ISBN13: {bookInfo?.isbn}/{bookInfo?.isbn13}
               </p>
               {bookInfo.sellable ? (
-                <p className="mt-3 font-semibold text-black">Price: {bookInfo?.price}{finesCurrency}</p>
+                <p className="mt-3 font-semibold text-black">
+                  Price: {bookInfo?.price}
+                  {finesCurrency}
+                </p>
               ) : (
                 <p className="mt-3 font-semibold text-black">Not for Sale.</p>
               )}
-              { !currentUser.isActive &&<p className="text-red-700">
-                NOTE: YOU ARE SUSBENDED, YOU WILL NOT BE ABLE SEND BUY/BORROW REQUESTS,PLEASE CONTACT COSTUMER SERVICE.
-              </p>}
+              {!currentUser.isActive && (
+                <p className="text-red-700">
+                  NOTE: YOU ARE SUSBENDED, YOU WILL NOT BE ABLE SEND BUY/BORROW REQUESTS,PLEASE CONTACT COSTUMER
+                  SERVICE.
+                </p>
+              )}
             </div>
             <div className="mt-12 flex flex-col justify-center">
               <p className="text-center font-light text-gray-600 lg:px-16"></p>
@@ -295,6 +298,7 @@ export default function BookDetails({ bookInfo }: Props) {
             </div>
           </div>
         </div>
+        { currentUser.isLibrarian && <BorrowsList bookInfo={bookInfo} />}
       </>
     )
   );

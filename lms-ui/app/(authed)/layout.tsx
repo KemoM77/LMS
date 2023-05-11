@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Sidebar from './(shared)/sidebar/sidebar';
 import { useAuthContext } from '../context/AuthContext';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import PrimarySearchAppBar from './(shared)/navbar/navbar';
 import ConfirmDialog from './(shared)/confirmDialog/dialog';
 import { CircularProgress } from '@mui/material';
@@ -27,13 +27,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     if (window.innerWidth < 700) setShowSidebar(false);
   }
   useEffect(() => {
-    //console.log(user);
+    ////////console.log(user);
 
     window.addEventListener('resize', handleResize);
   }, [user]);
 
   return (
-    !loading  && currentUser !== null ? <>
+    !loading  && currentUser  ? <>
       <ConfirmDialog />
       <div className="grid  grid-rows-header">
         <div className=" z-20 bg-white shadow-sm">

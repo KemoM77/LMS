@@ -1,7 +1,13 @@
+import { ForgotPassword } from "@/app/firebase/auth/forgotPassword";
+
+async function handleForgotPassword() {
+  ForgotPassword();
+}
+
 export default function FormExtra() {
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center">
+      {/* <div className="flex items-center">
         <input
           id="remember-me"
           name="remember-me"
@@ -12,12 +18,12 @@ export default function FormExtra() {
         <label id="remember-me-label" className="ml-2 block text-sm text-gray-900">
           Remember me
         </label>
-      </div>
+      </div> */}
 
       <div className="text-sm">
-        <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
+        <div onClick={handleForgotPassword} data-testid="forgotPassword"  className="cursor-pointer font-medium text-purple-600 hover:text-purple-500">
           Forgot your password?
-        </a>
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,13 @@
 'use client'
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Loader from './(authed)/(shared)/loader/loader';
+import { useEffect } from 'react';
 
 export default function Home() {
-redirect('/dashboard');
+  const router = useRouter()
+  useEffect(()=>{
+    router.push('/dashboard');
+  })
 
   return (
     <div className="mt-96 flex justify-center">

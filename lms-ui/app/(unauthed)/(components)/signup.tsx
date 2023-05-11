@@ -15,6 +15,7 @@ import Loader from '@/app/(authed)/(shared)/loader/loader';
 //     confirm_password:string,
 // }
 
+
 const fields = signupFields;
 let fieldsState = {}; //:SignUpData;
 
@@ -34,7 +35,7 @@ export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //console.log(94949494949449);
+    ////////console.log(94949494949449);
     setErrorMessage(
       signupState['password'].length < 6
         ? 'Password must be more than 6 characters'
@@ -44,7 +45,7 @@ export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
     );
     if (signupState['password'].length < 6 || signupState['password'] !== signupState['confirm-password']) return;
     setLoading(true);
-    //console.log(signupState);
+    ////////console.log(signupState);
 
     const { result, error } = await signUp(signupState, byLibrarian);
 
@@ -62,7 +63,7 @@ export default function Signup({ byLibrarian = false, onSubmit = () => {} }) {
 
     // alert(error.code)
     if (result) {
-      if (!byLibrarian) push('/dashboard');
+    //  if (!byLibrarian) push('/dashboard');
       setSuccessful(true);
     }
     if (!error) onSubmit();

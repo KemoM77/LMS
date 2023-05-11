@@ -16,7 +16,7 @@ import BookCard from '../books/bookCard';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function Page() {
+export default function DashPage() {
   const { currentUser } = useAuthContext();
   const [reminders, setReminders] = useState<BookRequest[]>([]);
   const [newBooks, setNewBooks] = useState<BookInfo[]>([]);
@@ -35,8 +35,8 @@ export default function Page() {
   const fetchCurrency = async () => {
     const { currency, error } = await getCurrency();
     setFinesCurrency(currency.currency);
-    return { currency, error };
     router.refresh();
+    return { currency, error };
   };
 
   const calcBooks = async () => {
@@ -54,13 +54,13 @@ export default function Page() {
   const fetchNewBooks = async () => {
     const { querySnapshot } = await getManyDocs('books', [], 'And', { feild: 'addedAT', method: 'desc' }, 4);
 
-    //console.log(34546343234567654357756355,querySnapshot.docs[0].data());
+    ////////console.log(34546343234567654357756355,querySnapshot.docs[0].data());
 
     let rems: BookInfo[] = [];
     querySnapshot.docs.forEach((doc) => {
-      console.log(delayFees);
+      //////console.log(delayFees);
       rems.push(doc.data() as BookInfo);
-      console.log('hererer', doc.data());
+      //////console.log('hererer', doc.data());
     });
 
     setNewBooks(rems);
@@ -88,11 +88,11 @@ export default function Page() {
     let totalFine = 0;
     let rems: BookRequest[] = [];
     querySnapshot.docs.forEach((doc) => {
-      console.log(delayFees);
+      //////console.log(delayFees);
 
       rems.push(doc.data() as BookRequest);
       totalFine += delayDays(myToDate(doc?.data().until)) * delayFees;
-      console.log(doc.data());
+      //////console.log(doc.data());
     });
 
     setReminders(rems);
@@ -122,7 +122,7 @@ export default function Page() {
                   {' '}
                   Welcome, {currentUser?.first_name}! &#128075; <br />
                 </h1>
-                Current Status: {currentUser.isActive ? 'Active :) ' : 'Suspended :('} <br />
+                Current Status: {currentUser?.isActive ? 'Active :) ' : 'Suspended :('} <br />
                 {currentUser.isActive && currentUser.valid_until
                   ? 'Until: ' + myToDate(currentUser.valid_until).toLocaleDateString()
                   : ''}

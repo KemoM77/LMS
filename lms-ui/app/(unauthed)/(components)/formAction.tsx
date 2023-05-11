@@ -12,8 +12,10 @@ export default function FormAction({ handleSubmit, type = 'Button', action = 'su
             'focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2': true,
             'bg-purple-200   cursor-default' : true
           })}
+          //onSubmit={handleSubmit}
           onClick={handleSubmit}
           disabled={disable}
+         // type='submit'
         >
           {text}
         </button>

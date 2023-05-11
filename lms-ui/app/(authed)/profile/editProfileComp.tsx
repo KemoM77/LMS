@@ -56,10 +56,10 @@ export default function EditProfileComp({ uid ,onSubmit=()=>{} }) {
     });
     if (user.uid === userData.id) {
       setCurrentUser({ ...currentUser ,...editProfileState });
-      console.log('same');
+      //////console.log('same');
     }
 
-    console.log('load off');
+    //////console.log('load off');
     router.refresh();
     onSubmit();
     setLoading(false);

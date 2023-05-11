@@ -60,9 +60,9 @@ export default function Profile({ userInfo }: Props) {
 
     let totalFine = 0;
     querySnapshot.docs.forEach((doc) => {
-     // console.log(delayFees);
+     // //////console.log(delayFees);
       
-      // console.log( delayDays(
+      // //////console.log( delayDays(
       //   Timestamp.fromMillis(
       //     (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
       //   ).toDate()
@@ -74,7 +74,7 @@ export default function Profile({ userInfo }: Props) {
             (doc.data() as BookRequest).until.seconds * 1000 + (doc.data() as BookRequest).until.nanoseconds / 1000000
           ).toDate()
         ) * delayFees;
-       // console.log(totalFine);
+       // //////console.log(totalFine);
         
     });
 
@@ -119,7 +119,7 @@ export default function Profile({ userInfo }: Props) {
         await addData('users', userInfo.id, { isActive: false });
         await addNotification(userInfo.id,'Account Suspended','Your account has been suspended, please contact the library service to re-activate.')
         router.refresh();
-       // console.log(33333);
+       // //////console.log(33333);
       });
     } else {
       setActivateDialogOpen(true);
@@ -175,19 +175,19 @@ export default function Profile({ userInfo }: Props) {
             <div className="grid grid-cols-1 lg:grid-cols-3">
               <div className="order-last mt-20 grid grid-cols-3 text-center lg:order-first lg:mt-0">
                 <div className="mr-2 rounded-md border-0 border-red-700">
-                  <p className={`text-xl font-bold ${fines > 0 ? 'text-red-700' : 'text-green-700'}  `}>
+                  <p className={`text-xl font-bold ${fines > 0 ? 'text-red-700' : 'text-green-700'} ${userInfo.isLibrarian?'text-transparent':''} `}>
                     {fines > 0 ? '-' : ''}
                     {fines} {finesCurrency}
                   </p>
-                  <p className="text-gray-400">Fines</p>
+                  <p className={`text-gray-400 ${userInfo.isLibrarian?'text-transparent':''}`}>Fines</p>
                 </div>
                 <div className="mr-3">
-                  <p className="text-xl font-bold text-blue-800">{borrowedBooks}</p>{' '}
-                  <p className="text-gray-400">Borrowed books</p>
+                  <p className={`text-xl font-bold text-blue-800 ${userInfo.isLibrarian?'text-transparent':''}`}>{borrowedBooks}</p>{' '}
+                  <p className={`text-gray-400 ${userInfo.isLibrarian?'text-transparent':''}`}>Borrowed books</p>
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-blue-800">{pendingRequests}</p>
-                  <p className="text-gray-400">Pending requests</p>
+                  <p className={`text-xl font-bold text-blue-800 ${userInfo.isLibrarian?'text-transparent':''}`}>{pendingRequests}</p>
+                  <p className={`text-gray-400 ${userInfo.isLibrarian?'text-transparent':''}`}>Pending requests</p>
                 </div>
               </div>
               <div className="relative">
@@ -222,7 +222,7 @@ export default function Profile({ userInfo }: Props) {
                 <button
                   onClick={() => {
                     setIsEditDialogOpen(true);
-                    console.log(isEditDialogOpen);
+                    //////console.log(isEditDialogOpen);
                   }}
                   className="transform rounded bg-gray-700 px-4 py-2 font-medium uppercase text-white shadow transition hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-lg"
                 >
@@ -254,15 +254,16 @@ export default function Profile({ userInfo }: Props) {
             <div className="mt-12 flex flex-col justify-center">
               <p className="text-center font-light text-gray-600 lg:px-16">
                 Registration date :{' '}
-                {userInfo?.date_of_registration &&
+                {userInfo.date_of_registration === null ? 'Loading time from server...' :(userInfo?.date_of_registration &&
                   Timestamp.fromMillis(
                     userInfo.date_of_registration.seconds * 1000 + userInfo.date_of_registration.nanoseconds / 1000000
                   )
                     .toDate()
-                    .toLocaleString()}
+                    .toLocaleString())}
               </p>
               {userInfo?.id === currentUser?.id && (
                 <button
+                id='deleteAccount'
                   onClick={handleDeleteAccount}
                   className="mt-4 w-40 border border-red-600 px-4 py-2 font-medium text-red-600 hover:bg-red-600 hover:text-white"
                 >

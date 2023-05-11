@@ -1,6 +1,7 @@
 import signIn from './signin';
 import type { Mock } from 'jest-mock';
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { TextEncoder } from "util";
 
 jest.mock('@/app/firebase', () => {
   return {

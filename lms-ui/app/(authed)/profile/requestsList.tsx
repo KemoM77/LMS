@@ -257,17 +257,17 @@ export default function RequestsList({ userInfo, onChange = () => {} }) {
                 </div>
               )}
               <div className={`${getStatusColor(req.status)} mr-3 font-semibold`}>
-                {req.status}
-                {req.status !== 'PENDING'
-                  ? ' since ' +
+                {req.status}  since:  
+              { req.managedAt === null ? 'Loading time from server...' : ( req.status !== 'PENDING' 
+                  ? 
                     (req?.managedAt instanceof Timestamp
                       ? Timestamp.fromMillis(req.managedAt.seconds * 1000 + req.managedAt.nanoseconds / 1000000)
                           .toDate()
                           .toLocaleString()
                       : new Date(req?.managedAt).toLocaleString())
-                  : ''}
+                  : '')}
               </div>
-              {req.until && req.status ==='ACCEPTED' &&(
+              {req.until && req.until !== null && req.status ==='ACCEPTED' &&(
                 <div className={`mr-3 font-semibold text-red-700`}>
                   {'-'}
                   {delayFees *

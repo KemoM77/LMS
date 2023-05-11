@@ -43,7 +43,7 @@ const Sidebar = ({ open, navItems = defaultNavItems, setOpen }: Props) => {
   });
   function handleSignout(): void {
     signout();
-    redirect('/sign');
+    redirect('/signin');
   }
 
   return (

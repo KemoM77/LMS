@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import addData from '../firestore/addData';
 import type { Mock } from 'jest-mock';
 import { serverTimestamp } from "firebase/firestore";
+import { TextEncoder } from "util";
 
 jest.mock('../../firebase', () => {
   return {

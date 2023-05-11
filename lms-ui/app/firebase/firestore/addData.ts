@@ -11,7 +11,7 @@ export default async function addData(colllection: string , id: string, data: an
     //     merge: true,
     // });
     let ref = doc(db, colllection, id);
-    console.log();
+    //////console.log();
     
     result = await setDoc(ref, data, { merge: true });
   } catch (e) {

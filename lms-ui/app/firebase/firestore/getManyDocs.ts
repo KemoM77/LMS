@@ -25,7 +25,7 @@ export default async function getManyDocs(
 ) {
   let queryConstraints: QueryFieldFilterConstraint[] = [];
   constraints.forEach((con) => {
-    console.log(con);
+    //////console.log(con);
     if (con.value !== undefined && con.value !== null) queryConstraints?.push(where(con.feild, con.comparison, con.value));
   });
 
@@ -72,7 +72,7 @@ export default async function getManyDocs(
     // );
    //const tempQ = query(collectionRef, limit(10), orderBy('requestedAt'))
   const querySnapshot = await getDocs(finalQuery);
-  //console.log('hereeeeee', querySnapshot.docs);
+  ////////console.log('hereeeeee', querySnapshot.docs);
 // Inside getManyDocs function, before the return statement
 let countError = null;
 let docsCount = 0;

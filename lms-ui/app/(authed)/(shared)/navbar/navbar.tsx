@@ -15,7 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import NotificationList from '../../profile/notificationList';
 import ActionDialog from '../dialog/dialog';
 import getManyDocs from '@/app/firebase/firestore/getManyDocs';
@@ -107,7 +107,6 @@ export default function PrimarySearchAppBar(props: Props) {
       { feild: 'id', method: 'desc' },
       1
     );
-    console.log(docsCount);
 
     setUnReadCount(docsCount);
   };
@@ -116,8 +115,7 @@ export default function PrimarySearchAppBar(props: Props) {
 
   const handleProfileClick = () => {
     handleMenuClose();
-    console.log(435454534);
-    redirect('/admin');
+    router.push('/admin');
   };
 
 
@@ -236,7 +234,7 @@ export default function PrimarySearchAppBar(props: Props) {
               </div>
               <div
                 onClick={() => {
-                  console.log('filter');
+                  //////console.log('filter');
                   router.push('/books');
                 }}
               >

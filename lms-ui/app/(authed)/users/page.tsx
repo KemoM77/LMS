@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../context/AuthContext';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import FilteredSearch from '../(shared)/FilteredSearch/FilteredSearch';
 import ActionDialog from '../(shared)/dialog/dialog';
 import Signup from '@/app/(unauthed)/(components)/signup';
@@ -16,7 +16,7 @@ export type SearchTerms = {
   filterOption: string;
 };
 
-function Page() {
+function UsersPage() {
   const [searchTerms, SetSearchTerms] = useState<SearchTerms>(undefined);
   const [searchResults, setSearchResults] = useState<UserInfo[]>(undefined);
   const [usersCount, setUsersCount] = useState<number>(undefined);
@@ -25,15 +25,16 @@ function Page() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   
   const {loading ,currentUser } = useAuthContext();
-  const router = useRouter();
+  const router =useRouter()
 
-  if (!currentUser.isLibrarian) redirect('/dashboard');
+
+  //if (!currentUser.isLibrarian) router.push('/dashboard');
 
   const options = ['Librarians', 'Users'];
 
   const fetchUsers = async () => {
     setSearchResults(undefined);
-    console.log(searchTerms);
+    //////console.log(searchTerms);
 
     const constraints: FeildQueryConstraint[] = [
       {
@@ -61,7 +62,7 @@ function Page() {
   };
 
   const handleLoadMore = () => {
-    //console.log('loaded more');
+    ////////console.log('loaded more');
     setLoadingMore(true);
     setStartAfter(searchResults[searchResults?.length - 1]?.first_name || '');
   };
@@ -72,7 +73,7 @@ function Page() {
       fetchUsers().then((value) => {
         const snapDocs = value.docs;
         snapDocs.forEach((doc) => {
-         // console.log(doc.data());
+         // //////console.log(doc.data());
           docs.push(doc.data() as UserInfo);
         });
         // docs =
@@ -81,7 +82,7 @@ function Page() {
         //     : docs.filter((doc) => doc.isLibrarian === (searchTerms.filterOption === 'users' ? false : true));
         setSearchResults([...searchResults, ...docs]);
         setLoadingMore(false);
-        console.log('SearchResults:', searchResults);
+        //////console.log('SearchResults:', searchResults);
       });
     }
   }, [searchTerms, startAfter]);
@@ -189,4 +190,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default UsersPage;

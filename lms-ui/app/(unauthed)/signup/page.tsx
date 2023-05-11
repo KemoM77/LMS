@@ -1,5 +1,4 @@
 'use client';
-import { redirect } from 'next/navigation';
 import Header from '../(components)/header';
 import Signup from '../(components)/signup';
 

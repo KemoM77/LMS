@@ -27,15 +27,15 @@ export default function ActivateMember({ userInfo, onSubmit }) {
   const USER_URL = `users`;
 
   const handleChange = (event) => {
-    console.log(event.target.value);
+    //////console.log(event.target.value);
     setDeadline(event.target.value);
     setIsDisabled(isDateInFuture(event.target.value));
   };
   const handleApprove = async (event) => {
     event.preventDefault();
-    console.log('aprroved');
+    //////console.log('aprroved');
     const date = new Date(deadline);
-    console.log(Timestamp.fromDate(date));
+    //////console.log(Timestamp.fromDate(date));
 
     userInfo = {
       ...userInfo,
@@ -43,7 +43,7 @@ export default function ActivateMember({ userInfo, onSubmit }) {
       valid_until: Timestamp.fromDate(date),
     };
 
-    //console.log(userInfo);
+    ////////console.log(userInfo);
 
     await addData(USER_URL, userInfo.id.trim(), userInfo);
     await addNotification(

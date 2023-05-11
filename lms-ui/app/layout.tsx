@@ -3,7 +3,6 @@ import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContextProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
-// import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 

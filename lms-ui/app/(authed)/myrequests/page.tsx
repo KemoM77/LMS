@@ -2,12 +2,12 @@
 import React from 'react'
 import RequestsList from '../profile/requestsList'
 import { useAuthContext } from '@/app/context/AuthContext';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-export default function Page() {
+export default function ReqsPage() {
     const { currentUser} = useAuthContext();
-
-    if (currentUser.isLibrarian) redirect('/dashboard');
+    const router =useRouter()
+    if (currentUser.isLibrarian) router.push('/dashboard');
 
 
   return !currentUser.isLibrarian && (

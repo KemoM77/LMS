@@ -31,7 +31,6 @@ type Props = {
   onSubmit: () => void;
 };
 export default function AddBook({ BookData = undefined, onSubmit = () => {} }: Props) {
-  console.log(BookData);
 
   const [addBookState, SetaddBookState] = useState<BookInfo>(BookData ? BookData : (fieldsState as BookInfo));
 
@@ -86,7 +85,7 @@ export default function AddBook({ BookData = undefined, onSubmit = () => {} }: P
       searchableTerms: undefined,
     };
 
-    console.log(updated);
+    //////console.log(updated);
     SetaddBookState(updated as BookInfo);
 
     const { result, error } = await addBook(updated);

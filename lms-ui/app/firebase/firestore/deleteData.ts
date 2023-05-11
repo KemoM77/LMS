@@ -3,21 +3,21 @@ import { db } from './getData';
 
 export const deleteData = async (id: any, collectionName: string) => {
   let e = null;
-  //console.log('this should be del',docRef);
+  ////////console.log('this should be del',docRef);
   try {
    
     const docRef =  doc(db, collectionName, id)
     ;
     if (!docRef.id) {
-      console.log('Document does not exist.');
+      //////console.log('Document does not exist.');
       return;
     }
 
     await deleteDoc(docRef);
-    console.log("successfully deleted");
+    //////console.log("successfully deleted");
     
   } catch (error) {
-    console.log(error);
+    //////console.log(error);
     e = error;
   }
   return { e };

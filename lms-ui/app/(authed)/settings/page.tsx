@@ -10,7 +10,7 @@ import modifyLifeTime from '@/app/firebase/firestore/modifyLifetime';
 import getCurrency from '@/app/firebase/firestore/getCurrency';
 import modifyCurrency from '@/app/firebase/firestore/modifyCurrency';
 import CurrencyCodesDropdown from './currencyDropdown';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useAuthContext } from '@/app/context/AuthContext';
 
 export default function SettingsPage() {
@@ -23,8 +23,7 @@ export default function SettingsPage() {
   const router = useRouter();
 
 
-///REDIRECTING
-  if (!currentUser.isLibrarian) redirect('/dashboard');
+  //if (!currentUser.isLibrarian) router.push('/dashboard');
 
 
 
@@ -47,7 +46,7 @@ export default function SettingsPage() {
   };
 
   const handleTimeChange = (event) => {
-    console.log(event.target.value);
+    //////console.log(event.target.value);
 
     setLifeTime(event.target.value);
   };
@@ -67,20 +66,20 @@ export default function SettingsPage() {
       });
     });
     await modifyLifeTime(lifeTimeState).then(() => {
-      console.log('added life time');
+      //////console.log('added life time');
     });
     await modifyCurrency(currencyState).then(() => {
-      console.log('added cur');
+      //////console.log('added cur');
     });
   };
   useEffect(() => {
     if (!loaded) {
       fetchCurrency().then((result) => {
-        console.log(result.currency);
+        //////console.log(result.currency);
         setCurrency(result.currency.currency);
       });
       fetchDailyFees().then((result) => {
-        console.log(result.dailyFees);
+        //////console.log(result.dailyFees);
         setDailyFess(result.dailyFees.fee);
       });
       fetchLifeTime().then((result) => {

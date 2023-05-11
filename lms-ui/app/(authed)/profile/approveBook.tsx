@@ -29,17 +29,17 @@ export default function ApproveBook({ requestInfo, userInfo ,  onSubmit }) {
   const USER_REQUESTS_URL = `users/${requestInfo.uid.trim()}/requests`;
 
   const handleChange = (event) => {
-    console.log(event.target.value);
+    //////console.log(event.target.value);
     setDeadline(event.target.value);
     setIsDisabled(isDateInFuture(event.target.value));
-   // console.log(requestInfo);
+   // //////console.log(requestInfo);
     
   };
   const handleApprove = async (event) => {
     event.preventDefault();
-    //console.log('aprroved');
+    ////////console.log('aprroved');
     const date = new Date(deadline);
-    console.log(Timestamp.fromDate(date));
+    //////console.log(Timestamp.fromDate(date));
     const newReqData: BookRequest = {
       ...requestInfo,
       status: 'ACCEPTED',
@@ -47,8 +47,8 @@ export default function ApproveBook({ requestInfo, userInfo ,  onSubmit }) {
       until: Timestamp.fromDate(date),
       managedAt: serverTimestamp(),
     };
-    // console.log(newReqData);
-    // console.log(USER_REQUESTS_URL);
+    // //////console.log(newReqData);
+    // //////console.log(USER_REQUESTS_URL);
 
     await addData(USER_REQUESTS_URL, newReqData.id.trim(), newReqData);
     await addNotification(

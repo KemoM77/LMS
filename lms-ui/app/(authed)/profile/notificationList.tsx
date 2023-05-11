@@ -50,7 +50,7 @@ export default function NotificationList() {
     await getNotification(currentUser.id).then((result) => {
       result.notifications.forEach((doc) => {
         notes.push(doc.data() as unknown as Notification);
-        console.log(doc.data());
+        //////console.log(doc.data());
       });
 
       setLoading(false);

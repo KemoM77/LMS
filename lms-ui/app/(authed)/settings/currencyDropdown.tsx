@@ -3,7 +3,7 @@
 import { Select,Option } from '@material-tailwind/react'
 import React from 'react'
 
-const currencyCodes: string[] = [
+export const currencyCodes: string[] = [
   'AED', // United Arab Emirates Dirham
   'AFN', // Afghan Afghani
   'ALL', // Albanian Lek
@@ -173,7 +173,7 @@ const currencyCodes: string[] = [
 
 export default function CurrencyCodesDropdown({onChange ,value = 'USD' }) {
   return (
-    <Select  onChange={(value) => onChange(value)} value={value} className="form-select bg-white" id="CurrencyCodesDropdown" name="CurrencyCodesDropdown">
+    <Select data-testid="CurrencyCodesDropdown"  onChange={(value) => onChange(value)} value={value} className="form-select bg-white" id="CurrencyCodesDropdown" name="CurrencyCodesDropdown">
     {currencyCodes.map((cur) =>     <Option key={cur} value={cur}>{cur}</Option>
 )}
 

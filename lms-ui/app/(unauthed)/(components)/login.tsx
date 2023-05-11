@@ -19,7 +19,6 @@ export default function Login() {
   const [successful, setSuccessful] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loginState['password'].length < 6) {
@@ -29,7 +28,7 @@ export default function Login() {
 
     setLoading(true);
     const { result, error } = await signIn(loginState['email-address'], loginState['password']);
-    // console.log(323232323);
+    // //////console.log(323232323);
     setErrorMessage(
       error?.code == 'auth/too-many-requests'
         ? 'Too many Requests.Try again later, or reset your password'
@@ -37,13 +36,15 @@ export default function Login() {
         ? 'Invalid email or password'
         : error?.code === 'auth/user-not-found'
         ? 'User does not exist, sign up first'
+        : error?.code == 'auth/invalid-email'
+        ? 'Invalid Email, please enter a valid email'
         : 'Login Error, try again later.'
     );
     //  setErrorMessage(loginState['password'].length < 6 ? 'Password must be more than 6 characters' : '');
     //alert(error.code)
     if (result) {
       setSuccessful(true);
-      router.push('/dashboard');
+      //router.push('/dashboard');
     }
     setLoading(false);
   };
