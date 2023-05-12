@@ -3,7 +3,7 @@ import { useAuthContext } from '@/app/context/AuthContext';
 import getManyDocs from '@/app/firebase/firestore/getManyDocs';
 import { useEffect, useState } from 'react';
 import addData from '@/app/firebase/firestore/addData';
-import { BookRequest, RequestStatus } from '../../profile//request';
+import { BookRequest, RequestStatus } from '../../profile/request';
 import { Timestamp, serverTimestamp } from 'firebase/firestore';
 import Link from 'next/link';
 import { CircularProgress } from '@mui/material';
