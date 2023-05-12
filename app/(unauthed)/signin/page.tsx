@@ -6,7 +6,7 @@ import Login from '../(components)/login';
 export default function LoginPage() {
   return (
     <div
-      className="border-gray-950 bg-slate-100 mt-32 flex max-h-[850px] min-w-[600px] flex-col justify-center rounded-md  border-0 p-10 shadow-2xl"
+      className="border-gray-950 bg-slate-100 mt-32 flex md:max-h-[850px] md:min-w-[600px] flex-col justify-center rounded-md  border-0 p-10 shadow-2xl"
     >
       <Header
         heading="Login to your account"

@@ -55,7 +55,7 @@ export default function Login() {
 
   return !isloading && !successful ? (
     <>
-      <form onSubmit={handleSubmit} className="mt-8 min-w-full space-y-6" data-testid="login-component">
+      <form onSubmit={handleSubmit} className="mt-8 md:min-w-full space-y-6" data-testid="login-component">
         <div className="text-center text-red-600">{errorMessage}</div>
         <div className="-space-y-px">
           {fields.map((field) => (
