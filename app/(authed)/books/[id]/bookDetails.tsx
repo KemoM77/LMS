@@ -164,7 +164,7 @@ export default function BookDetails({ bookInfo }: Props) {
     !loading && (
       <>
         <ActionDialog
-          title={'Edit profile information'}
+          title={'Edit Book information'}
           content={
             <AddBook
               BookData={bookInfo}

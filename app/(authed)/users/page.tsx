@@ -28,7 +28,7 @@ function UsersPage() {
   const router =useRouter()
 
 
-  //if (!currentUser.isLibrarian) router.push('/dashboard');
+  if (!currentUser.isLibrarian) router.push('/dashboard');
 
   const options = ['Librarians', 'Users'];
 

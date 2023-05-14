@@ -78,7 +78,7 @@ export default function RequestsList({ userInfo, onChange = () => {} }) {
       [],
       'And',
       { feild: 'requestedAt', method: 'desc' },
-      50
+      150
     );
     return { querySnapshot, docsCount };
   };

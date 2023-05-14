@@ -22,7 +22,7 @@ export default function DashPage() {
   const [newBooks, setNewBooks] = useState<BookInfo[]>([]);
   const [numOfBooks, setNumOfBooks] = useState<number>(0);
   const [numOfUsers, setNumOfUsers] = useState<number>(0);
-  const [fines, setFines] = useState<number>(0);
+  const [fines, setFines] = useState<number>(undefined);
   const [finesCurrency, setFinesCurrency] = useState<string>('USD');
   const [delayFees, setDelayFees] = useState<number>(undefined);
   const router = useRouter();
@@ -110,7 +110,7 @@ export default function DashPage() {
         fetchNewBooks();
       });
     }
-  }, [fines]);
+  },[fines]);
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="flex h-full ">
@@ -144,8 +144,8 @@ export default function DashPage() {
             <div className="mb-4">
               <Card>
                 <CardContent>
-                  <h1 className="text-3xl">Your Fines</h1>-{fines || 0}
-                  {finesCurrency}
+                  <h1 className="text-3xl">Your Fines</h1>-{fines +' ' + finesCurrency || 'Calculating...'}
+                  
                 </CardContent>
               </Card>
             </div>

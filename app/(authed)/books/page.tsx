@@ -145,7 +145,7 @@ export default function BooksPage() {
   return (
     <div className="flex flex-col md:items-center">
       <ActionDialog
-        title={'Edit profile information'}
+        title={'Add New Book'}
         content={
           <AddBook
             BookData={undefined}
