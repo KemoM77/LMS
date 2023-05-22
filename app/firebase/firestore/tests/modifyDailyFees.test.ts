@@ -1,6 +1,7 @@
-import modifyDailyFees from '../modifyDailyFees';
-import { setDoc, doc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
+
 import { db } from '../getData';
+import modifyDailyFees from '../modifyDailyFees';
 
 // Mock firebase/firestore external dependency
 jest.mock('firebase/firestore', () => ({

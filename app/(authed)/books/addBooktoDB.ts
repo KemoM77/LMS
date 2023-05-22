@@ -1,7 +1,9 @@
-import addData from '@/app/firebase/firestore/addData';
-import { BookInfo } from './book';
-import { getSubstrings } from '@/app/firebase/auth/signup';
 import { serverTimestamp } from 'firebase/firestore';
+
+import { getSubstrings } from '@/app/firebase/auth/signup';
+import addData from '@/app/firebase/firestore/addData';
+
+import { BookInfo } from './book';
 
 export async function addBook(bookInfo: BookInfo) {
   bookInfo.searchableTerms = getSubstrings(bookInfo.title);

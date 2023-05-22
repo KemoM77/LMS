@@ -1,26 +1,29 @@
 'use client';
-import * as React from 'react';
-import { styled, alpha, createTheme, ThemeProvider } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useRouter } from 'next/navigation';
-import NotificationList from '../../profile/notificationList';
-import ActionDialog from '../dialog/dialog';
-import getManyDocs from '@/app/firebase/firestore/getManyDocs';
+import * as React from 'react';
+
 import { useAuthContext } from '@/app/context/AuthContext';
 import { FeildQueryConstraint } from '@/app/firebase/firestore/constraints';
+import getManyDocs from '@/app/firebase/firestore/getManyDocs';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import MenuIcon from '@mui/icons-material/Menu';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SearchIcon from '@mui/icons-material/Search';
+import AppBar from '@mui/material/AppBar';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import InputBase from '@mui/material/InputBase';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { alpha, createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+
+import NotificationList from '../../profile/notificationList';
+import ActionDialog from '../dialog/dialog';
+
 const theme = createTheme({
   palette: {
     primary: {

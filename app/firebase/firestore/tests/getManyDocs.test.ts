@@ -1,8 +1,11 @@
-import getManyDocs from '../getManyDocs';
-import { collection, query, where, getDocs, getCountFromServer, QueryOrderByConstraint, orderBy,or, startAfter, limit } from 'firebase/firestore';
-import { db } from '../getData';
-import { FeildQueryConstraint, OrderContraint } from '../constraints';
+import {
+    collection, getCountFromServer, getDocs, limit, or, orderBy, query, QueryOrderByConstraint,
+    startAfter, where
+} from 'firebase/firestore';
 
+import { FeildQueryConstraint, OrderContraint } from '../constraints';
+import { db } from '../getData';
+import getManyDocs from '../getManyDocs';
 
 jest.mock('../getData', () => ({
   db: {},

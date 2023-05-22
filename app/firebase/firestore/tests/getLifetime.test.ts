@@ -1,6 +1,7 @@
-import getLifeTime from '../getLifetime';
 import { doc, getDoc } from 'firebase/firestore';
+
 import { db } from '../getData';
+import getLifeTime from '../getLifetime';
 
 // Mock Firebase module and functions
 jest.mock('firebase/firestore', () => ({

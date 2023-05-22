@@ -1,21 +1,11 @@
 import {
-    collection,
-    query,
-    where,
-    getDocs,
-    QueryFieldFilterConstraint,
-    DocumentData,
-    limit,
-    orderBy,
-    or,
-    Query,
-    startAfter,
-    getCountFromServer,
-    collectionGroup,
-  } from 'firebase/firestore';
-  import { db } from './getData';
-  import {  OrderContraint, FeildQueryConstraint } from './constraints';
-  
+    collection, collectionGroup, DocumentData, getCountFromServer, getDocs, limit, or, orderBy,
+    query, Query, QueryFieldFilterConstraint, startAfter, where
+} from 'firebase/firestore';
+
+import { FeildQueryConstraint, OrderContraint } from './constraints';
+import { db } from './getData';
+
   export default async function getCollectionGroup(
     collectionName: string,
     constraints: FeildQueryConstraint[] = [],

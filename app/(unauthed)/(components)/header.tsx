@@ -1,5 +1,7 @@
 import Link from 'next/link';
+
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+
 export default function Header({ heading, paragraph, linkName, linkUrl = '#' }) {
   return (
     <div className="mb-4">

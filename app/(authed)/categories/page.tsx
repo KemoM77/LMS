@@ -1,14 +1,15 @@
 'use client';
-import getCategories from '@/app/firebase/firestore/getCategories';
-import React, { useEffect, useState } from 'react';
-import { MinusCircleIcon } from '@heroicons/react/24/outline';
-import Input from '@/app/(unauthed)/(components)/input';
-import FormAction from '@/app/(unauthed)/(components)/formAction';
-import addCategories from '@/app/firebase/firestore/addCategories';
-import { Button } from '@material-tailwind/react';
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
+import FormAction from '@/app/(unauthed)/(components)/formAction';
+import Input from '@/app/(unauthed)/(components)/input';
 import { useAuthContext } from '@/app/context/AuthContext';
+import addCategories from '@/app/firebase/firestore/addCategories';
+import getCategories from '@/app/firebase/firestore/getCategories';
+import { MinusCircleIcon } from '@heroicons/react/24/outline';
+import { Button } from '@material-tailwind/react';
 
 function arraysHaveSameElements(arr1: string[], arr2: string[]): boolean {
   if (arr1.length !== arr2.length) {

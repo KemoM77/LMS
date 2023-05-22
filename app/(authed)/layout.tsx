@@ -1,11 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
-import Sidebar from './(shared)/sidebar/sidebar';
-import { useAuthContext } from '../context/AuthContext';
 import { redirect, useRouter } from 'next/navigation';
-import PrimarySearchAppBar from './(shared)/navbar/navbar';
-import ConfirmDialog from './(shared)/confirmDialog/dialog';
+import { useEffect, useState } from 'react';
+
 import { CircularProgress } from '@mui/material';
+
+import { useAuthContext } from '../context/AuthContext';
+import ConfirmDialog from './(shared)/confirmDialog/dialog';
+import PrimarySearchAppBar from './(shared)/navbar/navbar';
+import Sidebar from './(shared)/sidebar/sidebar';
 
 // const metadata = {
 // title: 'BookWoods',

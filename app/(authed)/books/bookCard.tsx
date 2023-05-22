@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
-import { BookInfo } from './book';
+
 import { getLanguageLabel } from './[id]/getLangLabel';
+import { BookInfo } from './book';
 
 type Props = {
   BookDetails: BookInfo;

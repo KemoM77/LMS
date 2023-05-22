@@ -1,5 +1,7 @@
 import React from 'react';
-import { render, fireEvent, screen, act, waitFor } from '@testing-library/react';
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+
 import ConfirmDialog, { confirmDialog } from './dialog';
 
 describe('ConfirmDialog', () => {

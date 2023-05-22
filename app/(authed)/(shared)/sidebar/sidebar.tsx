@@ -1,19 +1,22 @@
 // components/layout/Sidebar.tsx
 'use client';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import Link from 'next/link';
 import Image from 'next/image';
-import { defaultNavItems } from './defaultNavItems';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { useAuthContext } from '@/app/context/AuthContext';
+import Link from 'next/link';
+import { redirect, usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
-import { useRouter, usePathname, redirect } from 'next/navigation';
+
+import { useAuthContext } from '@/app/context/AuthContext';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Box } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { UserInfo } from '../../profile/user';
 import Loader from '../loader/loader';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Box } from '@mui/material';
+import { defaultNavItems } from './defaultNavItems';
+
 // define a NavItem prop
 export type NavItem = {
   label: string;

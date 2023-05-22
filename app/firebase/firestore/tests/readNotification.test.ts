@@ -1,6 +1,7 @@
-import ReadNotification from '../readNotification';
-import addData from '../addData';
 import { Notification } from '@/app/(authed)/profile/notification';
+
+import addData from '../addData';
+import ReadNotification from '../readNotification';
 
 // Mock addData external dependency
 jest.mock('../addData', () => ({

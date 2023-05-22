@@ -1,6 +1,8 @@
 
+import React from 'react';
+
 import getData from '@/app/firebase/firestore/getData';
-import React from 'react'
+
 import BookDetails from './bookDetails';
 
 export default async function BookDetailsPage({params}) {

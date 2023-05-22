@@ -1,15 +1,17 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { useAuthContext } from '../../context/AuthContext';
-import { useRouter } from 'next/navigation';
-import FilteredSearch from '../(shared)/FilteredSearch/FilteredSearch';
-import ActionDialog from '../(shared)/dialog/dialog';
-import Signup from '@/app/(unauthed)/(components)/signup';
-import { CircularProgress } from '@mui/material';
-import getManyDocs from '@/app/firebase/firestore/getManyDocs';
-import { FeildQueryConstraint } from '@/app/firebase/firestore/constraints';
-import { UserInfo } from '../profile/user';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
+import Signup from '@/app/(unauthed)/(components)/signup';
+import { FeildQueryConstraint } from '@/app/firebase/firestore/constraints';
+import getManyDocs from '@/app/firebase/firestore/getManyDocs';
+import { CircularProgress } from '@mui/material';
+
+import ActionDialog from '../(shared)/dialog/dialog';
+import FilteredSearch from '../(shared)/FilteredSearch/FilteredSearch';
+import { useAuthContext } from '../../context/AuthContext';
+import { UserInfo } from '../profile/user';
 
 export type SearchTerms = {
   searchText: string;

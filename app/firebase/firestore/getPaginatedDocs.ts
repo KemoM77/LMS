@@ -1,19 +1,13 @@
 import {
-    collection,
-    query,
-    getDocs,
-    DocumentData,
-    Query,
-    startAt,
-    endAt,
-    orderBy,
-    getCountFromServer,
-    limit,
-    startAfter
-  } from 'firebase/firestore';
-  import { db } from './getData';
-  import { QueryConstraint, OrderContraint, LimitConstraint, FeildQueryConstraint } from './constraints';
-  
+    collection, DocumentData, getCountFromServer, getDocs, limit, orderBy, query, Query,
+    startAfter, 
+} from 'firebase/firestore';
+
+import {
+    FeildQueryConstraint, LimitConstraint, OrderContraint, QueryConstraint
+} from './constraints';
+import { db } from './getData';
+
   export default async function getPaginatedDocs(
     collectionName: string,
     startat:any,

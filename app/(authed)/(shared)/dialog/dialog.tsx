@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
 const ActionDialog = ({ title, content, isOpen, onClose }) => {
   const router = useRouter();

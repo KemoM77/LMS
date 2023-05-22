@@ -1,23 +1,25 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { confirmDialog } from '../../(shared)/confirmDialog/dialog';
-import { useAuthContext } from '@/app/context/AuthContext';
-import { deleteData } from '@/app/firebase/firestore/deleteData';
 import { deleteUser } from 'firebase/auth';
-import ActionDialog from '../../(shared)/dialog/dialog';
+import { serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
+import { useAuthContext } from '@/app/context/AuthContext';
 import addData from '@/app/firebase/firestore/addData';
+import { deleteData } from '@/app/firebase/firestore/deleteData';
+import getCurrency from '@/app/firebase/firestore/getCurrency';
+import getLifeTime from '@/app/firebase/firestore/getLifetime';
+import { Button } from '@material-tailwind/react';
+
+import { confirmDialog } from '../../(shared)/confirmDialog/dialog';
+import ActionDialog from '../../(shared)/dialog/dialog';
+import { BookRequest } from '../../profile/request';
+import { addBook } from '../addBooktoDB';
 import { BookInfo } from '../book';
 import AddBook from '../editBook';
-import { Button } from '@material-tailwind/react';
-import { getLanguageLabel } from './getLangLabel';
-import { toast } from 'react-toastify';
-import { BookRequest } from '../../profile/request';
-import { serverTimestamp } from 'firebase/firestore';
-import { addBook } from '../addBooktoDB';
-import getLifeTime from '@/app/firebase/firestore/getLifetime';
-import getCurrency from '@/app/firebase/firestore/getCurrency';
 import BorrowsList from './borrowsList';
+import { getLanguageLabel } from './getLangLabel';
 
 type Props = {
   bookInfo: BookInfo;

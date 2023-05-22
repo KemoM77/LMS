@@ -1,6 +1,7 @@
-import modifyLifeTime from '../modifyLifetime';
-import { setDoc, doc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
+
 import { db } from '../getData';
+import modifyLifeTime from '../modifyLifetime';
 
 // Mock firebase/firestore external dependency
 jest.mock('firebase/firestore', () => ({

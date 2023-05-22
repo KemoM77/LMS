@@ -1,8 +1,10 @@
 'use client';
 import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { AuthContextProvider } from './context/AuthContext';
+
 import { ToastContainer } from 'react-toastify';
+
+import { AuthContextProvider } from './context/AuthContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 
@@ -14,10 +16,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <ToastContainer
       />
         <AuthContextProvider>
-        {/* <RouterContext.Provider value={makePub({})}> */}
             {children}
-          {/* </RouterContext.Provider> */}
-        </AuthContextProvider>
+›        </AuthContextProvider>
         <ToastContainer/>
       </body>
     </html>

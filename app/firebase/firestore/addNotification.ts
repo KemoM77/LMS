@@ -1,7 +1,9 @@
-import { Notification } from '@/app/(authed)/profile/notification';
-import addData from './addData';
-import { faker } from '@faker-js/faker';
 import { serverTimestamp } from 'firebase/firestore';
+
+import { Notification } from '@/app/(authed)/profile/notification';
+import { faker } from '@faker-js/faker';
+
+import addData from './addData';
 
 export default async function addNotification(uid: string, title:string , content:string) {
 

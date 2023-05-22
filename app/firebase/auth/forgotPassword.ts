@@ -1,5 +1,6 @@
-import { firebase_app } from '@/app/firebase';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+
+import { firebase_app } from '@/app/firebase';
 
 export async function ForgotPassword() {
 

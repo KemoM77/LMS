@@ -1,8 +1,10 @@
 'use client';
-import React from 'react'
-import RequestsList from '../profile/requestsList'
-import { useAuthContext } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import React from 'react';
+
+import { useAuthContext } from '@/app/context/AuthContext';
+
+import RequestsList from '../profile/requestsList';
 
 export default function ReqsPage() {
     const { currentUser} = useAuthContext();

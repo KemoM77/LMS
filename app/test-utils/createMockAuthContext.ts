@@ -1,7 +1,9 @@
-import { IdTokenResult, User,PhoneAuthCredential, AuthCredential } from 'firebase/auth';
-import { AuthContextType } from '../context/AuthContext';
-import { UserInfo } from '../(authed)/profile/user';
 import { auth } from 'firebase-admin';
+import { AuthCredential, IdTokenResult, PhoneAuthCredential, User } from 'firebase/auth';
+
+import { UserInfo } from '../(authed)/profile/user';
+import { AuthContextType } from '../context/AuthContext';
+
 import type { Mock } from 'jest-mock';
 
 

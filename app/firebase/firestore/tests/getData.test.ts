@@ -1,5 +1,6 @@
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+
 import getData, { db } from '../getData';
-import { getDoc, doc, getFirestore } from 'firebase/firestore';
 
 // Mock firebase/firestore external dependency
 jest.mock('firebase/firestore', () => ({

@@ -1,12 +1,14 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { loginFields } from '../(constants)/feilds';
-import Input from './input';
-import FormExtra from './formExtra';
-import FormAction from './formAction';
-import signIn from '../../firebase/auth/signin';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 import { CircularProgress } from '@mui/material';
+
+import { loginFields } from '../(constants)/feilds';
+import signIn from '../../firebase/auth/signin';
+import FormAction from './formAction';
+import FormExtra from './formExtra';
+import Input from './input';
 
 const fields = loginFields;
 let fieldsState = {};

@@ -1,10 +1,12 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import LoginPage from './page';
-import { AppRouterContext } from 'next/dist/shared/lib/app-router-context';
-import { createMockRouter } from '@/app/test-utils/createMockRouter';
 
+import { AppRouterContext } from 'next/dist/shared/lib/app-router-context';
+import React from 'react';
+
+import { createMockRouter } from '@/app/test-utils/createMockRouter';
+import { render, screen } from '@testing-library/react';
+
+import LoginPage from './page';
 
 jest.mock('../../firebase');
 jest.mock('firebase/auth');

@@ -1,19 +1,12 @@
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  QueryFieldFilterConstraint,
-  DocumentData,
-  limit,
-  orderBy,
-  or,
-  Query,
-  startAfter,
-  getCountFromServer,
+    collection, DocumentData, getCountFromServer, getDocs, limit, or, orderBy, query, Query,
+    QueryFieldFilterConstraint, startAfter, where
 } from 'firebase/firestore';
+
+import {
+    FeildQueryConstraint, LimitConstraint, OrderContraint, QueryConstraint
+} from './constraints';
 import { db } from './getData';
-import { QueryConstraint, OrderContraint, LimitConstraint, FeildQueryConstraint } from './constraints';
 
 export default async function getManyDocs(
   collectionName: string,

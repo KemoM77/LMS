@@ -1,6 +1,9 @@
-import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+
+import React from 'react';
+
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import CountriesDropdown from './countriesDropdown';
 
 describe('CountriesDropdown', () => {

@@ -1,4 +1,5 @@
 import { Notification } from '@/app/(authed)/profile/notification';
+
 import addData from './addData';
 
 export default async function ReadNotification(uid: string, notif:Notification) {

@@ -1,17 +1,19 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import Input from '@/app/(unauthed)/(components)/input';
-import { Button } from '@material-tailwind/react';
 import { toast } from 'react-toastify';
+
+import Input from '@/app/(unauthed)/(components)/input';
+import { useAuthContext } from '@/app/context/AuthContext';
+import getCurrency from '@/app/firebase/firestore/getCurrency';
 import getDailyFees from '@/app/firebase/firestore/getDailyFees';
 import getLifeTime from '@/app/firebase/firestore/getLifetime';
+import modifyCurrency from '@/app/firebase/firestore/modifyCurrency';
 import modifyDailyFees from '@/app/firebase/firestore/modifyDailyFees';
 import modifyLifeTime from '@/app/firebase/firestore/modifyLifetime';
-import getCurrency from '@/app/firebase/firestore/getCurrency';
-import modifyCurrency from '@/app/firebase/firestore/modifyCurrency';
+import { Button } from '@material-tailwind/react';
+
 import CurrencyCodesDropdown from './currencyDropdown';
-import { useRouter } from 'next/navigation';
-import { useAuthContext } from '@/app/context/AuthContext';
 
 export default function SettingsPage() {
   const [dailyFess, setDailyFess] = useState<number>(2);

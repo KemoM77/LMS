@@ -1,15 +1,13 @@
-import React from "react";
-import {
-  CalendarIcon,
-  HomeIcon,
-  UserGroupIcon
-} from "@heroicons/react/24/outline";
-import { NavItem } from "./sidebar";
-import { LibraryBooks } from "@mui/icons-material";
+import React from 'react';
+
+import { CalendarIcon, HomeIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { LibraryBooks } from '@mui/icons-material';
+import CategoryIcon from '@mui/icons-material/Category';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
 import SettingsIcon from '@mui/icons-material/Settings';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import CategoryIcon from '@mui/icons-material/Category';
+
+import { NavItem } from './sidebar';
 
 export const defaultNavItems: NavItem[] = [
   {

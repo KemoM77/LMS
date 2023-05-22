@@ -1,5 +1,6 @@
+import { doc, getDoc } from 'firebase/firestore';
+
 import getCategories from '../getCategories';
-import { getDoc, doc } from 'firebase/firestore';
 import { db } from '../getData';
 
 // Mock firebase/firestore external dependency

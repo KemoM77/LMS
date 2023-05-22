@@ -1,5 +1,7 @@
-import { setDoc, doc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
+
 import { db } from './getData';
+
 //import getCategories from './getCategories';
 
 export default async function modifyDailyFees(newfees:number) {

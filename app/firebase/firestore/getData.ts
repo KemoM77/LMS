@@ -1,5 +1,6 @@
-import {firebase_app} from "../../firebase";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+
+import { firebase_app } from '../../firebase';
 
 export const db = getFirestore(firebase_app)
 export default async function getData(collection:string, id:string) {

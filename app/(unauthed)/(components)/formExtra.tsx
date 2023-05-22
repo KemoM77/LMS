@@ -1,4 +1,4 @@
-import { ForgotPassword } from "@/app/firebase/auth/forgotPassword";
+import { ForgotPassword } from '@/app/firebase/auth/forgotPassword';
 
 async function handleForgotPassword() {
   ForgotPassword();

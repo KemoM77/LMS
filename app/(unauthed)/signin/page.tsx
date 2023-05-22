@@ -1,7 +1,7 @@
 'use client';
-import { loginFields } from '../(constants)/feilds';
 import Header from '../(components)/header';
 import Login from '../(components)/login';
+import { loginFields } from '../(constants)/feilds';
 
 export default function LoginPage() {
   return (

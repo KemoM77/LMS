@@ -1,9 +1,10 @@
-import addNotification from '../addNotification';
-import addData from '../addData';
 import { serverTimestamp } from 'firebase/firestore';
 
 // Correct the import statement for faker
 import * as faker from '@faker-js/faker';
+
+import addData from '../addData';
+import addNotification from '../addNotification';
 
 // Mock external dependencies
 jest.mock('../addData', () => jest.fn());

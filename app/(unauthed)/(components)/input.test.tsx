@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+
 import Input from './input';
-
-
 
 jest.mock('../(constants)/countriesDropdown.tsx', () => {
     return {

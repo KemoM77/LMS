@@ -1,6 +1,6 @@
-import { setDoc, doc } from 'firebase/firestore';
-import { db } from './getData';
+import { doc, setDoc } from 'firebase/firestore';
 
+import { db } from './getData';
 
 export default async function addData(colllection: string , id: string, data: any) {
   let result = null;

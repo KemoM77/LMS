@@ -1,5 +1,6 @@
-import { Select,Option } from '@material-tailwind/react'
-import React from 'react'
+import React from 'react';
+
+import { Option, Select } from '@material-tailwind/react';
 
 export default function LanguagesDropdown({onChange ,value = 'en' }) {
   return (

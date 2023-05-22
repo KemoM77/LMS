@@ -1,5 +1,6 @@
+import { doc, getDoc } from 'firebase/firestore';
+
 import getCurrency from '../getCurrency';
-import { getDoc, doc } from 'firebase/firestore';
 import { db } from '../getData';
 
 // Mock firebase/firestore external dependency

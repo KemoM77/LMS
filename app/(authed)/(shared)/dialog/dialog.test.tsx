@@ -1,8 +1,10 @@
-import { screen, render, fireEvent } from '@testing-library/react';
-import ActionDialog from './dialog';
-import { useRouter } from 'next/navigation';
 import { AppRouterContext } from 'next/dist/shared/lib/app-router-context';
+import { useRouter } from 'next/navigation';
+
 import { createMockRouter } from '@/app/test-utils/createMockRouter';
+import { fireEvent, render, screen } from '@testing-library/react';
+
+import ActionDialog from './dialog';
 
 jest.mock('next/navigation');
 

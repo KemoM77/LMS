@@ -1,23 +1,25 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { UserInfo } from './user';
-import { confirmDialog } from '../(shared)/confirmDialog/dialog';
-import { useAuthContext } from '@/app/context/AuthContext';
-import { deleteData } from '@/app/firebase/firestore/deleteData';
 import { deleteUser } from 'firebase/auth';
-import EditProfileComp from './editProfileComp';
-import ActionDialog from '../(shared)/dialog/dialog';
-import { useRouter } from 'next/navigation';
-import addData from '@/app/firebase/firestore/addData';
-import RequestsList, { delayDays } from './requestsList';
 import { Timestamp } from 'firebase/firestore';
-import ActivateMember from './activateMemeberForm';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
+import { useAuthContext } from '@/app/context/AuthContext';
+import addData from '@/app/firebase/firestore/addData';
+import addNotification from '@/app/firebase/firestore/addNotification';
+import { FeildQueryConstraint, QueryConstraint } from '@/app/firebase/firestore/constraints';
+import { deleteData } from '@/app/firebase/firestore/deleteData';
 import getCurrency from '@/app/firebase/firestore/getCurrency';
 import getDailyFees from '@/app/firebase/firestore/getDailyFees';
 import getManyDocs from '@/app/firebase/firestore/getManyDocs';
-import { FeildQueryConstraint, QueryConstraint } from '@/app/firebase/firestore/constraints';
+
+import { confirmDialog } from '../(shared)/confirmDialog/dialog';
+import ActionDialog from '../(shared)/dialog/dialog';
+import ActivateMember from './activateMemeberForm';
+import EditProfileComp from './editProfileComp';
 import { BookRequest } from './request';
-import addNotification from '@/app/firebase/firestore/addNotification';
+import RequestsList, { delayDays } from './requestsList';
+import { UserInfo } from './user';
 
 type Props = {
   userInfo: UserInfo;

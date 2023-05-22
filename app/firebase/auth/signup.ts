@@ -1,22 +1,25 @@
-import { firebase_app, second_firebase_app } from '../../firebase';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { serverTimestamp } from 'firebase/firestore';
-import addData from '../firestore/addData';
+
 import { UserInfo } from '@/app/(authed)/profile/user';
-//  const { TextEncoder} = require("util");
+
+import { firebase_app, second_firebase_app } from '../../firebase';
+import addData from '../firestore/addData';
+
+import { TextEncoder } from "util";
 
 
-// export async function hashString(inputString: string): Promise<string> {
-//   const encoder = new TextEncoder();
-//   const data = encoder.encode(inputString);
-//   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+export async function hashString(inputString: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(inputString);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
 
-//   // Convert the ArrayBuffer to a hexadecimal string
-//   const hashArray = Array.from(new Uint8Array(hashBuffer));
-//   const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+  // Convert the ArrayBuffer to a hexadecimal string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 
-//   return hashHex;
-// }
+  return hashHex;
+}
 
 export function getSubstrings(str: string): string[] {
   const substrings: string[] = [];

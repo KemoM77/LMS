@@ -1,10 +1,12 @@
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+import Loader from '@/app/(authed)/(shared)/loader/loader';
+import signUp from '@/app/firebase/auth/signup';
+
 import { signupFields } from '../(constants)/feilds';
 import FormAction from './formAction';
 import Input from './input';
-import signUp from '@/app/firebase/auth/signup';
-import { useRouter } from 'next/navigation';
-import Loader from '@/app/(authed)/(shared)/loader/loader';
 
 // export type SignUpData = {
 //     email:string,

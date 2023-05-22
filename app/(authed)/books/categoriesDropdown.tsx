@@ -1,6 +1,7 @@
-import getCategories from '@/app/firebase/firestore/getCategories';
 import React, { useState } from 'react';
 import { MultiSelect } from 'react-multi-select-component';
+
+import getCategories from '@/app/firebase/firestore/getCategories';
 
 const CategoriesDropdown = ({ onChange, value = [] }) => {
   const [initCategories, setInitCategories] = useState<string[]>([]);

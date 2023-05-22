@@ -1,5 +1,5 @@
-import getNotification from '../getNotifications';
 import getManyDocs from '../getManyDocs';
+import getNotification from '../getNotifications';
 
 // Mock getManyDocs external dependency
 jest.mock('../getManyDocs', () => ({

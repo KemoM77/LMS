@@ -1,16 +1,18 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { editProfileFields } from '@/app/(unauthed)/(constants)/feilds';
-import FormAction from '@/app/(unauthed)/(components)/formAction';
-import Input from '../../(unauthed)/(components)/input';
 import { useRouter } from 'next/navigation';
-import CircularProgress from '@mui/material/CircularProgress';
-import { useAuthContext } from '@/app/context/AuthContext';
-import getData from '@/app/firebase/firestore/getData';
-import addData from '@/app/firebase/firestore/addData';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { UserInfo } from './user';
+
+import FormAction from '@/app/(unauthed)/(components)/formAction';
+import { editProfileFields } from '@/app/(unauthed)/(constants)/feilds';
+import { useAuthContext } from '@/app/context/AuthContext';
+import addData from '@/app/firebase/firestore/addData';
 import addNotification from '@/app/firebase/firestore/addNotification';
+import getData from '@/app/firebase/firestore/getData';
+import CircularProgress from '@mui/material/CircularProgress';
+
+import Input from '../../(unauthed)/(components)/input';
+import { UserInfo } from './user';
 
 const fields = editProfileFields;
 let fieldsState = {};

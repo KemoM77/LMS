@@ -1,6 +1,8 @@
 import React, { Dispatch, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { SearchTerms } from '../../users/page';
+
 import { debounce } from '@mui/material';
+
+import { SearchTerms } from '../../users/page';
 
 type Props = {
   options: string[];

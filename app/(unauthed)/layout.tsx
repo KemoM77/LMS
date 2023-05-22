@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useAuthContext } from '../context/AuthContext';
 import { redirect } from 'next/navigation';
+import { useEffect } from 'react';
+
+import { useAuthContext } from '../context/AuthContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuthContext();

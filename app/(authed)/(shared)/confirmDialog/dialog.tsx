@@ -1,11 +1,13 @@
 import React from 'react';
-// material ui
-import { Dialog, DialogTitle, DialogContent, DialogActions, Box, IconButton, makeStyles } from '@mui/material';
-import { Button } from '@material-tailwind/react';
-import { Close } from '@mui/icons-material';
 // zustand
 import { create } from 'zustand';
-import { Alert } from '@mui/material';
+
+import { Button } from '@material-tailwind/react';
+import { Close } from '@mui/icons-material';
+// material ui
+import {
+    Alert, Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, makeStyles
+} from '@mui/material';
 
 export type ConfirmDialogStore = {
   message: string;

@@ -1,7 +1,8 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import FilteredSearch from './FilteredSearch';
-import { SearchTerms } from '../../users/page';
 import { debounce } from '@mui/material';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
+import { SearchTerms } from '../../users/page';
+import FilteredSearch from './FilteredSearch';
 
 jest.mock('@mui/material', () => ({
   ...jest.requireActual('@mui/material'),
@@ -135,25 +136,6 @@ describe('FilteredSearch component', () => {
       expect(mockOnSearch).toHaveBeenCalledTimes(0);
     });
   });
-  // test('should call onSearch with the correct search terms', async () => {
-  //   const options = ['Option1', 'Option2', 'Option3'];
-  //   const onSearch = jest.fn();
-  //   const { getByTestId, getByPlaceholderText } = render(<FilteredSearch options={options} onSearch={onSearch} />);
 
-  //   const searchInput = getByPlaceholderText('search for users');
-  //   const filterSelect = getByTestId('typeDrop');
-
-  //   fireEvent.change(searchInput, { target: { value: 'test' } });
-  //   fireEvent.change(filterSelect, { target: { value: 'option1' } });
-
-  //   await waitFor(() => expect(onSearch).toHaveBeenCalledTimes(1));
-
-  //   // Clear the search input
-  //   fireEvent.change(searchInput, { target: { value: '' } });
-
-  //   // It should call onSearch again when the search input is cleared
-  //   await waitFor(() => expect(onSearch).toHaveBeenCalledTimes(2));
-
-  //   expect(onSearch).toHaveBeenCalledWith({ searchText: 'test', filterOption: 'option1' });
-  // });
+  
 });

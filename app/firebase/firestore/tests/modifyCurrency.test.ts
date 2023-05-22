@@ -1,6 +1,7 @@
-import modifyCurrency from '../modifyCurrency';
-import { setDoc, doc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
+
 import { db } from '../getData';
+import modifyCurrency from '../modifyCurrency';
 
 // Mock firebase/firestore external dependency
 jest.mock('firebase/firestore', () => ({

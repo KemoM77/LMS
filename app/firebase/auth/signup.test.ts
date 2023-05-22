@@ -1,10 +1,11 @@
-import signUp, { getSubstrings } from './signup';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import addData from '../firestore/addData';
-import type { Mock } from 'jest-mock';
-import { serverTimestamp } from "firebase/firestore";
-import { TextEncoder } from "util";
+import { serverTimestamp } from 'firebase/firestore';
+import { TextEncoder } from 'util';
 
+import addData from '../firestore/addData';
+import signUp, { getSubstrings } from './signup';
+
+import type { Mock } from 'jest-mock';
 jest.mock('../../firebase', () => {
   return {
     firebase_app: {},
@@ -48,7 +49,7 @@ describe('signUp', () => {
           'userType': 'user',
         };
         const mockResult = { user: { uid: '12345' } };
-        const mockTerms = getSubstrings(mockData['first-name'] + ' ' + mockData['last-name']);
+        const mockTerms = [...new Set(getSubstrings(mockData['first-name'] + ' ' + mockData['last-name']))];
     
         (createUserWithEmailAndPassword as Mock).mockImplementation(() =>
           Promise.resolve(mockResult)
@@ -291,7 +292,7 @@ describe('signUp', () => {
           'userType': 'librarian',
         };
         const mockResult = { user: { uid: '54321' } };
-        const mockTerms = getSubstrings(mockData['first-name'] + ' ' + mockData['last-name']);
+        const mockTerms = [...new Set(getSubstrings(mockData['first-name'] + ' ' + mockData['last-name']))];
     
         (createUserWithEmailAndPassword as Mock).mockImplementation(() =>
           Promise.resolve(mockResult)

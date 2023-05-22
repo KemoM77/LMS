@@ -1,8 +1,10 @@
 'use client'
 import React from 'react';
-import getData from '@/app/firebase/firestore/getData';
-import Profile from './profile';
+
 import { useAuthContext } from '@/app/context/AuthContext';
+import getData from '@/app/firebase/firestore/getData';
+
+import Profile from './profile';
 
 export default  function ProfilePage() {
   const { user, loading,currentUser } = useAuthContext();

@@ -1,10 +1,11 @@
 'use client';
-import React from 'react';
-import Profile from '../profile';
-import getData from '@/app/firebase/firestore/getData';
-import { useAuthContext } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
+import { useAuthContext } from '@/app/context/AuthContext';
+import getData from '@/app/firebase/firestore/getData';
+
+import Profile from '../profile';
 
 export default async function ProfilePageDynamic({ params }) {
 

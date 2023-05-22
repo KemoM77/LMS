@@ -1,5 +1,5 @@
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
-import {  } from 'next/navigation';
+import {} from 'next/navigation';
 
 export function createMockRouter(router: Partial<AppRouterInstance>): AppRouterInstance {
   return {

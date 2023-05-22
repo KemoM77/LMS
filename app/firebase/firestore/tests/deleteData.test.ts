@@ -1,4 +1,5 @@
 import { deleteDoc, doc } from 'firebase/firestore';
+
 import { deleteData } from '../deleteData';
 
 // just Mocking the 'db' constant :)

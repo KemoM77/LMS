@@ -1,8 +1,10 @@
-import { Select, Option } from '@material-tailwind/react/components/Select';
 import { useEffect, useState } from 'react';
 import { MultiSelect } from 'react-multi-select-component';
-import LanguagesDropdown from '../../books/langsDropdown';
+
+import { Option, Select } from '@material-tailwind/react/components/Select';
+
 import CategoriesDropdown from '../../books/categoriesDropdown';
+import LanguagesDropdown from '../../books/langsDropdown';
 
 function BooksSearchBar({ onSearch, barSearch = '' }) {
   const [name, setName] = useState('');

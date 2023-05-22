@@ -1,11 +1,13 @@
-import { screen, fireEvent, waitFor } from '@testing-library/react';
-import { render } from '@testing-library/react';
-import type { Mock } from 'jest-mock';
+import { getFirestore } from 'firebase/firestore';
+import { AppRouterContext } from 'next/dist/shared/lib/app-router-context';
+
 import * as signUpModule from '@/app/firebase/auth/signup';
+import { createMockRouter } from '@/app/test-utils/createMockRouter';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
 import Signup from './signup';
 
-import { createMockRouter } from '@/app/test-utils/createMockRouter';
-
+import type { Mock } from 'jest-mock';
 jest.mock('@/app/firebase', () => {
   const mockedModule = require('@/app/__mocks__/firebase');
   return {
@@ -16,9 +18,6 @@ jest.mock('@/app/firebase', () => {
 
 jest.mock('firebase/auth');
 jest.mock('@/app/firebase/auth/signup');
-
-import { getFirestore } from 'firebase/firestore';
-import { AppRouterContext } from 'next/dist/shared/lib/app-router-context';
 
 const getFirestoreMock = getFirestore as jest.Mock;
 jest.mock('firebase/firestore', () => ({
